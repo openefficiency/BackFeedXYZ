@@ -1,6 +1,14 @@
+// PostCSS configuration
 export default {
   plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
+    // Only include autoprefixer if available, skip tailwindcss
+    ...((() => {
+      try {
+        require.resolve('autoprefixer');
+        return { autoprefixer: {} };
+      } catch {
+        return {};
+      }
+    })()),
   },
-};
+}
