@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voice AI Agent - Employee Feedback System</title>
+    
+    <!-- Preload ElevenLabs widget script -->
+    <link rel="preload" href="https://unpkg.com/@elevenlabs/convai-widget-embed" as="script">
+    
+    <!-- Add microphone permissions meta tag -->
+    <meta name="permissions-policy" content="microphone=*">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- ElevenLabs widget script loaded globally -->
+    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+    
+    <!-- Additional script to ensure widget functionality -->
+    <script>
+      // Ensure microphone permissions are properly handled
+      window.addEventListener('load', function() {
+        // Check if getUserMedia is available
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+          console.log('✅ getUserMedia is available');
+        } else {
+          console.warn('⚠️ getUserMedia is not available');
+        }
+        
+        // Listen for ElevenLabs widget events globally
+        window.addEventListener('message', function(event) {
+          console.log('Global message listener:', event);
+          
+          // Forward ElevenLabs events to the React app
+          if (event.data && typeof event.data === 'object') {
+            const { type } = event.data;
+            if (type && (type.includes('conversation') || type.includes('convai'))) {
+              console.log('ElevenLabs event detected:', event.data);
+              
+              // Dispatch a custom event that React can listen to
+              window.dispatchEvent(new CustomEvent('elevenlabs-event', {
+                detail: event.data
+              }));
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
