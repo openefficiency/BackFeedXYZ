@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "dev:netlify": "netlify dev",
-    "build": "vite build",
+    "build": "npm install && npm run build:app",
+    "build:app": "vite build",
     "build:functions": "npm run build",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -15,12 +16,12 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
+    "@vitejs/plugin-react": "^4.3.1",
     "lucide-react": "^0.344.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.20.1",
     "recharts": "^2.8.0",
-      "@vitejs/plugin-react": "^4.3.1",
     "vite": "^5.4.2"
   },
   "devDependencies": {

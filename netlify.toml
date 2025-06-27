@@ -1,19 +1,21 @@
 # Netlify configuration for ElevenLabs webhook integration
 
 [build]
-  command = "npx vite build"
+  command = "npm run build"
   functions = "netlify/functions"
   edge_functions = "netlify/edge-functions"
   publish = "dist"
+
+# Build environment variables
+[build.environment]
+  NODE_VERSION = "18"
+  NODE_ENV = "production"
+  NPM_FLAGS = "--legacy-peer-deps"
 
 # Edge Function configuration
 [[edge_functions]]
   function = "elevenlabs-webhook"
   path = "/api/elevenlabs-webhook"
-
-# Build environment
-[build.environment]
-  NODE_VERSION = "18"
 
 # Environment variables for different contexts
 [context.production.environment]
