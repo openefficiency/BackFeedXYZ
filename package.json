@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "dev:netlify": "netlify dev",
-    "build": "npx vite build",
+    "build": "npm install && npx vite build",
     "build:functions": "npm run build",
     "lint": "eslint .",
     "preview": "vite preview",
