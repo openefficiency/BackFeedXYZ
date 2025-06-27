@@ -8,7 +8,7 @@ import { HRLogin } from './pages/HRLogin';
 import { DatabaseStatus } from './pages/DatabaseStatus';
 import { Pricing } from './pages/Pricing';
 import { ACKDemo } from './pages/ACKDemo';
-import { StandaloneACKDemoPage } from './pages/StandaloneACKDemo';
+import { NetlifyTrackingDemoPage } from './pages/NetlifyTrackingDemo';
 import { Footer } from './components/Footer';
 
 function App() {
@@ -25,7 +25,7 @@ function App() {
             <Route path="/hr-dashboard" element={<HRDashboard />} />
             <Route path="/database-status" element={<DatabaseStatus />} />
             <Route path="/ack-demo" element={<ACKDemo />} />
-            <Route path="/standalone-ack" element={<StandaloneACKDemoPage />} />
+            <Route path="/netlify-tracking" element={<NetlifyTrackingDemoPage />} />
           </Routes>
         </main>
         <Footer />

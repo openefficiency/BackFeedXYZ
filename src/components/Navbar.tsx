@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Mic, Shield, Search, Menu, X, CreditCard, Phone, Zap } from 'lucide-react';
+import { Mic, Shield, Search, Menu, X, CreditCard, Phone, Zap, Globe } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const location = useLocation();
@@ -42,11 +42,11 @@ export const Navbar: React.FC = () => {
             <NavLink to="/track" icon={<Search className="w-4 h-4" />}>
               Track Case
             </NavLink>
+            <NavLink to="/netlify-tracking" icon={<Globe className="w-4 h-4" />}>
+              Netlify Tracking
+            </NavLink>
             <NavLink to="/ack-demo" icon={<Phone className="w-4 h-4" />}>
               ACK Demo
-            </NavLink>
-            <NavLink to="/standalone-ack" icon={<Zap className="w-4 h-4" />}>
-              Standalone ACK
             </NavLink>
             <NavLink to="/pricing" icon={<CreditCard className="w-4 h-4" />}>
               Pricing
@@ -72,11 +72,11 @@ export const Navbar: React.FC = () => {
               <NavLink to="/track" icon={<Search className="w-4 h-4" />}>
                 Track Case
               </NavLink>
+              <NavLink to="/netlify-tracking" icon={<Globe className="w-4 h-4" />}>
+                Netlify Tracking
+              </NavLink>
               <NavLink to="/ack-demo" icon={<Phone className="w-4 h-4" />}>
                 ACK Demo
-              </NavLink>
-              <NavLink to="/standalone-ack" icon={<Zap className="w-4 h-4" />}>
-                Standalone ACK
               </NavLink>
               <NavLink to="/pricing" icon={<CreditCard className="w-4 h-4" />}>
                 Pricing
