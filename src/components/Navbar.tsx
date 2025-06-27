@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Mic, Shield, Search, Menu, X, CreditCard, Phone, Zap, Globe } from 'lucide-react';
+import { Mic, Shield, Search, Menu, X, CreditCard, Phone, Zap, Globe, Activity } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const location = useLocation();
@@ -48,6 +48,9 @@ export const Navbar: React.FC = () => {
             <NavLink to="/ack-demo" icon={<Phone className="w-4 h-4" />}>
               ACK Demo
             </NavLink>
+            <NavLink to="/production-monitor" icon={<Activity className="w-4 h-4" />}>
+              Monitor
+            </NavLink>
             <NavLink to="/pricing" icon={<CreditCard className="w-4 h-4" />}>
               Pricing
             </NavLink>
@@ -77,6 +80,9 @@ export const Navbar: React.FC = () => {
               </NavLink>
               <NavLink to="/ack-demo" icon={<Phone className="w-4 h-4" />}>
                 ACK Demo
+              </NavLink>
+              <NavLink to="/production-monitor" icon={<Activity className="w-4 h-4" />}>
+                Monitor
               </NavLink>
               <NavLink to="/pricing" icon={<CreditCard className="w-4 h-4" />}>
                 Pricing
