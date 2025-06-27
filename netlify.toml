@@ -1,7 +1,6 @@
 # Netlify configuration for ElevenLabs webhook integration
-
 [build]
-  command = "npm run build:app"
+  command = "npm install tailwindcss@latest postcss@latest autoprefixer@latest --no-save && npm run build:app"
   functions = "netlify/functions"
   edge_functions = "netlify/edge-functions"
   publish = "dist"
