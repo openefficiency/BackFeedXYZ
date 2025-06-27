@@ -16,8 +16,20 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     
-    <!-- ElevenLabs widget script loaded globally -->
-    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+    <!-- ElevenLabs widget script with conflict prevention -->
+    <script>
+      // Add this before loading the ElevenLabs script
+      if (customElements.get('elevenlabs-convai')) {
+        console.log('ElevenLabs widget already registered, skipping...');
+      } else {
+        // Load the ElevenLabs widget script
+        const script = document.createElement('script');
+        script.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
+        script.async = true;
+        script.type = 'text/javascript';
+        document.head.appendChild(script);
+      }
+    </script>
     
     <!-- Additional script to ensure widget functionality -->
     <script>
