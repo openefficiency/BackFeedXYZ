@@ -756,7 +756,7 @@ export const apiService = {
 };
 
 // Initialize connection test and setup on module load
-const initializeConnection = async () => {
+(async () => {
   console.log('🚀 Initializing Supabase connection...');
   console.log('🌐 Environment:', import.meta.env.MODE);
   
@@ -788,7 +788,4 @@ const initializeConnection = async () => {
   } catch (error) {
     console.error('❌ Connection initialization error:', error);
   }
-};
-
-// Run initialization
-initializeConnection();
+})();
