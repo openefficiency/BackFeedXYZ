@@ -47,7 +47,8 @@ ELEVENLABS_WEBHOOK_SECRET=whsec_your_webhook_secret_here
 
 **Optional (for database integration):**
 ```bash
-SUPABASE_URL=https://tnvyzdmgyvpzwxbravrx.supabase.co
+SUPABASE_URL=https://jceijyxczlsofzpnygvk.supabase.co
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpjZWlqeXhjemxzb2Z6cG55Z3ZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA5OTc5NjMsImV4cCI6MjA2NjU3Mzk2M30.dm2LAhvq_p3QmF7kiNwact06xH_X0l8ScAgr9M-DO6M
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
 NODE_ENV=production
 ```

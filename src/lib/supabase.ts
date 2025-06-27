@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 
 // Supabase configuration with your specific credentials
-const supabaseUrl = 'https://tnvyzdmgyvpzwxbravrx.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRudnl6ZG1neXZwend4YnJhdnJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAyMDg3MTYsImV4cCI6MjA2NTc4NDcxNn0.tgtFA4wHYLfa8pu3Oes2y4raVT-_2LuWFOWimXALbWI';
+const supabaseUrl = 'https://jceijyxczlsofzpnygvk.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpjZWlqeXhjemxzb2Z6cG55Z3ZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA5OTc5NjMsImV4cCI6MjA2NjU3Mzk2M30.dm2LAhvq_p3QmF7kiNwact06xH_X0l8ScAgr9M-DO6M';
 
 // Validate configuration
 if (!supabaseUrl || !supabaseAnonKey) {
@@ -37,8 +37,8 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 export const testConnection = async (): Promise<boolean> => {
   try {
     console.log('🔍 Testing Supabase connection...');
-    console.log('📍 URL:', supabaseUrl);
-    console.log('🔑 Key:', supabaseAnonKey.substring(0, 20) + '...');
+    console.log('📍 URL:', 'https://jceijyxczlsofzpnygvk.supabase.co');
+    console.log('🔑 Key:', 'eyJhbGciOiJIUzI1NiIsInR5cC...');
     
     // Test basic connectivity with a simple query
     const { data, error, status, statusText } = await supabase
