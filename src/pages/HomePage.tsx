@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Mic, Check, MessageSquare, ArrowRight, Volume2, ExternalLink, Zap, Star, Shield, Brain, Clock, Users, Sparkles } from 'lucide-react';
+import { Mic, Check, MessageSquare, ArrowRight, Volume2, ExternalLink, Zap, Star, Shield, Brain, Clock, Users, Sparkles, Heart, ThumbsUp, Award } from 'lucide-react';
 import { handleElevenLabsWebhook } from '../lib/elevenlabs-webhook';
 import { PilotWaitlistModal } from '../components/PilotWaitlistModal';
 
@@ -402,6 +402,124 @@ export const HomePage: React.FC = () => {
               <Mic className="w-6 h-6" />
               Track Case
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Show us your Love Section */}
+      <section className="py-20 px-4 bg-gradient-to-br from-red-50 via-pink-50 to-purple-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm border border-red-200 rounded-full text-red-700 text-sm font-medium mb-6">
+              <Heart className="w-4 h-4 fill-current" />
+              Community Love
+            </div>
+            
+            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+              Show us your 
+              <span className="bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent"> Love</span>
+            </h2>
+            
+            <p className="text-xl text-slate-600 mb-12 max-w-3xl mx-auto leading-relaxed">
+              BackFeed is featured in the Bolt Gallery! Help us climb to the top by showing your love with hearts ❤️
+            </p>
+          </div>
+
+          {/* Gallery Showcase */}
+          <div className="relative mb-12">
+            <div className="relative overflow-hidden rounded-2xl shadow-2xl border border-slate-200">
+              {/* Background Image with Fade Effect */}
+              <div className="relative">
+                <img 
+                  src="/image.png" 
+                  alt="Bolt Gallery Community & Social builds featuring BackFeed"
+                  className="w-full h-auto"
+                />
+                
+                {/* Overlay to fade out everything except BackFeed */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-black/60"></div>
+                
+                {/* Highlight BackFeed project */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="relative">
+                    {/* Spotlight effect on BackFeed */}
+                    <div className="absolute -inset-8 bg-gradient-radial from-white/20 via-white/10 to-transparent rounded-full blur-xl"></div>
+                    
+                    {/* Arrow pointing to BackFeed */}
+                    <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
+                      <div className="flex flex-col items-center">
+                        <div className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-lg border border-white/20">
+                          <p className="text-sm font-bold text-slate-900">BackFeed ❤️</p>
+                        </div>
+                        <div className="w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-white/90 mt-1"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Instructions */}
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
+            <div className="text-center p-6 bg-white/80 backdrop-blur-sm rounded-xl border border-red-200 hover:border-red-300 transition-colors">
+              <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl">1️⃣</span>
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">Visit Bolt Gallery</h3>
+              <p className="text-slate-600 text-sm">
+                Click the link below to visit the Community & Social builds section in Bolt Gallery
+              </p>
+            </div>
+
+            <div className="text-center p-6 bg-white/80 backdrop-blur-sm rounded-xl border border-red-200 hover:border-red-300 transition-colors">
+              <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl">2️⃣</span>
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">Find BackFeed</h3>
+              <p className="text-slate-600 text-sm">
+                Look for the BackFeed project in the gallery - it's the employee feedback system you're using right now!
+              </p>
+            </div>
+
+            <div className="text-center p-6 bg-white/80 backdrop-blur-sm rounded-xl border border-red-200 hover:border-red-300 transition-colors">
+              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl">3️⃣</span>
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">Show Love ❤️</h3>
+              <p className="text-slate-600 text-sm">
+                Click the heart button to show your love and help BackFeed climb to the top of the gallery!
+              </p>
+            </div>
+          </div>
+
+          {/* CTA Button */}
+          <div className="text-center">
+            <a
+              href="https://bolt.new/gallery/categories/community-social"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-xl font-bold text-lg hover:from-red-600 hover:to-pink-600 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
+            >
+              <Heart className="w-6 h-6 fill-current" />
+              Show BackFeed Some Love
+              <ExternalLink className="w-5 h-5" />
+            </a>
+            
+            <div className="mt-6 flex items-center justify-center gap-4 text-sm text-slate-600">
+              <div className="flex items-center gap-2">
+                <ThumbsUp className="w-4 h-4 text-blue-500" />
+                <span>Help us reach #1</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Award className="w-4 h-4 text-yellow-500" />
+                <span>Community favorite</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Users className="w-4 h-4 text-green-500" />
+                <span>Built with love</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
