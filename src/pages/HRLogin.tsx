@@ -129,6 +129,9 @@ export const HRLogin: React.FC = () => {
 
           <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
             <h3 className="font-semibold text-blue-900 mb-2">Demo Credentials</h3>
+            <p className="text-sm text-blue-700 mb-3">
+              Try use demo user account credentials to explore the HR dashboard and experience
+            </p>
             <div className="text-sm text-blue-700 space-y-1">
               <p><strong>Email:</strong> hr@company.com</p>
               <p><strong>Password:</strong> demo123</p>
