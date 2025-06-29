@@ -90,6 +90,27 @@ export const TrackCase: React.FC = () => {
     }
   };
 
+  const selectDemoCode = async (code: string) => {
+    // Set the confirmation code
+    setConfirmationCode(code);
+    
+    // Clear any existing error
+    setError('');
+    
+    // Automatically search for the case
+    setLoading(true);
+    
+    try {
+      const data = await dbService.getCaseByCode(code);
+      setCaseData(data);
+    } catch (err: any) {
+      setError('Case not found. Please check your confirmation code and try again.');
+      setCaseData(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'open': return 'text-blue-600 bg-blue-100';
@@ -291,22 +312,18 @@ export const TrackCase: React.FC = () => {
               {demoCodes.map((code) => (
                 <button
                   key={code}
-                  onClick={() => copyCode(code)}
-                  className="flex items-center justify-between p-3 bg-white border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors group"
+                  onClick={() => selectDemoCode(code)}
+                  className="flex items-center justify-between p-3 bg-white border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors group cursor-pointer"
                 >
                   <span className="font-mono text-sm font-medium text-blue-800">{code}</span>
                   <div className="flex items-center">
-                    {copiedCode === code ? (
-                      <CheckCircle className="w-4 h-4 text-green-600" />
-                    ) : (
-                      <Copy className="w-4 h-4 text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    )}
+                    <Search className="w-4 h-4 text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                 </button>
               ))}
             </div>
             <p className="text-xs text-blue-600 mt-2">
-              Click any code to copy it to your clipboard
+              Click any code to automatically search for that case
             </p>
           </div>
         </div>
