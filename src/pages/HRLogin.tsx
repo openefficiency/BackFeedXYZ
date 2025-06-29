@@ -166,7 +166,7 @@ export const HRLogin: React.FC = () => {
 
               <button
                 onClick={copyCredentials}
-                className="w-full flex items-center justify-center gap-2 p-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-colors"
+                className="w-full flex items-center justify-center gap-2 p-3 bg-slate-100 text-slate-700 border border-slate-200 rounded-lg hover:bg-slate-200 hover:border-slate-300 transition-colors"
               >
                 {copied ? (
                   <>
