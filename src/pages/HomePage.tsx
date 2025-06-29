@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Mic, Check, MessageSquare, ArrowRight, Volume2, ExternalLink, Zap, Star, Shield, Brain, Clock, Users, Sparkles, Heart, ThumbsUp, Award } from 'lucide-react';
+import { Mic, Check, MessageSquare, ArrowRight, Volume2, ExternalLink, Zap, Star, Shield, Brain, Clock, Users, Sparkles, Heart, ThumbsUp, Award, Search } from 'lucide-react';
 import { handleElevenLabsWebhook } from '../lib/elevenlabs-webhook';
 import { PilotWaitlistModal } from '../components/PilotWaitlistModal';
 
@@ -211,82 +211,72 @@ export const HomePage: React.FC = () => {
   // Show success page if conversation completed
   if (result) {
     return (
-      <div className="min-h-screen py-8 px-4">
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
-            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Check className="w-10 h-10 text-green-600" />
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-4 px-4">
+        <div className="max-w-lg mx-auto">
+          {/* Success Animation */}
+          <div className="text-center mb-8">
+            <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+              <Check className="w-12 h-12 text-green-600" />
             </div>
             
-            <h1 className="text-3xl font-bold text-slate-900 mb-4">
-              Feedback Submitted Successfully
+            <h1 className="text-2xl md:text-3xl font-light text-slate-900 mb-4 tracking-tight">
+              Feedback Submitted
             </h1>
             
-            <p className="text-slate-600 mb-8">
-              Your feedback has been processed using advanced AI technology 
-              and routed directly to the HR portal for investigation.
+            <p className="text-slate-600 text-lg leading-relaxed">
+              Your voice has been heard. 
+              <br />
+              Change is coming.
             </p>
-            
-            <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-6 mb-8">
-              <h3 className="text-lg font-semibold text-blue-900 mb-2">
+          </div>
+          
+          {/* Confirmation Code - Apple Style */}
+          <div className="bg-white/80 backdrop-blur-xl border border-white/50 rounded-3xl p-8 mb-8 shadow-2xl">
+            <div className="text-center">
+              <h3 className="text-lg font-medium text-slate-900 mb-4">
                 Your Secure Tracking Code
               </h3>
-              <div className="text-4xl font-mono font-bold text-blue-600 mb-4 tracking-wider">
+              <div className="text-3xl md:text-4xl font-mono font-light text-blue-600 mb-6 tracking-widest">
                 {result.confirmationCode}
               </div>
               <button
                 onClick={() => navigator.clipboard.writeText(result.confirmationCode)}
-                className="text-blue-600 hover:text-blue-800 font-medium"
+                className="text-blue-600 hover:text-blue-800 font-medium transition-colors"
               >
-                Click to copy
+                Tap to copy
               </button>
             </div>
+          </div>
 
-            {/* Technology Confirmation */}
-            <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-4 mb-8">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <MessageSquare className="w-5 h-5 text-purple-600" />
-                <span className="font-semibold text-purple-900">AI Processing Confirmed</span>
-              </div>
-              <div className="text-sm text-purple-800 space-y-1">
-                <p>✅ Processed with <a href="https://aegiswhistle.com" target="_blank" rel="noopener noreferrer" className="font-semibold hover:underline">Aegis AI</a> Conversational Technology</p>
-                <p>✅ Natural conversation flow completed</p>
-                <p>✅ Real-time voice interaction processed</p>
-                <p>✅ Tagged with case ID: {result.caseId.substring(0, 12)}...</p>
-                <p>✅ Secure conversation processing</p>
-                <p>✅ Enhanced feedback quality through guided conversation</p>
-                <p>✅ Automatically routed to HR portal</p>
-              </div>
+          {/* AI Processing Confirmation - Minimalist */}
+          <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200/50 rounded-2xl p-6 mb-8">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <MessageSquare className="w-5 h-5 text-purple-600" />
+              <span className="font-medium text-purple-900">AI Processing Complete</span>
             </div>
-
-            {/* Conversation Summary */}
-            <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-8 text-left">
-              <h4 className="font-semibold text-slate-900 mb-2">Feedback Summary:</h4>
-              <p className="text-slate-700 text-sm leading-relaxed">
-                {result.transcript.length > 300 
-                  ? result.transcript.substring(0, 300) + '...' 
-                  : result.transcript}
-              </p>
-              <div className="text-xs text-slate-500 mt-2">
-                Total feedback length: {result.transcript.split(/\s+/).length} words
-              </div>
+            <div className="text-sm text-purple-800 space-y-2 text-center">
+              <p>✓ Processed with <a href="https://aegiswhistle.com" target="_blank" rel="noopener noreferrer" className="font-semibold hover:underline">Aegis AI</a></p>
+              <p>✓ Routed to HR portal</p>
+              <p>✓ Secure & anonymous</p>
             </div>
-            
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                to="/track"
-                className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all duration-200"
-              >
-                Track Your Case
-              </Link>
-              <button
-                onClick={resetWidget}
-                className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-slate-100 text-slate-700 rounded-lg font-semibold hover:bg-slate-200 transition-colors"
-              >
-                <MessageSquare className="w-4 h-4" />
-                Submit Another Report
-              </button>
-            </div>
+          </div>
+          
+          {/* Action Buttons - Clean */}
+          <div className="space-y-4">
+            <Link
+              to="/track"
+              className="w-full flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-2xl font-medium hover:from-purple-700 hover:to-blue-700 transition-all duration-200 shadow-lg"
+            >
+              <Search className="w-5 h-5" />
+              Track Your Case
+            </Link>
+            <button
+              onClick={resetWidget}
+              className="w-full flex items-center justify-center gap-3 px-8 py-4 bg-white/80 text-slate-700 rounded-2xl font-medium hover:bg-white transition-colors border border-slate-200"
+            >
+              <MessageSquare className="w-5 h-5" />
+              Submit Another Report
+            </button>
           </div>
         </div>
       </div>
@@ -294,55 +284,61 @@ export const HomePage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section with Widget */}
-      <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-100 to-blue-100 text-purple-700 rounded-full text-sm font-medium mb-8">
-            <MessageSquare className="w-4 h-4" />
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      {/* Hero Section - Mobile First */}
+      <section className="py-12 md:py-20 px-4">
+        <div className="max-w-lg md:max-w-4xl mx-auto text-center">
+          {/* Powered by Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-md border border-white/50 rounded-full text-sm font-medium mb-8 shadow-lg">
+            <MessageSquare className="w-4 h-4 text-purple-600" />
             Powered by 
             <a 
               href="https://aegiswhistle.com" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-bold hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
+              className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-bold hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
             >
-              <Zap className="w-4 h-4" />
+              <Zap className="w-3 h-3" />
               Aegis AI
-              <ExternalLink className="w-3 h-3" />
+              <ExternalLink className="w-2 h-2" />
             </a>
           </div>
           
-          <h1 className="text-5xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
+          {/* Main Headline - Steve Jobs Typography */}
+          <h1 className="text-4xl md:text-6xl font-extralight text-slate-900 mb-6 leading-tight tracking-tight">
             Every Voice
-            <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent"> Deserves</span>
+            <br />
+            <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-light">Deserves</span>
             <br />
             to be Heard
           </h1>
           
-          <p className="text-xl text-slate-600 mb-12 max-w-2xl mx-auto leading-relaxed">
-            The most human way to share workplace feedback. 
-            <br />
+          {/* Subtitle - Clean & Simple */}
+          <p className="text-lg md:text-xl text-slate-600 mb-12 leading-relaxed font-light">
+            The most human way to share workplace feedback.
+            <br className="hidden md:block" />
             Simply speak. We listen. Change happens.
           </p>
 
-          {/* Aegis AI Interface Section */}
-          <div className="bg-white rounded-2xl shadow-xl border border-slate-200 p-8 mb-12 max-w-2xl mx-auto">
+          {/* AI Interface - Apple-inspired Card */}
+          <div className="bg-white/60 backdrop-blur-xl border border-white/40 rounded-3xl p-6 md:p-8 mb-12 shadow-2xl hover:shadow-3xl transition-all duration-700">
             <div className="text-center mb-6">
-              <div className="flex items-center justify-center gap-2 mb-4">
-                <Mic className="w-6 h-6 text-purple-600" />
-                <h3 className="text-xl font-semibold text-slate-900">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center">
+                  <Mic className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-xl font-light text-slate-900">
                   Your moment to make a difference
                 </h3>
               </div>
-              <p className="text-slate-600 mb-6">
+              <p className="text-slate-600 font-light">
                 Because every great workplace starts with honest conversation.
               </p>
             </div>
 
             {error && (
-              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-red-700">{error}</p>
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-2xl">
+                <p className="text-red-700 text-sm">{error}</p>
                 <button
                   onClick={() => setError('')}
                   className="mt-2 text-sm text-red-600 hover:text-red-800 underline"
@@ -360,9 +356,9 @@ export const HomePage: React.FC = () => {
                     agent-id="agent_01jydtj6avef99c1ne0eavf0ww"
                     style={{
                       width: '100%',
-                      height: '400px',
+                      height: '350px',
                       border: 'none',
-                      borderRadius: '12px'
+                      borderRadius: '16px'
                     }}
                   ></elevenlabs-convai>
                 </div>
@@ -376,277 +372,181 @@ export const HomePage: React.FC = () => {
               </div>
             )}
 
-            {/* Alternative: Direct Link to ElevenLabs Interface */}
-            <div className="bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-200 rounded-xl p-6">
-              <div className="text-center">
-                <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Mic className="w-6 h-6 text-white" />
-                </div>
-                <a
-                  href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
-                >
-                  <Volume2 className="w-5 h-5" />
-                  Speak to 
-                  <span className="font-bold">Aegis</span>
-                  📣
-                </a>
-              </div>
+            {/* Alternative Link */}
+            <div className="text-center">
+              <a
+                href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-2xl font-medium hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
+              >
+                <Volume2 className="w-5 h-5" />
+                Speak to Aegis
+                <Mic className="w-4 h-4" />
+              </a>
             </div>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/track"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-white text-slate-700 rounded-xl font-semibold text-lg border-2 border-slate-200 hover:border-purple-300 hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200"
-            >
-              <Mic className="w-6 h-6" />
-              Track Case
-            </Link>
-          </div>
+          {/* Track Case Button */}
+          <Link
+            to="/track"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-white/80 backdrop-blur-md text-slate-700 rounded-2xl font-medium border border-white/50 hover:bg-white hover:shadow-lg transform hover:scale-105 transition-all duration-200"
+          >
+            <Search className="w-5 h-5" />
+            Track Your Case
+          </Link>
         </div>
       </section>
 
-      {/* Show us your Love Section - Steve Jobs inspired with different background */}
-      <section className="py-24 px-4 bg-gradient-to-br from-gray-50 via-slate-50 to-gray-100 relative overflow-hidden">
-        {/* Subtle background pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(0,0,0,0.15) 1px, transparent 0)',
-            backgroundSize: '20px 20px'
-          }}></div>
-        </div>
-        
-        <div className="max-w-5xl mx-auto relative">
-          <div className="text-center mb-20">
-            <h2 className="text-5xl md:text-6xl font-light text-slate-900 mb-8 tracking-tight">
-              Show us your 
-              <span className="bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent font-medium"> Love</span>
-            </h2>
-          </div>
+      {/* Show Love Section - Ultra Minimalist */}
+      <section className="py-16 md:py-24 px-4 bg-gradient-to-br from-gray-50 via-slate-50 to-gray-100 relative overflow-hidden">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl md:text-6xl font-extralight text-slate-900 mb-8 tracking-tight">
+            Show us your 
+            <span className="bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent font-light"> Love</span>
+          </h2>
 
-          {/* Gallery Showcase - Minimalist */}
-          <div className="relative mb-20">
+          {/* Gallery Preview - Mobile Optimized */}
+          <div className="relative mb-12">
             <a
               href="https://bolt.new/gallery/categories/community-social"
               target="_blank"
               rel="noopener noreferrer"
-              className="block relative overflow-hidden rounded-3xl shadow-2xl border border-white/50 hover:shadow-3xl transition-all duration-500 transform hover:scale-[1.01] bg-white/80 backdrop-blur-sm"
+              className="block relative overflow-hidden rounded-3xl shadow-2xl border border-white/50 hover:shadow-3xl transition-all duration-500 transform hover:scale-[1.02] bg-white/80 backdrop-blur-sm"
             >
-              <div className="relative">
-                <img 
-                  src="/image.png" 
-                  alt="Bolt Gallery Community & Social builds featuring BackFeed"
-                  className="w-full h-auto opacity-90"
-                />
-                
-                {/* Elegant overlay */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40"></div>
-                
-                {/* Spotlight on BackFeed */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="relative">
-                    <div className="absolute -inset-16 bg-gradient-radial from-white/40 via-white/20 to-transparent rounded-full blur-3xl"></div>
-                    
-                    {/* Clean indicator */}
-                    <div className="absolute -top-24 left-1/2 transform -translate-x-1/2">
-                      <div className="flex flex-col items-center animate-pulse">
-                        <div className="bg-white/95 backdrop-blur-md px-8 py-4 rounded-2xl shadow-xl border border-white/40">
-                          <p className="text-xl font-medium text-slate-900 flex items-center gap-3">
-                            <Heart className="w-6 h-6 text-red-500 fill-current" />
-                            BackFeed
-                          </p>
-                        </div>
-                        <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-white/95 mt-3"></div>
-                      </div>
-                    </div>
-                  </div>
+              <img 
+                src="/image.png" 
+                alt="Bolt Gallery Community & Social builds featuring BackFeed"
+                className="w-full h-auto opacity-90"
+              />
+              
+              {/* Elegant overlay */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30"></div>
+              
+              {/* BackFeed Spotlight */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="bg-white/95 backdrop-blur-md px-6 py-3 rounded-2xl shadow-xl border border-white/40 animate-pulse">
+                  <p className="text-lg font-medium text-slate-900 flex items-center gap-2">
+                    <Heart className="w-5 h-5 text-red-500 fill-current" />
+                    BackFeed
+                  </p>
                 </div>
               </div>
             </a>
           </div>
 
-          {/* Steve Jobs-inspired 1-2-3 Steps - Ultra Clean */}
-          <div className="relative mb-20">
-            <div className="grid md:grid-cols-3 gap-12 relative">
-              {/* Step 1 */}
-              <a
-                href="https://bolt.new/gallery/categories/community-social"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group text-center p-10 bg-white/70 backdrop-blur-sm rounded-3xl border border-white/60 hover:bg-white/90 transition-all duration-500 hover:shadow-2xl transform hover:-translate-y-3"
-              >
-                <div className="w-20 h-20 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-8 group-hover:scale-110 transition-transform duration-500 shadow-lg">
-                  <span className="text-4xl font-light text-white">1</span>
-                </div>
-                <h3 className="text-2xl font-light text-slate-900 mb-2">Visit Gallery</h3>
-              </a>
-
-              {/* Step 2 */}
-              <a
-                href="https://bolt.new/gallery/categories/community-social"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group text-center p-10 bg-white/70 backdrop-blur-sm rounded-3xl border border-white/60 hover:bg-white/90 transition-all duration-500 hover:shadow-2xl transform hover:-translate-y-3"
-                style={{ animationDelay: '0.1s' }}
-              >
-                <div className="w-20 h-20 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-8 group-hover:scale-110 transition-transform duration-500 shadow-lg">
-                  <span className="text-4xl font-light text-white">2</span>
-                </div>
-                <h3 className="text-2xl font-light text-slate-900 mb-2">Find BackFeed</h3>
-              </a>
-
-              {/* Step 3 */}
-              <a
-                href="https://bolt.new/gallery/categories/community-social"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group text-center p-10 bg-white/70 backdrop-blur-sm rounded-3xl border border-white/60 hover:bg-white/90 transition-all duration-500 hover:shadow-2xl transform hover:-translate-y-3"
-                style={{ animationDelay: '0.2s' }}
-              >
-                <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-8 group-hover:scale-110 transition-transform duration-500 shadow-lg">
-                  <Heart className="w-10 h-10 text-white fill-current" />
-                </div>
-                <h3 className="text-2xl font-light text-slate-900 mb-2">Show Love</h3>
-              </a>
-            </div>
-          </div>
-
-          {/* Minimalist CTA */}
-          <div className="text-center">
+          {/* Simple Steps - Mobile First */}
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
             <a
               href="https://bolt.new/gallery/categories/community-social"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-4 px-16 py-6 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-full font-medium text-xl hover:from-red-600 hover:to-pink-600 transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-3xl"
+              className="group text-center p-8 bg-white/70 backdrop-blur-sm rounded-3xl border border-white/60 hover:bg-white/90 transition-all duration-500 hover:shadow-xl transform hover:-translate-y-2"
             >
-              <Heart className="w-8 h-8 fill-current" />
-              Show BackFeed Some Love
-              <ExternalLink className="w-6 h-6" />
+              <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500">
+                <span className="text-2xl font-light text-white">1</span>
+              </div>
+              <h3 className="text-xl font-light text-slate-900">Visit Gallery</h3>
             </a>
-            
-            {/* Clean status indicators */}
-            <div className="mt-12 flex items-center justify-center gap-12 text-slate-600">
-              <div className="flex items-center gap-3 text-lg font-light">
-                <ThumbsUp className="w-5 h-5 text-blue-500" />
-                <span>Help us reach #1</span>
+
+            <a
+              href="https://bolt.new/gallery/categories/community-social"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group text-center p-8 bg-white/70 backdrop-blur-sm rounded-3xl border border-white/60 hover:bg-white/90 transition-all duration-500 hover:shadow-xl transform hover:-translate-y-2"
+            >
+              <div className="w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500">
+                <span className="text-2xl font-light text-white">2</span>
               </div>
-              <div className="flex items-center gap-3 text-lg font-light">
-                <Award className="w-5 h-5 text-yellow-500" />
-                <span>Community favorite</span>
+              <h3 className="text-xl font-light text-slate-900">Find BackFeed</h3>
+            </a>
+
+            <a
+              href="https://bolt.new/gallery/categories/community-social"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group text-center p-8 bg-white/70 backdrop-blur-sm rounded-3xl border border-white/60 hover:bg-white/90 transition-all duration-500 hover:shadow-xl transform hover:-translate-y-2"
+            >
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500">
+                <Heart className="w-8 h-8 text-white fill-current" />
               </div>
-              <div className="flex items-center gap-3 text-lg font-light">
-                <Users className="w-5 h-5 text-green-500" />
-                <span>Built with love</span>
-              </div>
-              <div className="flex items-center gap-3 text-lg font-light">
-                <Heart className="w-5 h-5 text-red-500 fill-current" />
-                <span>To spread love</span>
-              </div>
-            </div>
+              <h3 className="text-xl font-light text-slate-900">Show Love</h3>
+            </a>
           </div>
+
+          {/* CTA Button */}
+          <a
+            href="https://bolt.new/gallery/categories/community-social"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-4 px-12 py-4 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-full font-medium text-lg hover:from-red-600 hover:to-pink-600 transform hover:scale-105 transition-all duration-300 shadow-2xl"
+          >
+            <Heart className="w-6 h-6 fill-current" />
+            Show BackFeed Some Love
+            <ExternalLink className="w-5 h-5" />
+          </a>
         </div>
       </section>
 
-      {/* Early Access Program Section - Steve Jobs inspired */}
-      <section className="py-32 px-4 bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden">
-        {/* Subtle geometric pattern */}
-        <div className="absolute inset-0 opacity-3">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'linear-gradient(30deg, #f8fafc 12%, transparent 12.5%, transparent 87%, #f8fafc 87.5%, #f8fafc), linear-gradient(150deg, #f8fafc 12%, transparent 12.5%, transparent 87%, #f8fafc 87.5%, #f8fafc), linear-gradient(30deg, #f8fafc 12%, transparent 12.5%, transparent 87%, #f8fafc 87.5%, #f8fafc), linear-gradient(150deg, #f8fafc 12%, transparent 12.5%, transparent 87%, #f8fafc 87.5%, #f8fafc)',
-            backgroundSize: '80px 140px',
-            backgroundPosition: '0 0, 0 0, 40px 70px, 40px 70px'
-          }}></div>
-        </div>
-        
-        <div className="max-w-4xl mx-auto text-center relative">
-          {/* Apple-style badge */}
-          <div className="inline-flex items-center gap-3 px-6 py-3 bg-white/80 backdrop-blur-md border border-slate-200/50 rounded-full text-slate-700 text-sm font-light mb-16 shadow-lg">
+      {/* Early Access - Simplified */}
+      <section className="py-16 md:py-24 px-4">
+        <div className="max-w-3xl mx-auto text-center">
+          <div className="inline-flex items-center gap-3 px-6 py-3 bg-white/80 backdrop-blur-md border border-white/50 rounded-full text-slate-700 text-sm font-light mb-12 shadow-lg">
             <Sparkles className="w-4 h-4 text-blue-500" />
             Early Access Program
           </div>
           
-          {/* Ultra-light typography */}
-          <h2 className="text-6xl md:text-7xl font-extralight text-slate-900 mb-8 tracking-tight leading-none">
+          <h2 className="text-4xl md:text-6xl font-extralight text-slate-900 mb-8 tracking-tight leading-tight">
             Apply for 
             <br />
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-light">Aegis AI Pilot</span>
-            <br />
-            <span className="text-5xl md:text-6xl">Waitlist</span>
           </h2>
 
-          {/* Minimalist card */}
-          <div className="max-w-2xl mx-auto mt-20">
-            <div className="bg-white/60 backdrop-blur-xl border border-white/40 rounded-3xl p-12 shadow-2xl hover:shadow-3xl transition-all duration-700 hover:bg-white/70">
-              <h3 className="text-3xl font-light text-slate-900 mb-6 tracking-tight">
-                Ready to Transform Your Organization?
-              </h3>
-              <p className="text-xl font-light text-slate-600 mb-12 leading-relaxed">
-                Join the exclusive pilot program and be among the first to experience the future of employee engagement.
-              </p>
-              
-              {/* Apple-style button */}
-              <button
-                onClick={() => setShowPilotModal(true)}
-                className="inline-flex items-center gap-4 px-12 py-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full font-light text-xl hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-3xl tracking-wide"
-              >
-                <Star className="w-6 h-6" />
-                Apply for Aegis AI Pilot Waitlist
-                <ArrowRight className="w-6 h-6" />
-              </button>
-            </div>
+          <div className="bg-white/60 backdrop-blur-xl border border-white/40 rounded-3xl p-8 md:p-12 shadow-2xl">
+            <h3 className="text-2xl md:text-3xl font-light text-slate-900 mb-6">
+              Ready to Transform Your Organization?
+            </h3>
+            <p className="text-lg font-light text-slate-600 mb-8 leading-relaxed">
+              Join the exclusive pilot program and be among the first to experience the future of employee engagement.
+            </p>
+            
+            <button
+              onClick={() => setShowPilotModal(true)}
+              className="inline-flex items-center gap-4 px-10 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full font-medium text-lg hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-2xl"
+            >
+              <Star className="w-5 h-5" />
+              Apply for Pilot Waitlist
+              <ArrowRight className="w-5 h-5" />
+            </button>
           </div>
         </div>
       </section>
 
-      {/* Ready to Share Your Feedback Section - Steve Jobs inspired */}
-      <section className="py-32 px-4 bg-gradient-to-br from-blue-50 via-purple-50 to-slate-50 relative overflow-hidden">
-        {/* Subtle radial pattern */}
-        <div className="absolute inset-0 opacity-4">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 25px 25px, rgba(59, 130, 246, 0.1) 2px, transparent 0)',
-            backgroundSize: '50px 50px'
-          }}></div>
-        </div>
-        
-        <div className="max-w-4xl mx-auto text-center relative">
-          {/* Ultra-clean typography */}
-          <h2 className="text-6xl md:text-7xl font-extralight text-slate-900 mb-8 tracking-tight leading-none">
+      {/* Final CTA - Clean */}
+      <section className="py-16 md:py-24 px-4 bg-gradient-to-br from-blue-50 via-purple-50 to-slate-50">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-4xl md:text-6xl font-extralight text-slate-900 mb-8 tracking-tight leading-tight">
             Ready to Share
             <br />
-            <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-light">Your Feedback</span>
-            <br />
-            <span className="text-slate-900 font-extralight">to your Company?</span>
+            <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-light">Your Feedback?</span>
           </h2>
           
-          <p className="text-2xl font-light text-slate-600 mb-16 max-w-3xl mx-auto leading-relaxed tracking-wide">
-            Join all those employees who trust BackFeed to anonymously share their feedback through natural AI conversations.
+          <p className="text-xl font-light text-slate-600 mb-12 leading-relaxed">
+            Join employees who trust BackFeed to share their feedback through natural AI conversations.
           </p>
           
-          {/* Apple-style CTA */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <a
-              href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-4 px-12 py-6 bg-white/80 backdrop-blur-md text-slate-800 rounded-full font-light text-xl border border-slate-200/50 hover:bg-white hover:shadow-2xl transform hover:scale-105 transition-all duration-300 shadow-xl tracking-wide"
-            >
-              <MessageSquare className="w-6 h-6" />
-              How can 
-              <a 
-                href="https://aegiswhistle.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="font-medium hover:underline bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent"
-              >
-                Aegis AI
-              </a>
-              help you today?
-              <Mic className="w-5 h-5" />
-            </a>
-          </div>
+          <a
+            href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-4 px-10 py-4 bg-white/80 backdrop-blur-md text-slate-800 rounded-full font-medium text-lg border border-white/50 hover:bg-white hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+          >
+            <MessageSquare className="w-5 h-5" />
+            How can 
+            <span className="font-medium bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Aegis AI</span>
+            help you today?
+            <Mic className="w-4 h-4" />
+          </a>
         </div>
       </section>
 
