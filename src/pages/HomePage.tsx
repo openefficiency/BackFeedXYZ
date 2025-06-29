@@ -407,27 +407,27 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* Show us your Love Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-red-50 via-pink-50 to-purple-50">
-        <div className="max-w-6xl mx-auto">
+      <section className="py-20 px-4 bg-gradient-to-br from-slate-50 via-white to-slate-50">
+        <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm border border-red-200 rounded-full text-red-700 text-sm font-medium mb-6">
-              <Heart className="w-4 h-4 fill-current" />
-              Community Love
-            </div>
-            
             <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
               Show us your 
               <span className="bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent"> Love</span>
             </h2>
             
-            <p className="text-xl text-slate-600 mb-12 max-w-3xl mx-auto leading-relaxed">
-              BackFeed is featured in the Bolt Gallery! Help us climb to the top by showing your love with hearts ❤️
+            <p className="text-xl text-slate-600 mb-12 max-w-2xl mx-auto leading-relaxed">
+              BackFeed is featured in the Bolt Gallery! Help us climb to the top.
             </p>
           </div>
 
           {/* Gallery Showcase */}
-          <div className="relative mb-12">
-            <div className="relative overflow-hidden rounded-2xl shadow-2xl border border-slate-200">
+          <div className="relative mb-16">
+            <a
+              href="https://bolt.new/gallery/categories/community-social"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block relative overflow-hidden rounded-2xl shadow-2xl border border-slate-200 hover:shadow-3xl transition-all duration-300 transform hover:scale-[1.02]"
+            >
               {/* Background Image with Fade Effect */}
               <div className="relative">
                 <img 
@@ -437,59 +437,78 @@ export const HomePage: React.FC = () => {
                 />
                 
                 {/* Overlay to fade out everything except BackFeed */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-black/60"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-black/60"></div>
                 
                 {/* Highlight BackFeed project */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="relative">
                     {/* Spotlight effect on BackFeed */}
-                    <div className="absolute -inset-8 bg-gradient-radial from-white/20 via-white/10 to-transparent rounded-full blur-xl"></div>
+                    <div className="absolute -inset-12 bg-gradient-radial from-white/30 via-white/10 to-transparent rounded-full blur-2xl"></div>
                     
                     {/* Arrow pointing to BackFeed */}
-                    <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
-                      <div className="flex flex-col items-center">
-                        <div className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-lg border border-white/20">
-                          <p className="text-sm font-bold text-slate-900">BackFeed ❤️</p>
+                    <div className="absolute -top-20 left-1/2 transform -translate-x-1/2">
+                      <div className="flex flex-col items-center animate-bounce">
+                        <div className="bg-white/95 backdrop-blur-sm px-6 py-3 rounded-xl shadow-lg border border-white/30">
+                          <p className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <Heart className="w-5 h-5 text-red-500 fill-current" />
+                            BackFeed
+                          </p>
                         </div>
-                        <div className="w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-white/90 mt-1"></div>
+                        <div className="w-0 h-0 border-l-6 border-r-6 border-t-6 border-transparent border-t-white/95 mt-2"></div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </a>
           </div>
 
-          {/* Instructions */}
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
-            <div className="text-center p-6 bg-white/80 backdrop-blur-sm rounded-xl border border-red-200 hover:border-red-300 transition-colors">
-              <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">1️⃣</span>
-              </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2">Visit Bolt Gallery</h3>
-              <p className="text-slate-600 text-sm">
-                Click the link below to visit the Community & Social builds section in Bolt Gallery
-              </p>
-            </div>
+          {/* Steve Jobs-inspired 1-2-3 Steps */}
+          <div className="relative mb-16">
+            {/* Connection Lines */}
+            <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-slate-300 to-transparent transform -translate-y-1/2 hidden md:block"></div>
+            
+            <div className="grid md:grid-cols-3 gap-8 relative">
+              {/* Step 1 */}
+              <a
+                href="https://bolt.new/gallery/categories/community-social"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group text-center p-8 bg-white rounded-2xl border border-slate-200 hover:border-red-300 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-2"
+              >
+                <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <span className="text-3xl font-bold text-white">1</span>
+                </div>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">Visit Gallery</h3>
+              </a>
 
-            <div className="text-center p-6 bg-white/80 backdrop-blur-sm rounded-xl border border-red-200 hover:border-red-300 transition-colors">
-              <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">2️⃣</span>
-              </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2">Find BackFeed</h3>
-              <p className="text-slate-600 text-sm">
-                Look for the BackFeed project in the gallery - it's the employee feedback system you're using right now!
-              </p>
-            </div>
+              {/* Step 2 */}
+              <a
+                href="https://bolt.new/gallery/categories/community-social"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group text-center p-8 bg-white rounded-2xl border border-slate-200 hover:border-red-300 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-2"
+                style={{ animationDelay: '0.1s' }}
+              >
+                <div className="w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <span className="text-3xl font-bold text-white">2</span>
+                </div>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">Find BackFeed</h3>
+              </a>
 
-            <div className="text-center p-6 bg-white/80 backdrop-blur-sm rounded-xl border border-red-200 hover:border-red-300 transition-colors">
-              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">3️⃣</span>
-              </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2">Show Love ❤️</h3>
-              <p className="text-slate-600 text-sm">
-                Click the heart button to show your love and help BackFeed climb to the top of the gallery!
-              </p>
+              {/* Step 3 */}
+              <a
+                href="https://bolt.new/gallery/categories/community-social"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group text-center p-8 bg-white rounded-2xl border border-slate-200 hover:border-red-300 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-2"
+                style={{ animationDelay: '0.2s' }}
+              >
+                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <Heart className="w-8 h-8 text-white fill-current" />
+                </div>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">Show Love</h3>
+              </a>
             </div>
           </div>
 
@@ -499,14 +518,14 @@ export const HomePage: React.FC = () => {
               href="https://bolt.new/gallery/categories/community-social"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-xl font-bold text-lg hover:from-red-600 hover:to-pink-600 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
+              className="inline-flex items-center gap-3 px-12 py-5 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-2xl font-bold text-xl hover:from-red-600 hover:to-pink-600 transform hover:scale-105 transition-all duration-200 shadow-xl hover:shadow-2xl"
             >
-              <Heart className="w-6 h-6 fill-current" />
+              <Heart className="w-7 h-7 fill-current" />
               Show BackFeed Some Love
-              <ExternalLink className="w-5 h-5" />
+              <ExternalLink className="w-6 h-6" />
             </a>
             
-            <div className="mt-6 flex items-center justify-center gap-4 text-sm text-slate-600">
+            <div className="mt-8 flex items-center justify-center gap-8 text-sm text-slate-500">
               <div className="flex items-center gap-2">
                 <ThumbsUp className="w-4 h-4 text-blue-500" />
                 <span>Help us reach #1</span>
