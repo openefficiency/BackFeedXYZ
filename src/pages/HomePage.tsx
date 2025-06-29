@@ -547,60 +547,86 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Aegis AI Pilot Waitlist Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-slate-900 via-purple-900 to-blue-900">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white text-sm font-medium mb-6">
-              <Sparkles className="w-4 h-4" />
-              Early Access Program
-            </div>
-            
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Apply for 
-              <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent"> Aegis AI Pilot</span>
-              <br />Waitlist
-            </h2>
+      {/* Early Access Program Section - Steve Jobs inspired */}
+      <section className="py-32 px-4 bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden">
+        {/* Subtle geometric pattern */}
+        <div className="absolute inset-0 opacity-3">
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'linear-gradient(30deg, #f8fafc 12%, transparent 12.5%, transparent 87%, #f8fafc 87.5%, #f8fafc), linear-gradient(150deg, #f8fafc 12%, transparent 12.5%, transparent 87%, #f8fafc 87.5%, #f8fafc), linear-gradient(30deg, #f8fafc 12%, transparent 12.5%, transparent 87%, #f8fafc 87.5%, #f8fafc), linear-gradient(150deg, #f8fafc 12%, transparent 12.5%, transparent 87%, #f8fafc 87.5%, #f8fafc)',
+            backgroundSize: '80px 140px',
+            backgroundPosition: '0 0, 0 0, 40px 70px, 40px 70px'
+          }}></div>
+        </div>
+        
+        <div className="max-w-4xl mx-auto text-center relative">
+          {/* Apple-style badge */}
+          <div className="inline-flex items-center gap-3 px-6 py-3 bg-white/80 backdrop-blur-md border border-slate-200/50 rounded-full text-slate-700 text-sm font-light mb-16 shadow-lg">
+            <Sparkles className="w-4 h-4 text-blue-500" />
+            Early Access Program
           </div>
+          
+          {/* Ultra-light typography */}
+          <h2 className="text-6xl md:text-7xl font-extralight text-slate-900 mb-8 tracking-tight leading-none">
+            Apply for 
+            <br />
+            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-light">Aegis AI Pilot</span>
+            <br />
+            <span className="text-5xl md:text-6xl">Waitlist</span>
+          </h2>
 
-          {/* Waitlist CTA */}
-          <div className="max-w-2xl mx-auto text-center">
-            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8">
-              <h3 className="text-2xl font-bold text-white mb-4">
+          {/* Minimalist card */}
+          <div className="max-w-2xl mx-auto mt-20">
+            <div className="bg-white/60 backdrop-blur-xl border border-white/40 rounded-3xl p-12 shadow-2xl hover:shadow-3xl transition-all duration-700 hover:bg-white/70">
+              <h3 className="text-3xl font-light text-slate-900 mb-6 tracking-tight">
                 Ready to Transform Your Organization?
               </h3>
-              <p className="text-purple-100 mb-8">
+              <p className="text-xl font-light text-slate-600 mb-12 leading-relaxed">
                 Join the exclusive pilot program and be among the first to experience the future of employee engagement.
               </p>
               
+              {/* Apple-style button */}
               <button
                 onClick={() => setShowPilotModal(true)}
-                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
+                className="inline-flex items-center gap-4 px-12 py-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full font-light text-xl hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-3xl tracking-wide"
               >
-                <Star className="w-5 h-5" />
+                <Star className="w-6 h-6" />
                 Apply for Aegis AI Pilot Waitlist
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-6 h-6" />
               </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-purple-600 to-blue-600">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-bold text-white mb-6">
-            Ready to Share Your Feedback?
+      {/* Ready to Share Your Feedback Section - Steve Jobs inspired */}
+      <section className="py-32 px-4 bg-gradient-to-br from-blue-50 via-purple-50 to-slate-50 relative overflow-hidden">
+        {/* Subtle radial pattern */}
+        <div className="absolute inset-0 opacity-4">
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'radial-gradient(circle at 25px 25px, rgba(59, 130, 246, 0.1) 2px, transparent 0)',
+            backgroundSize: '50px 50px'
+          }}></div>
+        </div>
+        
+        <div className="max-w-4xl mx-auto text-center relative">
+          {/* Ultra-clean typography */}
+          <h2 className="text-6xl md:text-7xl font-extralight text-slate-900 mb-8 tracking-tight leading-none">
+            Ready to Share
+            <br />
+            <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-light">Your Feedback?</span>
           </h2>
-          <p className="text-xl text-purple-100 mb-8 max-w-2xl mx-auto">
+          
+          <p className="text-2xl font-light text-slate-600 mb-16 max-w-3xl mx-auto leading-relaxed tracking-wide">
             Join thousands of employees who trust BackFeed to share their feedback through natural AI conversations.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          
+          {/* Apple-style CTA */}
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <a
               href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-white text-purple-600 rounded-xl font-semibold text-lg hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200"
+              className="inline-flex items-center gap-4 px-12 py-6 bg-white/80 backdrop-blur-md text-slate-800 rounded-full font-light text-xl border border-slate-200/50 hover:bg-white hover:shadow-2xl transform hover:scale-105 transition-all duration-300 shadow-xl tracking-wide"
             >
               <MessageSquare className="w-6 h-6" />
               How can 
@@ -608,12 +634,12 @@ export const HomePage: React.FC = () => {
                 href="https://aegiswhistle.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="font-bold hover:underline"
+                className="font-medium hover:underline bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent"
               >
                 Aegis AI
               </a>
               help you today?
-              <Mic className="w-4 h-4" />
+              <Mic className="w-5 h-5" />
             </a>
           </div>
         </div>
