@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Shield, Mail, Lock, ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import { Shield, Mail, Lock, ArrowLeft, Eye, EyeOff, Copy, Check } from 'lucide-react';
 import { dbService } from '../lib/supabase';
 
 export const HRLogin: React.FC = () => {
@@ -12,6 +12,7 @@ export const HRLogin: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [copiedField, setCopiedField] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,6 +36,23 @@ export const HRLogin: React.FC = () => {
       ...prev,
       [e.target.name]: e.target.value
     }));
+  };
+
+  const copyToClipboard = async (text: string, field: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedField(field);
+      
+      // Also fill the form field
+      setFormData(prev => ({
+        ...prev,
+        [field]: text
+      }));
+      
+      setTimeout(() => setCopiedField(''), 2000);
+    } catch (err) {
+      console.error('Failed to copy text:', err);
+    }
   };
 
   return (
@@ -129,13 +147,53 @@ export const HRLogin: React.FC = () => {
 
           <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
             <h3 className="font-semibold text-blue-900 mb-2">Demo Credentials</h3>
-            <p className="text-sm text-blue-700 mb-3">
-              Try use demo user account credentials to explore the HR dashboard and experience
+            <p className="text-sm text-blue-700 mb-4">
+              Try use demo user account credentials to explore the HR dashboard and company investigation flow, experience.
             </p>
-            <div className="text-sm text-blue-700 space-y-1">
-              <p><strong>Email:</strong> hr@company.com</p>
-              <p><strong>Password:</strong> demo123</p>
+            
+            <div className="space-y-3">
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-sm font-medium text-blue-800">Email:</span>
+                </div>
+                <button
+                  onClick={() => copyToClipboard('hr@company.com', 'email')}
+                  className="w-full flex items-center justify-between p-3 bg-white border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors group"
+                >
+                  <span className="font-mono text-sm text-blue-800">hr@company.com</span>
+                  <div className="flex items-center">
+                    {copiedField === 'email' ? (
+                      <Check className="w-4 h-4 text-green-600" />
+                    ) : (
+                      <Copy className="w-4 h-4 text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    )}
+                  </div>
+                </button>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-sm font-medium text-blue-800">Password:</span>
+                </div>
+                <button
+                  onClick={() => copyToClipboard('demo123', 'password')}
+                  className="w-full flex items-center justify-between p-3 bg-white border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors group"
+                >
+                  <span className="font-mono text-sm text-blue-800">demo123</span>
+                  <div className="flex items-center">
+                    {copiedField === 'password' ? (
+                      <Check className="w-4 h-4 text-green-600" />
+                    ) : (
+                      <Copy className="w-4 h-4 text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    )}
+                  </div>
+                </button>
+              </div>
             </div>
+
+            <p className="text-xs text-blue-600 mt-3">
+              Click any credential to copy it and auto-fill the form
+            </p>
           </div>
 
           <div className="mt-6 text-center text-sm text-slate-500">
