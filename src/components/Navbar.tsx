@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Mic, Shield, Search, Menu, X } from 'lucide-react';
+import { Mic, Shield, Search, Menu, X, ExternalLink, Zap } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const location = useLocation();
@@ -33,7 +33,19 @@ export const Navbar: React.FC = () => {
             </div>
             <div className="hidden sm:block">
               <h1 className="text-xl font-bold text-slate-800">BackFeed</h1>
-              <p className="text-xs text-slate-500">Powered by Aegis AI</p>
+              <div className="flex items-center gap-1 text-xs text-slate-500">
+                <span>Powered by</span>
+                <a 
+                  href="https://aegiswhistle.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 px-2 py-0.5 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-md font-semibold hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-sm hover:shadow-md"
+                >
+                  <Zap className="w-3 h-3" />
+                  Aegis AI
+                  <ExternalLink className="w-2 h-2" />
+                </a>
+              </div>
             </div>
           </Link>
 
@@ -66,6 +78,23 @@ export const Navbar: React.FC = () => {
               <NavLink to="/hr-login" icon={<Shield className="w-4 h-4" />}>
                 HR Portal
               </NavLink>
+            </div>
+            
+            {/* Mobile Aegis AI Button */}
+            <div className="mt-4 pt-4 border-t border-slate-200">
+              <div className="flex items-center gap-1 text-xs text-slate-500 justify-center">
+                <span>Powered by</span>
+                <a 
+                  href="https://aegiswhistle.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-md font-semibold hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-sm hover:shadow-md"
+                >
+                  <Zap className="w-3 h-3" />
+                  Aegis AI
+                  <ExternalLink className="w-2 h-2" />
+                </a>
+              </div>
             </div>
           </div>
         )}
