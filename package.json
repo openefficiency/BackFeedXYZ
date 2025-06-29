@@ -5,9 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "dev:netlify": "netlify dev",
+    "build": "npm install && npm run build:app",
+    "build:app": "vite build",
+    "build:functions": "npm run build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "netlify deploy --prod",
+    "deploy:preview": "netlify deploy"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
