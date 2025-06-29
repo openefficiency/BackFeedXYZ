@@ -7,7 +7,6 @@ import { TrackCase } from './pages/TrackCase';
 import { HRLogin } from './pages/HRLogin';
 import { DatabaseStatus } from './pages/DatabaseStatus';
 import { Pricing } from './pages/Pricing';
-import { ACKDemo } from './pages/ACKDemo';
 import { StandaloneACKDemoPage } from './pages/StandaloneACKDemo';
 import { Footer } from './components/Footer';
 
@@ -24,7 +23,6 @@ function App() {
             <Route path="/hr-login" element={<HRLogin />} />
             <Route path="/hr-dashboard" element={<HRDashboard />} />
             <Route path="/database-status" element={<DatabaseStatus />} />
-            <Route path="/ack-demo" element={<ACKDemo />} />
             <Route path="/standalone-ack" element={<StandaloneACKDemoPage />} />
           </Routes>
         </main>
