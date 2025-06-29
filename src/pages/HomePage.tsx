@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Mic, Check, MessageSquare, ArrowRight, Volume2 } from 'lucide-react';
+import { Mic, Check, MessageSquare, ArrowRight, Volume2, ExternalLink, Zap } from 'lucide-react';
 import { handleElevenLabsWebhook } from '../lib/elevenlabs-webhook';
 
 export const HomePage: React.FC = () => {
@@ -247,7 +247,7 @@ export const HomePage: React.FC = () => {
                 <span className="font-semibold text-purple-900">AI Processing Confirmed</span>
               </div>
               <div className="text-sm text-purple-800 space-y-1">
-                <p>✅ Processed with Aegis AI Conversational Technology</p>
+                <p>✅ Processed with <a href="https://aegiswhistle.com" target="_blank" rel="noopener noreferrer" className="font-semibold hover:underline">Aegis AI</a> Conversational Technology</p>
                 <p>✅ Natural conversation flow completed</p>
                 <p>✅ Real-time voice interaction processed</p>
                 <p>✅ Tagged with case ID: {result.caseId.substring(0, 12)}...</p>
@@ -298,7 +298,16 @@ export const HomePage: React.FC = () => {
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-100 to-blue-100 text-purple-700 rounded-full text-sm font-medium mb-8">
             <MessageSquare className="w-4 h-4" />
-            Powered by Aegis AI
+            Powered by 
+            <a 
+              href="https://aegiswhistle.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 font-semibold hover:underline"
+            >
+              Aegis AI
+              <ExternalLink className="w-3 h-3" />
+            </a>
           </div>
           
           <h1 className="text-5xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
@@ -374,7 +383,9 @@ export const HomePage: React.FC = () => {
                   className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
                 >
                   <Volume2 className="w-5 h-5" />
-                  Speak to Aegis 📣
+                  Speak to 
+                  <span className="font-bold">Aegis</span>
+                  📣
                 </a>
               </div>
             </div>
@@ -409,7 +420,16 @@ export const HomePage: React.FC = () => {
               className="inline-flex items-center gap-3 px-8 py-4 bg-white text-purple-600 rounded-xl font-semibold text-lg hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200"
             >
               <MessageSquare className="w-6 h-6" />
-              How can Aegis AI help you today?
+              How can 
+              <a 
+                href="https://aegiswhistle.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="font-bold hover:underline"
+              >
+                Aegis AI
+              </a>
+              help you today?
               <Mic className="w-4 h-4" />
             </a>
           </div>
