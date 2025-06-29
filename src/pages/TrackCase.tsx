@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Clock, CheckCircle, AlertCircle, MessageSquare, ArrowLeft } from 'lucide-react';
+import { Search, Clock, CheckCircle, AlertCircle, MessageSquare, ArrowLeft, Copy } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { dbService } from '../lib/supabase';
 
@@ -40,6 +40,7 @@ export const TrackCase: React.FC = () => {
   const [error, setError] = useState('');
   const [newMessage, setNewMessage] = useState('');
   const [sendingMessage, setSendingMessage] = useState(false);
+  const [copiedCode, setCopiedCode] = useState('');
 
   const searchCase = async () => {
     if (!confirmationCode.trim()) {
@@ -79,6 +80,16 @@ export const TrackCase: React.FC = () => {
     }
   };
 
+  const copyCode = async (code: string) => {
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopiedCode(code);
+      setTimeout(() => setCopiedCode(''), 2000);
+    } catch (err) {
+      console.error('Failed to copy code:', err);
+    }
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'open': return 'text-blue-600 bg-blue-100';
@@ -106,6 +117,8 @@ export const TrackCase: React.FC = () => {
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString();
   };
+
+  const demoCodes = ['AB7X9K2M4P', 'CD8Y5N3Q1R', 'EF9Z6P4S2T', 'GH1A7R5U3V'];
 
   return (
     <div className="min-h-screen py-8 px-4">
@@ -269,10 +282,31 @@ export const TrackCase: React.FC = () => {
             </div>
           )}
 
-          {/* Help Text */}
-          <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
-            <p className="text-blue-700 text-sm">
-              💡 Try use sample confirmation codes to explore the follow-up functionality of employees: AB7X9K2M4P, CD8Y5N3Q1R, EF9Z6P4S2T, or GH1A7R5U3V
+          {/* Demo Codes Section */}
+          <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <p className="text-blue-700 text-sm mb-4">
+              💡 Try use Demo Case numbers to explore the follow-up functionality of employees
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {demoCodes.map((code) => (
+                <button
+                  key={code}
+                  onClick={() => copyCode(code)}
+                  className="flex items-center justify-between p-3 bg-white border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors group"
+                >
+                  <span className="font-mono text-sm font-medium text-blue-800">{code}</span>
+                  <div className="flex items-center">
+                    {copiedCode === code ? (
+                      <CheckCircle className="w-4 h-4 text-green-600" />
+                    ) : (
+                      <Copy className="w-4 h-4 text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    )}
+                  </div>
+                </button>
+              ))}
+            </div>
+            <p className="text-xs text-blue-600 mt-2">
+              Click any code to copy it to your clipboard
             </p>
           </div>
         </div>
