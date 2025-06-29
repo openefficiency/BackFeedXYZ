@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Mic, Check, MessageSquare, ArrowRight } from 'lucide-react';
+import { Mic, Check, MessageSquare, ArrowRight, Volume2 } from 'lucide-react';
 import { handleElevenLabsWebhook } from '../lib/elevenlabs-webhook';
 
 export const HomePage: React.FC = () => {
@@ -315,7 +315,7 @@ export const HomePage: React.FC = () => {
           <div className="bg-white rounded-2xl shadow-xl border border-slate-200 p-8 mb-12 max-w-2xl mx-auto">
             <div className="text-center mb-6">
               <div className="flex items-center justify-center gap-2 mb-4">
-                <MessageSquare className="w-6 h-6 text-purple-600" />
+                <Mic className="w-6 h-6 text-purple-600" />
                 <h3 className="text-xl font-semibold text-slate-900">
                   First step of making the world better is Speaking UP !
                 </h3>
@@ -367,18 +367,14 @@ export const HomePage: React.FC = () => {
                 <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
                   <Mic className="w-6 h-6 text-white" />
                 </div>
-                <p className="text-sm text-purple-700 mb-3">
-                  Speak to Aegis
-                </p>
                 <a
                   href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
                 >
-                  <Mic className="w-5 h-5" />
-                  Speak to Aegis
-                  <ArrowRight className="w-4 h-4" />
+                  <Volume2 className="w-5 h-5" />
+                  Speak to Aegis 📣
                 </a>
               </div>
             </div>
