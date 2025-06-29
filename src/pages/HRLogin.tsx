@@ -12,7 +12,7 @@ export const HRLogin: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [copiedField, setCopiedField] = useState('');
+  const [copied, setCopied] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,20 +38,21 @@ export const HRLogin: React.FC = () => {
     }));
   };
 
-  const copyToClipboard = async (text: string, field: string) => {
+  const copyCredentials = async () => {
     try {
-      await navigator.clipboard.writeText(text);
-      setCopiedField(field);
+      const credentials = 'hr@company.com\ndemo123';
+      await navigator.clipboard.writeText(credentials);
       
-      // Also fill the form field
-      setFormData(prev => ({
-        ...prev,
-        [field]: text
-      }));
+      // Auto-fill the form
+      setFormData({
+        email: 'hr@company.com',
+        password: 'demo123'
+      });
       
-      setTimeout(() => setCopiedField(''), 2000);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy text:', err);
+      console.error('Failed to copy credentials:', err);
     }
   };
 
@@ -152,47 +153,37 @@ export const HRLogin: React.FC = () => {
             </p>
             
             <div className="space-y-3">
-              <div>
-                <div className="flex items-center justify-between mb-1">
+              <div className="bg-white border border-blue-200 rounded-lg p-4">
+                <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium text-blue-800">Email:</span>
-                </div>
-                <button
-                  onClick={() => copyToClipboard('hr@company.com', 'email')}
-                  className="w-full flex items-center justify-between p-3 bg-white border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors group"
-                >
                   <span className="font-mono text-sm text-blue-800">hr@company.com</span>
-                  <div className="flex items-center">
-                    {copiedField === 'email' ? (
-                      <Check className="w-4 h-4 text-green-600" />
-                    ) : (
-                      <Copy className="w-4 h-4 text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    )}
-                  </div>
-                </button>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-blue-800">Password:</span>
+                  <span className="font-mono text-sm text-blue-800">demo123</span>
+                </div>
               </div>
 
-              <div>
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm font-medium text-blue-800">Password:</span>
-                </div>
-                <button
-                  onClick={() => copyToClipboard('demo123', 'password')}
-                  className="w-full flex items-center justify-between p-3 bg-white border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors group"
-                >
-                  <span className="font-mono text-sm text-blue-800">demo123</span>
-                  <div className="flex items-center">
-                    {copiedField === 'password' ? (
-                      <Check className="w-4 h-4 text-green-600" />
-                    ) : (
-                      <Copy className="w-4 h-4 text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    )}
-                  </div>
-                </button>
-              </div>
+              <button
+                onClick={copyCredentials}
+                className="w-full flex items-center justify-center gap-2 p-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-colors"
+              >
+                {copied ? (
+                  <>
+                    <Check className="w-4 h-4" />
+                    Copied & Auto-filled!
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-4 h-4" />
+                    Copy Both & Auto-fill Form
+                  </>
+                )}
+              </button>
             </div>
 
             <p className="text-xs text-blue-600 mt-3">
-              Click any credential to copy it and auto-fill the form
+              Click the button above to copy both credentials and auto-fill the login form
             </p>
           </div>
 
