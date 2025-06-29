@@ -27,7 +27,7 @@ export const HomePage: React.FC = () => {
     script.type = 'text/javascript';
     
     script.onload = () => {
-      console.log('✅ ElevenLabs widget script loaded successfully');
+      console.log('✅ Widget script loaded successfully');
       setWidgetLoaded(true);
       
       // Set up widget event listeners after script loads
@@ -117,7 +117,7 @@ export const HomePage: React.FC = () => {
 
   const handleElevenLabsConversationComplete = async (payload: any) => {
     try {
-      console.log('🎤 Processing ElevenLabs conversation completion:', payload);
+      console.log('🎤 Processing conversation completion:', payload);
       
       // Create a comprehensive payload with all possible data
       const enhancedPayload = {
@@ -179,7 +179,7 @@ export const HomePage: React.FC = () => {
         throw new Error(result.error || 'Failed to process conversation');
       }
     } catch (err: any) {
-      console.error('Failed to process ElevenLabs conversation:', err);
+      console.error('Failed to process conversation:', err);
       setError(`Failed to process conversation: ${err.message}`);
     }
   };
@@ -252,7 +252,7 @@ export const HomePage: React.FC = () => {
     {
       icon: <MessageSquare className="w-8 h-8 text-purple-600" />,
       title: "Conversational AI",
-      description: "Have natural conversations with our AI assistant for the most human-like interaction."
+      description: "Have natural conversations with our AI assistant powered by Aegis AI for the most human-like interaction."
     },
     {
       icon: <Lock className="w-8 h-8 text-green-600" />,
@@ -322,7 +322,7 @@ export const HomePage: React.FC = () => {
                 <span className="font-semibold text-purple-900">AI Processing Confirmed</span>
               </div>
               <div className="text-sm text-purple-800 space-y-1">
-                <p>✅ Processed with advanced conversational AI</p>
+                <p>✅ Processed with Aegis AI Conversational Technology</p>
                 <p>✅ Natural conversation flow completed</p>
                 <p>✅ Real-time voice interaction processed</p>
                 <p>✅ Tagged with case ID: {result.caseId.substring(0, 12)}...</p>
@@ -371,6 +371,10 @@ export const HomePage: React.FC = () => {
       {/* Hero Section with Widget */}
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-100 to-blue-100 text-purple-700 rounded-full text-sm font-medium mb-8">
+            <MessageSquare className="w-4 h-4" />
+            Powered by Aegis AI
+          </div>
           
           <h1 className="text-5xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
             Your Voice
@@ -378,7 +382,7 @@ export const HomePage: React.FC = () => {
           </h1>
           
           <p className="text-xl text-slate-600 mb-12 max-w-2xl mx-auto leading-relaxed">
-            A secure, AI-powered platform for anonymous employee feedback with natural conversation. 
+            BackFeed is a secure, AI-powered platform for anonymous employee feedback with natural conversation. 
             Talk to our AI assistant, share your concerns, and make a difference in your workplace.
           </p>
 
@@ -494,7 +498,7 @@ export const HomePage: React.FC = () => {
               <span className="text-purple-600"> Everyone</span>
             </h2>
             <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-              Our platform combines cutting-edge conversational AI with secure communications 
+              BackFeed combines cutting-edge conversational AI with secure communications 
               to create a seamless feedback experience.
             </p>
           </div>
@@ -527,13 +531,13 @@ export const HomePage: React.FC = () => {
             Powered by Advanced Conversational AI
           </h2>
           <p className="text-xl text-slate-600 mb-12">
-            We use cutting-edge AI technology to create natural, human-like conversations.
+            We use Aegis AI's cutting-edge technology to create natural, human-like conversations.
           </p>
           
           <div className="max-w-2xl mx-auto">
             <div className="bg-white rounded-2xl p-8 shadow-lg">
               <MessageSquare className="w-12 h-12 text-purple-600 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">Advanced Conversational AI</h3>
+              <h3 className="text-2xl font-bold text-slate-900 mb-4">Aegis AI Conversational Technology</h3>
               <p className="text-slate-600">
                 Experience the most natural AI conversation available. Our AI assistant understands context, 
                 asks intelligent follow-up questions, and creates a comfortable environment for sharing feedback.
@@ -550,7 +554,7 @@ export const HomePage: React.FC = () => {
             Ready to Share Your Feedback?
           </h2>
           <p className="text-xl text-purple-100 mb-8 max-w-2xl mx-auto">
-            Join thousands of employees who trust our platform to share their feedback through natural AI conversations.
+            Join thousands of employees who trust BackFeed to share their feedback through natural AI conversations.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button

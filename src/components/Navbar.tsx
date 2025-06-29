@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Mic, Shield, Search, Menu, X, CreditCard } from 'lucide-react';
+import { Mic, Shield, Search, Menu, X } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const location = useLocation();
@@ -32,8 +32,8 @@ export const Navbar: React.FC = () => {
               <Mic className="w-6 h-6 text-white" />
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-xl font-bold text-slate-800">Voice AI Agent</h1>
-              <p className="text-xs text-slate-500">Employee Feedback System</p>
+              <h1 className="text-xl font-bold text-slate-800">BackFeed</h1>
+              <p className="text-xs text-slate-500">Powered by Aegis AI</p>
             </div>
           </Link>
 
@@ -41,9 +41,6 @@ export const Navbar: React.FC = () => {
           <div className="hidden md:flex items-center gap-2">
             <NavLink to="/track" icon={<Search className="w-4 h-4" />}>
               Track Case
-            </NavLink>
-            <NavLink to="/pricing" icon={<CreditCard className="w-4 h-4" />}>
-              Pricing
             </NavLink>
             <NavLink to="/hr-login" icon={<Shield className="w-4 h-4" />}>
               HR Portal
@@ -65,9 +62,6 @@ export const Navbar: React.FC = () => {
             <div className="flex flex-col gap-2">
               <NavLink to="/track" icon={<Search className="w-4 h-4" />}>
                 Track Case
-              </NavLink>
-              <NavLink to="/pricing" icon={<CreditCard className="w-4 h-4" />}>
-                Pricing
               </NavLink>
               <NavLink to="/hr-login" icon={<Shield className="w-4 h-4" />}>
                 HR Portal

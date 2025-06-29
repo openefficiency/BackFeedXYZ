@@ -1,11 +1,12 @@
-# Voice AI Agent - Employee Feedback System
+# BackFeed - Employee Feedback System
+*Powered by Aegis AI*
 
-A comprehensive, production-ready employee feedback system using ElevenLabs Conversational AI with real-time processing and HR management capabilities.
+A comprehensive, production-ready employee feedback system using advanced conversational AI with real-time processing and HR management capabilities.
 
 ## 🚀 Features
 
 ### Core Functionality
-- **ElevenLabs Conversational AI Integration**: Natural voice conversations for employee feedback
+- **Aegis AI Conversational Technology**: Natural voice conversations for employee feedback
 - **Real-time Processing**: Instant feedback processing and case creation
 - **Comprehensive Database Integration**: Full audit trails and case management
 - **HR Dashboard**: Complete case management and analytics
@@ -16,14 +17,14 @@ A comprehensive, production-ready employee feedback system using ElevenLabs Conv
 - **Frontend**: React 18 with TypeScript
 - **Styling**: Tailwind CSS with custom design system
 - **Database**: Supabase with Row Level Security
-- **Voice AI**: ElevenLabs Conversational AI
+- **Voice AI**: Advanced Conversational AI Technology
 - **Charts**: Recharts for analytics visualization
 - **Icons**: Lucide React
 
 ## 📋 Requirements
 
 - Node.js 18+
-- ElevenLabs API key and Agent ID
+- Conversational AI agent configuration
 - Supabase project (configured automatically)
 
 ## 🛠️ Quick Setup
@@ -31,7 +32,7 @@ A comprehensive, production-ready employee feedback system using ElevenLabs Conv
 ### 1. Clone and Install
 ```bash
 git clone <your-repo>
-cd voice-ai-agent-system
+cd backfeed-system
 npm install
 ```
 
@@ -47,7 +48,7 @@ VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 npm run dev
 ```
 
-### 4. Configure ElevenLabs Widget
+### 4. Configure Conversational Widget
 Update the agent ID in `src/pages/HomePage.tsx`:
 ```typescript
 <elevenlabs-convai agent-id="your-agent-id-here" />
@@ -63,7 +64,7 @@ Update the agent ID in `src/pages/HomePage.tsx`:
 - **hr_users**: HR team member authentication
 
 ### Key Components
-- **HomePage**: Main landing page with ElevenLabs widget
+- **HomePage**: Main landing page with conversational AI widget
 - **HRDashboard**: Comprehensive case management interface
 - **TrackCase**: Public case tracking with confirmation codes
 - **DatabaseStatus**: System health monitoring and testing
@@ -91,7 +92,7 @@ Update the agent ID in `src/pages/HomePage.tsx`:
 
 ## 📊 Analytics & Insights
 
-The system provides comprehensive analytics including:
+BackFeed provides comprehensive analytics including:
 - Case volume trends and patterns
 - Category distribution and severity analysis
 - Response time tracking
@@ -137,7 +138,7 @@ VITE_SUPABASE_ANON_KEY=your_production_anon_key
 
 ### API Integration
 The system integrates with:
-- ElevenLabs Conversational AI for voice processing
+- Advanced Conversational AI for voice processing
 - Supabase for database operations
 - Custom webhook handlers for real-time processing
 
@@ -165,4 +166,5 @@ MIT License - see LICENSE file for details.
 
 ---
 
-**Built with ❤️ for seamless voice AI integration and comprehensive employee feedback management.**
+**BackFeed - Powered by Aegis AI**  
+*Built with ❤️ for seamless voice AI integration and comprehensive employee feedback management.*

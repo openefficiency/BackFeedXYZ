@@ -7,9 +7,9 @@ export const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2 text-sm text-slate-600">
-            <span>© 2025 Voice AI Agent System</span>
+            <span>© 2025 BackFeed</span>
             <span className="hidden md:inline">•</span>
-            <span className="hidden md:inline">Employee Feedback Platform</span>
+            <span className="hidden md:inline">Powered by Aegis AI</span>
           </div>
           
           <div className="flex items-center gap-4">
@@ -28,7 +28,7 @@ export const Footer: React.FC = () => {
             </div>
             
             <div className="text-xs text-slate-500">
-              Hackathon 2025
+              Employee Feedback Platform
             </div>
           </div>
         </div>
