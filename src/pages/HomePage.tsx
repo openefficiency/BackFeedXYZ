@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Mic, Shield, Search, MessageSquare, BarChart3, Lock, Zap, Users, Check, ArrowLeft } from 'lucide-react';
+import { Mic, Check, MessageSquare, ExternalLink } from 'lucide-react';
 import { handleElevenLabsWebhook } from '../lib/elevenlabs-webhook';
 
 export const HomePage: React.FC = () => {
@@ -199,87 +199,10 @@ export const HomePage: React.FC = () => {
     return 'Conversation completed through the widget';
   };
 
-  const generateConfirmationCode = (): string => {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let result = '';
-    for (let i = 0; i < 10; i++) {
-      result += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return result;
-  };
-
   const resetWidget = () => {
     setResult(null);
     setError('');
   };
-
-  // Test function to simulate conversation completion
-  const testConversation = () => {
-    const testPayload = {
-      conversation_id: `test_conv_${Date.now()}`,
-      agent_id: 'agent_01jydtj6avef99c1ne0eavf0ww',
-      status: 'completed',
-      transcript: {
-        user_messages: [
-          {
-            text: 'I need to report a safety issue in our workplace. The equipment in our department has not been properly maintained and there have been several near-miss incidents.',
-            timestamp: new Date().toISOString()
-          }
-        ],
-        agent_messages: [
-          {
-            text: 'Thank you for bringing this safety concern to my attention. Can you tell me more about the specific equipment and incidents?',
-            timestamp: new Date().toISOString()
-          }
-        ]
-      },
-      conversation_metadata: {
-        duration_seconds: 180,
-        started_at: new Date(Date.now() - 180000).toISOString(),
-        ended_at: new Date().toISOString()
-      },
-      sentiment_analysis: {
-        overall_sentiment: 'negative',
-        confidence: 0.85,
-        emotions: ['concerned', 'worried']
-      }
-    };
-    
-    handleElevenLabsConversationComplete(testPayload);
-  };
-
-  const features = [
-    {
-      icon: <MessageSquare className="w-8 h-8 text-purple-600" />,
-      title: "Conversational AI",
-      description: "Have natural conversations with our AI assistant powered by Aegis AI for the most human-like interaction."
-    },
-    {
-      icon: <Lock className="w-8 h-8 text-green-600" />,
-      title: "Anonymous & Secure",
-      description: "Your identity remains protected while ensuring your voice is heard with enterprise-grade security."
-    },
-    {
-      icon: <Zap className="w-8 h-8 text-blue-600" />,
-      title: "Intelligent Follow-ups",
-      description: "Our AI asks thoughtful follow-up questions to help you share comprehensive, actionable feedback."
-    },
-    {
-      icon: <BarChart3 className="w-8 h-8 text-orange-600" />,
-      title: "Real-time Analytics",
-      description: "HR teams get comprehensive insights and analytics for better decision making."
-    },
-    {
-      icon: <Users className="w-8 h-8 text-indigo-600" />,
-      title: "Two-way Communication",
-      description: "Secure messaging system allows HR to communicate back using your confirmation code."
-    },
-    {
-      icon: <Shield className="w-8 h-8 text-red-600" />,
-      title: "Enterprise Security",
-      description: "All conversations are processed with enterprise-grade security and compliance standards."
-    }
-  ];
 
   // Show success page if conversation completed
   if (result) {
@@ -438,43 +361,6 @@ export const HomePage: React.FC = () => {
                 </div>
               </div>
             )}
-
-            {/* Test Button for Development */}
-            <div className="mb-6">
-              <button
-                onClick={testConversation}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
-              >
-                Test Conversation (Demo)
-              </button>
-            </div>
-
-            {/* Widget Instructions */}
-            <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-4">
-              <h4 className="font-medium text-purple-900 mb-2">How to use:</h4>
-              <ul className="text-sm text-purple-800 space-y-1">
-                <li>• Click the microphone icon in the widget above</li>
-                <li>• Allow microphone access when prompted</li>
-                <li>• Start speaking - the AI will respond naturally</li>
-                <li>• Have a conversation about your feedback</li>
-                <li>• The AI will guide you through sharing your thoughts</li>
-                <li>• Your conversation is automatically processed and sent to HR</li>
-                <li>• You'll receive a confirmation code when complete</li>
-                <li>• Or click "Test Conversation" to see a demo</li>
-              </ul>
-            </div>
-
-            {/* Troubleshooting */}
-            <div className="mt-4 bg-amber-50 border border-amber-200 rounded-lg p-4">
-              <h4 className="font-medium text-amber-900 mb-2">Troubleshooting:</h4>
-              <ul className="text-sm text-amber-800 space-y-1">
-                <li>• Make sure your microphone is connected and working</li>
-                <li>• Allow microphone permissions when prompted by your browser</li>
-                <li>• Try refreshing the page if the widget doesn't load</li>
-                <li>• Use the "Test Conversation" button to see how it works</li>
-                <li>• Check your browser's microphone settings if audio isn't working</li>
-              </ul>
-            </div>
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -482,67 +368,9 @@ export const HomePage: React.FC = () => {
               to="/track"
               className="inline-flex items-center gap-3 px-8 py-4 bg-white text-slate-700 rounded-xl font-semibold text-lg border-2 border-slate-200 hover:border-purple-300 hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200"
             >
-              <Search className="w-6 h-6" />
+              <Mic className="w-6 h-6" />
               Track Case
             </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-20 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">
-              Powerful Features for
-              <span className="text-purple-600"> Everyone</span>
-            </h2>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-              BackFeed combines cutting-edge conversational AI with secure communications 
-              to create a seamless feedback experience.
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="p-8 rounded-2xl border border-slate-200 hover:shadow-xl hover:border-purple-200 transition-all duration-300 group"
-              >
-                <div className="mb-6 transform group-hover:scale-110 transition-transform duration-200">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-semibold text-slate-900 mb-4">
-                  {feature.title}
-                </h3>
-                <p className="text-slate-600 leading-relaxed">
-                  {feature.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Technology Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-purple-50 to-blue-50">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-bold text-slate-900 mb-6">
-            Powered by Advanced Conversational AI
-          </h2>
-          <p className="text-xl text-slate-600 mb-12">
-            We use Aegis AI's cutting-edge technology to create natural, human-like conversations.
-          </p>
-          
-          <div className="max-w-2xl mx-auto">
-            <div className="bg-white rounded-2xl p-8 shadow-lg">
-              <MessageSquare className="w-12 h-12 text-purple-600 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">Aegis AI Conversational Technology</h3>
-              <p className="text-slate-600">
-                Experience the most natural AI conversation available. Our AI assistant understands context, 
-                asks intelligent follow-up questions, and creates a comfortable environment for sharing feedback.
-              </p>
-            </div>
           </div>
         </div>
       </section>
@@ -557,20 +385,16 @@ export const HomePage: React.FC = () => {
             Join thousands of employees who trust BackFeed to share their feedback through natural AI conversations.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            <a
+              href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-3 px-8 py-4 bg-white text-purple-600 rounded-xl font-semibold text-lg hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200"
             >
               <MessageSquare className="w-6 h-6" />
-              Start Conversation Now
-            </button>
-            <Link
-              to="/hr-login"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-transparent text-white border-2 border-white rounded-xl font-semibold text-lg hover:bg-white hover:text-purple-600 transition-all duration-200"
-            >
-              <Shield className="w-6 h-6" />
-              HR Portal Access
-            </Link>
+              How can Aegis AI help you today?
+              <ExternalLink className="w-4 h-4" />
+            </a>
           </div>
         </div>
       </section>
