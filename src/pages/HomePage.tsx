@@ -613,11 +613,13 @@ export const HomePage: React.FC = () => {
           <h2 className="text-6xl md:text-7xl font-extralight text-slate-900 mb-8 tracking-tight leading-none">
             Ready to Share
             <br />
-            <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-light">Your Feedback?</span>
+            <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-light">Your Feedback</span>
+            <br />
+            <span className="text-slate-900 font-extralight">to your Company?</span>
           </h2>
           
           <p className="text-2xl font-light text-slate-600 mb-16 max-w-3xl mx-auto leading-relaxed tracking-wide">
-            Join thousands of employees who trust BackFeed to share their feedback through natural AI conversations.
+            Join all those employees who trust BackFeed to anonymously share their feedback through natural AI conversations.
           </p>
           
           {/* Apple-style CTA */}
