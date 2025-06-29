@@ -46,17 +46,17 @@ export const MagicalBoltLogo: React.FC = () => {
   };
 
   return (
-    <div className="fixed top-4 right-4 z-50">
+    <div className="fixed bottom-4 right-4 z-50">
       {/* Enhanced Tooltip */}
       {showTooltip && (
-        <div className="absolute -bottom-20 right-0 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white text-sm px-4 py-3 rounded-xl shadow-2xl whitespace-nowrap animate-in fade-in slide-in-from-top-2 duration-200 border border-slate-700">
+        <div className="absolute -top-20 right-0 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white text-sm px-4 py-3 rounded-xl shadow-2xl whitespace-nowrap animate-in fade-in slide-in-from-top-2 duration-200 border border-slate-700">
           <div className="flex items-center gap-2">
             <Code className="w-4 h-4 text-blue-400" />
             <span className="font-medium">Click to explore Bolt.new</span>
             <ExternalLink className="w-3 h-3 text-slate-400" />
           </div>
           <div className="text-xs text-slate-400 mt-1">The AI-powered development platform</div>
-          <div className="absolute top-0 right-6 -translate-y-1 w-3 h-3 bg-slate-900 rotate-45 border-l border-t border-slate-700"></div>
+          <div className="absolute bottom-0 right-6 translate-y-1 w-3 h-3 bg-slate-900 rotate-45 border-r border-b border-slate-700"></div>
         </div>
       )}
 
@@ -180,7 +180,7 @@ export const MagicalBoltLogo: React.FC = () => {
       {/* Background Ambient Light */}
       {isHovered && (
         <div className="fixed inset-0 pointer-events-none">
-          <div className="absolute top-4 right-4 w-48 h-32 bg-gradient-radial from-purple-500/10 via-blue-500/5 to-transparent rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-4 right-4 w-48 h-32 bg-gradient-radial from-purple-500/10 via-blue-500/5 to-transparent rounded-full blur-3xl animate-pulse"></div>
         </div>
       )}
     </div>
