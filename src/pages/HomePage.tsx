@@ -250,7 +250,7 @@ export const HomePage: React.FC = () => {
             )}
 
             {/* Direct Link to ElevenLabs Interface */}
-            <div className="bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-200 rounded-xl p-8 mb-6">
+            <div className="bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-200 rounded-xl p-8">
               <div className="text-center">
                 <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Mic className="w-8 h-8 text-white" />
@@ -272,18 +272,6 @@ export const HomePage: React.FC = () => {
                   <ArrowRight className="w-5 h-5" />
                 </a>
               </div>
-            </div>
-
-            {/* Instructions */}
-            <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-              <h4 className="font-medium text-slate-900 mb-2">How it works:</h4>
-              <ul className="text-sm text-slate-600 space-y-1">
-                <li>• Click the button above to open Aegis AI in a new window</li>
-                <li>• Allow microphone access when prompted</li>
-                <li>• Have a natural conversation about your feedback</li>
-                <li>• Your conversation is automatically processed and sent to HR</li>
-                <li>• You'll receive a confirmation code when complete</li>
-              </ul>
             </div>
           </div>
           
