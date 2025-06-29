@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { 
   LogOut, Search, Filter, BarChart3, Clock, AlertCircle, 
   CheckCircle, MessageSquare, TrendingUp, Users, FileText,
-  Calendar, Eye, ArrowUpRight, Shield, Lock, Tag
+  Calendar, Eye, ArrowUpRight, Shield, Lock, Tag, Menu, X,
+  ChevronLeft, ChevronRight, Send, Plus
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
 import { dbService } from '../lib/supabase';
@@ -48,6 +49,8 @@ export const HRDashboard: React.FC = () => {
   const [error, setError] = useState('');
   const [newMessage, setNewMessage] = useState('');
   const [sendingMessage, setSendingMessage] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [mobileView, setMobileView] = useState<'cases' | 'chat' | 'analytics'>('cases');
 
   useEffect(() => {
     // Check authentication
@@ -251,37 +254,90 @@ export const HRDashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      {/* Header */}
-      <header className="bg-white border-b border-slate-200 px-6 py-4">
+      {/* Mobile Header */}
+      <header className="bg-white border-b border-slate-200 px-4 py-4 md:px-6">
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-slate-900">HR Dashboard</h1>
-            <p className="text-slate-600">Enhanced AI-Powered Employee Feedback Management</p>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setShowMobileMenu(!showMobileMenu)}
+              className="md:hidden p-2 rounded-lg text-slate-600 hover:text-blue-600 hover:bg-blue-50"
+            >
+              {showMobileMenu ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+            <div>
+              <h1 className="text-xl md:text-2xl font-bold text-slate-900">HR Dashboard</h1>
+              <p className="text-slate-600 text-sm hidden md:block">Enhanced AI-Powered Employee Feedback Management</p>
+            </div>
           </div>
-          <div className="flex items-center gap-4">
+          
+          <div className="flex items-center gap-2 md:gap-4">
+            {/* Mobile Navigation */}
+            <div className="md:hidden flex bg-slate-100 rounded-lg p-1">
+              <button
+                onClick={() => setMobileView('cases')}
+                className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                  mobileView === 'cases' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-600'
+                }`}
+              >
+                Cases
+              </button>
+              {selectedCase && (
+                <button
+                  onClick={() => setMobileView('chat')}
+                  className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                    mobileView === 'chat' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-600'
+                  }`}
+                >
+                  Chat
+                </button>
+              )}
+              <button
+                onClick={() => setMobileView('analytics')}
+                className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                  mobileView === 'analytics' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-600'
+                }`}
+              >
+                Stats
+              </button>
+            </div>
+
             {/* AI Processing Status */}
-            <div className="flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="hidden md:flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg">
               <MessageSquare className="w-4 h-4 text-blue-600" />
               <span className="text-sm font-medium text-blue-700">
-                AI Processed: {analyticsData.aiProcessedCases} cases
+                AI: {analyticsData.aiProcessedCases}
               </span>
             </div>
             
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+              className="flex items-center gap-2 px-3 py-2 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
             >
               <LogOut className="w-4 h-4" />
-              Logout
+              <span className="hidden md:inline">Logout</span>
             </button>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {showMobileMenu && (
+          <div className="md:hidden mt-4 pt-4 border-t border-slate-200">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg">
+                <MessageSquare className="w-4 h-4 text-blue-600" />
+                <span className="text-sm font-medium text-blue-700">
+                  AI Processed: {analyticsData.aiProcessedCases} cases
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
       </header>
 
-      <div className="flex">
-        {/* Sidebar - Cases List */}
-        <div className="w-1/3 bg-white border-r border-slate-200 h-[calc(100vh-80px)] overflow-y-auto">
-          <div className="p-6">
+      <div className="flex h-[calc(100vh-80px)]">
+        {/* Desktop Sidebar - Cases List */}
+        <div className={`${mobileView === 'cases' ? 'block' : 'hidden'} md:block w-full md:w-1/3 bg-white border-r border-slate-200 overflow-y-auto`}>
+          <div className="p-4 md:p-6">
             <div className="flex gap-4 mb-6">
               <div className="flex-1 relative">
                 <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
@@ -298,7 +354,7 @@ export const HRDashboard: React.FC = () => {
                 onChange={(e) => setStatusFilter(e.target.value)}
                 className="px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
-                <option value="all">All Status</option>
+                <option value="all">All</option>
                 <option value="open">Open</option>
                 <option value="investigating">Investigating</option>
                 <option value="closed">Closed</option>
@@ -314,7 +370,10 @@ export const HRDashboard: React.FC = () => {
                 return (
                   <div
                     key={case_.id}
-                    onClick={() => setSelectedCase(case_)}
+                    onClick={() => {
+                      setSelectedCase(case_);
+                      setMobileView('chat');
+                    }}
                     className={`p-4 rounded-lg border cursor-pointer transition-all ${
                       selectedCase?.id === case_.id 
                         ? 'border-blue-300 bg-blue-50' 
@@ -345,14 +404,14 @@ export const HRDashboard: React.FC = () => {
                       </span>
                     </div>
                     
-                    <h3 className="font-semibold text-slate-900 mb-1">
+                    <h3 className="font-semibold text-slate-900 mb-1 line-clamp-2">
                       {caseTitle}
                     </h3>
                     
                     {/* Key Topics */}
                     {keyTopics.length > 0 && (
                       <div className="flex flex-wrap gap-1 mb-2">
-                        {keyTopics.slice(0, 3).map((topic, index) => (
+                        {keyTopics.slice(0, 2).map((topic, index) => (
                           <span key={index} className="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs">
                             <Tag className="w-3 h-3" />
                             {topic}
@@ -375,42 +434,44 @@ export const HRDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Main Content */}
-        <div className="flex-1 p-6 overflow-y-auto h-[calc(100vh-80px)]">
-          {selectedCase ? (
-            <div className="space-y-6">
-              {/* Enhanced Case Header */}
-              <div className="bg-white rounded-xl p-6 shadow-sm">
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-2">
-                      {getCaseTitle(selectedCase)}
-                    </h2>
-                    <div className="flex items-center gap-4 text-sm text-slate-600 mb-3">
-                      <span>Case #{selectedCase.confirmation_code}</span>
-                      <span>•</span>
-                      <span>Created {new Date(selectedCase.created_at).toLocaleDateString()}</span>
-                      <span>•</span>
-                      <span>Updated {new Date(selectedCase.updated_at).toLocaleDateString()}</span>
-                    </div>
-                    <div className="text-sm text-slate-600">
-                      <span className="font-medium">Category:</span> {selectedCase.category}
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <select
-                      value={selectedCase.status}
-                      onChange={(e) => updateCaseStatus(selectedCase.id, e.target.value as any)}
-                      className="px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+        {/* Main Content Area */}
+        <div className="flex-1 overflow-y-auto">
+          {/* Chat View */}
+          {selectedCase && (mobileView === 'chat' || window.innerWidth >= 768) && (
+            <div className={`${mobileView === 'chat' ? 'block' : 'hidden'} md:block h-full flex flex-col`}>
+              {/* Chat Header */}
+              <div className="bg-white border-b border-slate-200 p-4 md:p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={() => setMobileView('cases')}
+                      className="md:hidden p-2 rounded-lg text-slate-600 hover:text-blue-600"
                     >
-                      <option value="open">Open</option>
-                      <option value="investigating">Investigating</option>
-                      <option value="closed">Closed</option>
-                    </select>
+                      <ChevronLeft className="w-5 h-5" />
+                    </button>
+                    <div>
+                      <h2 className="text-xl font-bold text-slate-900">
+                        {getCaseTitle(selectedCase)}
+                      </h2>
+                      <div className="flex items-center gap-2 text-sm text-slate-600">
+                        <span>#{selectedCase.confirmation_code}</span>
+                        <span>•</span>
+                        <span>{new Date(selectedCase.created_at).toLocaleDateString()}</span>
+                      </div>
+                    </div>
                   </div>
+                  <select
+                    value={selectedCase.status}
+                    onChange={(e) => updateCaseStatus(selectedCase.id, e.target.value as any)}
+                    className="px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm"
+                  >
+                    <option value="open">Open</option>
+                    <option value="investigating">Investigating</option>
+                    <option value="closed">Closed</option>
+                  </select>
                 </div>
                 
-                <div className="flex gap-4 mb-4 flex-wrap">
+                <div className="flex gap-2 flex-wrap">
                   <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(selectedCase.status)}`}>
                     {getStatusIcon(selectedCase.status)}
                     {selectedCase.status.charAt(0).toUpperCase() + selectedCase.status.slice(1)}
@@ -424,299 +485,134 @@ export const HRDashboard: React.FC = () => {
                       AI Processed
                     </span>
                   )}
-                  {getUrgencyIndicators(selectedCase).length > 0 && (
-                    <span className="inline-flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm font-medium">
-                      <AlertCircle className="w-4 h-4" />
-                      {getUrgencyIndicators(selectedCase).length} Urgency Indicators
-                    </span>
-                  )}
                 </div>
-
-                {/* Key Topics Display */}
-                {getKeyTopics(selectedCase).length > 0 && (
-                  <div className="mb-4">
-                    <h4 className="font-semibold text-slate-900 mb-2">Key Topics Identified:</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {getKeyTopics(selectedCase).map((topic, index) => (
-                        <span key={index} className="inline-flex items-center gap-1 px-3 py-1 bg-blue-50 text-blue-700 rounded-lg text-sm">
-                          <Tag className="w-4 h-4" />
-                          {topic.charAt(0).toUpperCase() + topic.slice(1)}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Urgency Indicators */}
-                {getUrgencyIndicators(selectedCase).length > 0 && (
-                  <div className="mb-4">
-                    <h4 className="font-semibold text-red-900 mb-2">Urgency Indicators Detected:</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {getUrgencyIndicators(selectedCase).map((indicator, index) => (
-                        <span key={index} className="inline-flex items-center gap-1 px-3 py-1 bg-red-50 text-red-700 rounded-lg text-sm">
-                          <AlertCircle className="w-4 h-4" />
-                          {indicator}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                
-                <div>
-                  <h3 className="font-semibold text-slate-900 mb-2">Case Summary:</h3>
-                  <p className="text-slate-700 leading-relaxed">{selectedCase.summary}</p>
-                </div>
-
-                {/* Enhanced AI Processing Info */}
-                {hasAIProcessing(selectedCase) && (
-                  <div className="mt-6 p-4 bg-purple-50 border border-purple-200 rounded-lg">
-                    <h4 className="font-semibold text-purple-900 mb-2 flex items-center gap-2">
-                      <MessageSquare className="w-4 h-4" />
-                      Enhanced AI Conversation Analysis
-                    </h4>
-                    {(() => {
-                      const aiData = getAIMetadata(selectedCase);
-                      return aiData ? (
-                        <div className="text-sm text-purple-800 space-y-2">
-                          <div className="grid md:grid-cols-2 gap-4">
-                            <div>
-                              <p className="font-medium mb-1">Conversation Metrics:</p>
-                              <ul className="space-y-1">
-                                <li>• Conversation ID: {aiData.conversation_id || 'N/A'}</li>
-                                <li>• Duration: {Math.round((aiData.duration_seconds || 0) / 60 * 10) / 10} minutes</li>
-                                <li>• User Messages: {aiData.user_engagement?.message_count || aiData.user_messages || 'N/A'}</li>
-                                <li>• Agent Responses: {aiData.agent_responses || 'N/A'}</li>
-                                <li>• Topic Coverage: {aiData.user_engagement?.topic_coverage || 0} topics</li>
-                              </ul>
-                            </div>
-                            <div>
-                              <p className="font-medium mb-1">AI Analysis:</p>
-                              <ul className="space-y-1">
-                                <li>• Conversation Quality: {aiData.conversation_quality || 'N/A'}</li>
-                                <li>• Processing Type: {aiData.processing_type || 'AI Conversation'}</li>
-                                <li>• HR Priority: {aiData.hr_routing?.priority || 'normal'}</li>
-                                <li>• Response Time: {aiData.hr_routing?.estimated_response_time || 'standard'}</li>
-                                {aiData.sentiment_analysis && (
-                                  <li>• Sentiment: {aiData.sentiment_analysis.overall_sentiment} ({Math.round(aiData.sentiment_analysis.confidence * 100)}% confidence)</li>
-                                )}
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      ) : null;
-                    })()}
-                  </div>
-                )}
-
-                {/* Transcript */}
-                {selectedCase.transcripts.length > 0 && (
-                  <div className="mt-6">
-                    <h3 className="font-semibold text-slate-900 mb-2">Full Conversation Transcript:</h3>
-                    <div className="bg-slate-50 rounded-lg p-4">
-                      <p className="text-slate-700 leading-relaxed">{selectedCase.transcripts[0].raw_transcript}</p>
-                    </div>
-                  </div>
-                )}
               </div>
 
-              {/* AI Insights */}
-              {selectedCase.ai_insights.length > 0 && (
-                <div className="bg-white rounded-xl p-6 shadow-sm">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-4">AI Insights & Recommendations</h3>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    {selectedCase.ai_insights.map((insight) => (
-                      <div key={insight.id} className="space-y-4">
-                        {insight.insight_type === 'risk_assessment' && (
-                          <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                            <h4 className="font-semibold text-red-900 mb-2">Risk Assessment</h4>
-                            <div className="flex items-center gap-2 mb-2">
-                              <div className="w-full bg-red-200 rounded-full h-2">
-                                <div 
-                                  className="bg-red-600 h-2 rounded-full" 
-                                  style={{ width: `${(insight.content.risk_level / 5) * 100}%` }}
-                                ></div>
-                              </div>
-                              <span className="text-sm font-medium text-red-700">
-                                {insight.content.estimated_impact} ({insight.content.risk_level}/5)
-                              </span>
-                            </div>
-                            <p className="text-sm text-red-700">
-                              {insight.content.immediate_action_required ? 'Immediate action required' : 'Standard processing timeline'}
-                            </p>
-                          </div>
-                        )}
-                        
-                        {insight.insight_type === 'next_steps' && (
-                          <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-                            <h4 className="font-semibold text-green-900 mb-2">Recommended Actions</h4>
-                            <ul className="text-sm text-green-700 space-y-1">
-                              {insight.content.recommended_actions?.map((action: string, index: number) => (
-                                <li key={index}>• {action}</li>
-                              ))}
-                            </ul>
-                            <p className="text-sm text-green-700 mt-2">
-                              <strong>Timeline:</strong> {insight.content.timeline}
-                            </p>
-                          </div>
-                        )}
-
-                        {insight.insight_type === 'elevenlabs_conversation' && (
-                          <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg">
-                            <h4 className="font-semibold text-purple-900 mb-2 flex items-center gap-2">
-                              <MessageSquare className="w-4 h-4" />
-                              AI Conversation Analysis
-                            </h4>
-                            <div className="text-sm text-purple-700 space-y-1">
-                              <p>• Case Title: {insight.content.case_title}</p>
-                              <p>• Key Topics: {insight.content.key_topics?.join(', ') || 'None identified'}</p>
-                              <p>• Urgency Indicators: {insight.content.urgency_indicators?.length || 0} detected</p>
-                              <p>• Conversation Quality: {insight.content.conversation_quality}</p>
-                              <p>• User Engagement: {insight.content.user_engagement?.conversation_depth || 'N/A'}</p>
-                              <p>• Processing Type: {insight.content.processing_type}</p>
-                              <p>• HR Priority: {insight.content.hr_routing?.priority || 'normal'}</p>
-                              <p>• HR Routed: ✓ Direct</p>
-                              {insight.content.sentiment_analysis && (
-                                <p>• Sentiment: {insight.content.sentiment_analysis.overall_sentiment}</p>
-                              )}
-                            </div>
-                          </div>
-                        )}
-
-                        {(insight.insight_type === 'deepgram_realtime' || insight.insight_type === 'elevenlabs_realtime') && (
-                          <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-                            <h4 className="font-semibold text-green-900 mb-2 flex items-center gap-2">
-                              <MessageSquare className="w-4 h-4" />
-                              Real-time AI Processing
-                            </h4>
-                            <div className="text-sm text-green-700 space-y-1">
-                              <p>• Model: {insight.content.model || 'Advanced AI'}</p>
-                              <p>• Processing: {insight.content.processing_type}</p>
-                              <p>• Word Count: {insight.content.word_count}</p>
-                              <p>• Smart Format: ✓ Enabled</p>
-                              <p>• HR Routing: ✓ Direct</p>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Communication */}
-              <div className="bg-white rounded-xl p-6 shadow-sm">
-                <h3 className="flex items-center gap-2 text-lg font-semibold text-slate-900 mb-4">
-                  <MessageSquare className="w-5 h-5" />
-                  Secure Communication Thread
-                </h3>
-                
-                <div className="space-y-4 mb-6 max-h-96 overflow-y-auto">
+              {/* Chat Messages */}
+              <div className="flex-1 p-4 md:p-6 overflow-y-auto">
+                <div className="space-y-4">
                   {selectedCase.hr_interactions
                     .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
                     .map((interaction) => (
                     <div
                       key={interaction.id}
-                      className={`p-4 rounded-lg ${
-                        interaction.sender_type === 'employee' ? 'bg-blue-50 ml-8' :
-                        interaction.sender_type === 'system' ? 'bg-slate-50' : 'bg-green-50 mr-8'
-                      }`}
+                      className={`flex ${interaction.sender_type === 'employee' ? 'justify-start' : 'justify-end'}`}
                     >
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="font-medium text-slate-900">
+                      <div
+                        className={`max-w-xs md:max-w-md px-4 py-3 rounded-2xl ${
+                          interaction.sender_type === 'employee' 
+                            ? 'bg-slate-100 text-slate-900' 
+                            : interaction.sender_type === 'system'
+                            ? 'bg-blue-50 text-blue-900 border border-blue-200'
+                            : 'bg-blue-600 text-white'
+                        }`}
+                      >
+                        <p className="text-sm leading-relaxed">{interaction.message}</p>
+                        <p className={`text-xs mt-2 ${
+                          interaction.sender_type === 'employee' 
+                            ? 'text-slate-500' 
+                            : interaction.sender_type === 'system'
+                            ? 'text-blue-600'
+                            : 'text-blue-100'
+                        }`}>
                           {interaction.sender_type === 'system' ? 'System' : 
-                           interaction.sender_type === 'hr_manager' ? interaction.sender_name : 'Employee'}
-                        </span>
-                        {interaction.sender_type === 'system' && (
-                          <Lock className="w-3 h-3 text-slate-500" />
-                        )}
-                        <span className="text-xs text-slate-500">
+                           interaction.sender_type === 'hr_manager' ? interaction.sender_name : 'Employee'} • 
                           {new Date(interaction.created_at).toLocaleString()}
-                        </span>
+                        </p>
                       </div>
-                      <p className="text-slate-700">{interaction.message}</p>
                     </div>
                   ))}
                 </div>
-                
-                {selectedCase.status !== 'closed' && (
+              </div>
+
+              {/* Message Input */}
+              {selectedCase.status !== 'closed' && (
+                <div className="bg-white border-t border-slate-200 p-4 md:p-6">
                   <div className="flex gap-3">
                     <input
                       type="text"
                       value={newMessage}
                       onChange={(e) => setNewMessage(e.target.value)}
-                      placeholder="Type your secure response..."
-                      className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="Type your response..."
+                      className="flex-1 px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                       disabled={sendingMessage}
                     />
                     <button 
                       onClick={sendMessage}
                       disabled={!newMessage.trim() || sendingMessage}
-                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
                     >
-                      {sendingMessage ? 'Sending...' : 'Send'}
+                      {sendingMessage ? (
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      ) : (
+                        <Send className="w-4 h-4" />
+                      )}
+                      <span className="hidden md:inline">Send</span>
                     </button>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
-          ) : (
-            // Analytics Dashboard
-            <div className="space-y-6">
+          )}
+
+          {/* Analytics View */}
+          {(mobileView === 'analytics' || (!selectedCase && window.innerWidth >= 768)) && (
+            <div className={`${mobileView === 'analytics' ? 'block' : 'hidden'} md:block p-4 md:p-6 space-y-6`}>
               {/* Stats Cards */}
-              <div className="grid md:grid-cols-5 gap-6">
-                <div className="bg-white p-6 rounded-xl shadow-sm">
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
+                <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-slate-600 text-sm">Total Cases</p>
                       <p className="text-2xl font-bold text-slate-900">{cases.length}</p>
                     </div>
-                    <FileText className="w-8 h-8 text-blue-600" />
+                    <FileText className="w-6 h-6 md:w-8 md:h-8 text-blue-600" />
                   </div>
                 </div>
                 
-                <div className="bg-white p-6 rounded-xl shadow-sm">
+                <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-slate-600 text-sm">Open Cases</p>
+                      <p className="text-slate-600 text-sm">Open</p>
                       <p className="text-2xl font-bold text-slate-900">{analyticsData.casesByStatus.open || 0}</p>
                     </div>
-                    <Clock className="w-8 h-8 text-orange-600" />
+                    <Clock className="w-6 h-6 md:w-8 md:h-8 text-orange-600" />
                   </div>
                 </div>
                 
-                <div className="bg-white p-6 rounded-xl shadow-sm">
+                <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-slate-600 text-sm">Investigating</p>
                       <p className="text-2xl font-bold text-slate-900">{analyticsData.casesByStatus.investigating || 0}</p>
                     </div>
-                    <AlertCircle className="w-8 h-8 text-yellow-600" />
+                    <AlertCircle className="w-6 h-6 md:w-8 md:h-8 text-yellow-600" />
                   </div>
                 </div>
                 
-                <div className="bg-white p-6 rounded-xl shadow-sm">
+                <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-slate-600 text-sm">Closed Cases</p>
+                      <p className="text-slate-600 text-sm">Closed</p>
                       <p className="text-2xl font-bold text-slate-900">{analyticsData.casesByStatus.closed || 0}</p>
                     </div>
-                    <CheckCircle className="w-8 h-8 text-green-600" />
+                    <CheckCircle className="w-6 h-6 md:w-8 md:h-8 text-green-600" />
                   </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-xl shadow-sm">
+                <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-slate-600 text-sm">AI Processed</p>
                       <p className="text-2xl font-bold text-slate-900">{analyticsData.aiProcessedCases}</p>
                     </div>
-                    <MessageSquare className="w-8 h-8 text-purple-600" />
+                    <MessageSquare className="w-6 h-6 md:w-8 md:h-8 text-purple-600" />
                   </div>
                 </div>
               </div>
 
-              {/* Charts */}
+              {/* Charts - Hidden on mobile when not in analytics view */}
               <div className="grid lg:grid-cols-2 gap-6">
                 <div className="bg-white p-6 rounded-xl shadow-sm">
                   <h3 className="text-lg font-semibold text-slate-900 mb-4">Cases by Category</h3>
@@ -770,8 +666,8 @@ export const HRDashboard: React.FC = () => {
                 </div>
               </div>
 
-              {/* Enhanced AI Technology Status */}
-              <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-xl p-6">
+              {/* Enhanced AI Technology Status - Hidden on mobile */}
+              <div className="hidden md:block bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-xl p-6">
                 <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
                   <MessageSquare className="w-5 h-5 text-purple-600" />
                   Enhanced AI Technology Processing Status
@@ -801,6 +697,17 @@ export const HRDashboard: React.FC = () => {
                     <p>✓ Real-time sentiment analysis</p>
                   </div>
                 </div>
+              </div>
+            </div>
+          )}
+
+          {/* Empty State for Desktop */}
+          {!selectedCase && mobileView !== 'analytics' && window.innerWidth >= 768 && (
+            <div className="hidden md:flex items-center justify-center h-full">
+              <div className="text-center">
+                <MessageSquare className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-slate-900 mb-2">Select a Case to Start</h3>
+                <p className="text-slate-600">Choose a case from the sidebar to view details and communicate with employees.</p>
               </div>
             </div>
           )}
