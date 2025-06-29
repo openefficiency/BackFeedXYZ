@@ -303,8 +303,9 @@ export const HomePage: React.FC = () => {
               href="https://aegiswhistle.com" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 font-semibold hover:underline"
+              className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-bold hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
             >
+              <Zap className="w-4 h-4" />
               Aegis AI
               <ExternalLink className="w-3 h-3" />
             </a>

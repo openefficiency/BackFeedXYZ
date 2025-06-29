@@ -7,18 +7,18 @@ export const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2 text-sm text-slate-600">
-            <span>© 2025 BackFeed</span>
+            <span>© 2025 AegisWhistle LLC. All rights reserved.</span>
             <span className="hidden md:inline">•</span>
             <span className="hidden md:inline">Powered by</span>
             <a 
               href="https://aegiswhistle.com" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
+              className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-purple-100 to-blue-100 text-purple-700 rounded-md font-medium hover:from-purple-200 hover:to-blue-200 transition-all duration-200 text-xs border border-purple-200 hover:border-purple-300"
             >
-              <Zap className="w-4 h-4" />
+              <Zap className="w-3 h-3" />
               Aegis AI
-              <ExternalLink className="w-3 h-3" />
+              <ExternalLink className="w-2 h-2" />
             </a>
           </div>
           
