@@ -272,7 +272,7 @@ export const TrackCase: React.FC = () => {
           {/* Help Text */}
           <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
             <p className="text-blue-700 text-sm">
-              💡 Try using confirmation codes from your database: AB7X9K2M4P, CD8Y5N3Q1R, EF9Z6P4S2T, or GH1A7R5U3V
+              💡 Try use sample confirmation codes to explore the follow-up functionality of employees: AB7X9K2M4P, CD8Y5N3Q1R, EF9Z6P4S2T, or GH1A7R5U3V
             </p>
           </div>
         </div>
