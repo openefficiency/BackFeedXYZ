@@ -435,6 +435,42 @@ export const HomePage: React.FC = () => {
               </div>
             )}
 
+            {/* Test Button for Development */}
+            <div className="mb-6">
+              <button
+                onClick={testConversation}
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
+              >
+                Test Conversation (Demo)
+              </button>
+            </div>
+
+            {/* Widget Instructions */}
+            <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-4">
+              <h4 className="font-medium text-purple-900 mb-2">How to use:</h4>
+              <ul className="text-sm text-purple-800 space-y-1">
+                <li>• Click the microphone icon in the widget above</li>
+                <li>• Allow microphone access when prompted</li>
+                <li>• Start speaking - the AI will respond naturally</li>
+                <li>• Have a conversation about your feedback</li>
+                <li>• The AI will guide you through sharing your thoughts</li>
+                <li>• Your conversation is automatically processed and sent to HR</li>
+                <li>• You'll receive a confirmation code when complete</li>
+                <li>• Or click "Test Conversation" to see a demo</li>
+              </ul>
+            </div>
+
+            {/* Troubleshooting */}
+            <div className="mt-4 bg-amber-50 border border-amber-200 rounded-lg p-4">
+              <h4 className="font-medium text-amber-900 mb-2">Troubleshooting:</h4>
+              <ul className="text-sm text-amber-800 space-y-1">
+                <li>• Make sure your microphone is connected and working</li>
+                <li>• Allow microphone permissions when prompted by your browser</li>
+                <li>• Try refreshing the page if the widget doesn't load</li>
+                <li>• Use the "Test Conversation" button to see how it works</li>
+                <li>• Check your browser's microphone settings if audio isn't working</li>
+              </ul>
+            </div>
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

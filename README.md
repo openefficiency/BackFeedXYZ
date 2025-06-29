@@ -1,36 +1,157 @@
-# ElevenLabs Voice Demo
+# Voice AI Agent - Employee Feedback System
 
-This project contains a lightweight example of using the ElevenLabs conversational API inside a React app. Previous standalone ACK generation utilities have been removed, so only the basic demo components remain.
+A comprehensive, production-ready employee feedback system using ElevenLabs Conversational AI with real-time processing and HR management capabilities.
 
-## Requirements
+## 🚀 Features
+
+### Core Functionality
+- **ElevenLabs Conversational AI Integration**: Natural voice conversations for employee feedback
+- **Real-time Processing**: Instant feedback processing and case creation
+- **Comprehensive Database Integration**: Full audit trails and case management
+- **HR Dashboard**: Complete case management and analytics
+- **Two-way Communication**: Secure messaging between employees and HR
+- **AI Insights**: Advanced analytics and sentiment analysis
+
+### Technology Stack
+- **Frontend**: React 18 with TypeScript
+- **Styling**: Tailwind CSS with custom design system
+- **Database**: Supabase with Row Level Security
+- **Voice AI**: ElevenLabs Conversational AI
+- **Charts**: Recharts for analytics visualization
+- **Icons**: Lucide React
+
+## 📋 Requirements
 
 - Node.js 18+
-- ElevenLabs API key
-- ElevenLabs Agent ID
+- ElevenLabs API key and Agent ID
+- Supabase project (configured automatically)
 
-Create a `.env` file with your credentials:
+## 🛠️ Quick Setup
 
-```env
-ELEVENLABS_API_KEY=sk_your_key
-ELEVENLABS_AGENT_ID=your_agent_id
+### 1. Clone and Install
+```bash
+git clone <your-repo>
+cd voice-ai-agent-system
+npm install
 ```
 
-## Getting Started
+### 2. Environment Configuration
+Create `.env` file:
+```env
+VITE_SUPABASE_URL=https://tnvyzdmgyvpzwxbravrx.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
 
-Install dependencies and run the development server:
-
+### 3. Start Development Server
 ```bash
-npm install
 npm run dev
 ```
 
-Open `http://localhost:5173` in your browser to view the demo.
+### 4. Configure ElevenLabs Widget
+Update the agent ID in `src/pages/HomePage.tsx`:
+```typescript
+<elevenlabs-convai agent-id="your-agent-id-here" />
+```
 
-## License
+## 🏗️ Architecture
 
-MIT License - see the LICENSE file for details.
+### Database Schema
+- **cases**: Main feedback cases with confirmation codes
+- **transcripts**: Voice transcription data with sentiment analysis
+- **hr_interactions**: Two-way communication system
+- **ai_insights**: AI analysis results and recommendations
+- **hr_users**: HR team member authentication
 
-## Contributing
+### Key Components
+- **HomePage**: Main landing page with ElevenLabs widget
+- **HRDashboard**: Comprehensive case management interface
+- **TrackCase**: Public case tracking with confirmation codes
+- **DatabaseStatus**: System health monitoring and testing
+
+## 🎯 Key Features
+
+### Employee Experience
+- Natural voice conversations with AI
+- Anonymous feedback submission
+- Secure case tracking with confirmation codes
+- Real-time processing and immediate confirmation
+
+### HR Management
+- Comprehensive dashboard with analytics
+- Case prioritization and status management
+- Two-way secure communication
+- AI-powered insights and recommendations
+- Advanced filtering and search capabilities
+
+### AI Processing
+- Real-time sentiment analysis
+- Automatic categorization and priority assignment
+- Risk assessment and next steps recommendations
+- Pattern detection across cases
+
+## 📊 Analytics & Insights
+
+The system provides comprehensive analytics including:
+- Case volume trends and patterns
+- Category distribution and severity analysis
+- Response time tracking
+- AI confidence scores and accuracy metrics
+- Employee satisfaction indicators
+
+## 🔒 Security Features
+
+- Row Level Security (RLS) with Supabase
+- Anonymous feedback submission
+- Secure confirmation code system
+- Encrypted data transmission
+- Audit trails for all actions
+
+## 🧪 Testing
+
+### Database Testing
+Access `/database-status` to run comprehensive tests:
+- Connection and authentication verification
+- Table structure and constraint validation
+- RLS policy testing
+- Performance benchmarking
+
+### Sample Data
+The system includes realistic test data:
+- **Test Confirmation Codes**: AB7X9K2M4P, CD8Y5N3Q1R, GH1A7R5U3V
+- **HR Login**: hr@company.com / demo123
+
+## 🚀 Deployment
+
+### Build for Production
+```bash
+npm run build
+```
+
+### Environment Variables for Production
+```env
+VITE_SUPABASE_URL=your_production_supabase_url
+VITE_SUPABASE_ANON_KEY=your_production_anon_key
+```
+
+## 📚 Documentation
+
+### API Integration
+The system integrates with:
+- ElevenLabs Conversational AI for voice processing
+- Supabase for database operations
+- Custom webhook handlers for real-time processing
+
+### Component Structure
+```
+src/
+├── components/          # Reusable UI components
+├── pages/              # Main application pages
+├── lib/                # Utilities and services
+├── types/              # TypeScript type definitions
+└── utils/              # Helper functions
+```
+
+## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -38,8 +159,10 @@ MIT License - see the LICENSE file for details.
 4. Add tests when applicable
 5. Submit a pull request
 
-For questions or support, please open an issue on GitHub.
+## 📄 License
+
+MIT License - see LICENSE file for details.
 
 ---
 
-Built with ❤️ for streamlined voice interactions.
+**Built with ❤️ for seamless voice AI integration and comprehensive employee feedback management.**
