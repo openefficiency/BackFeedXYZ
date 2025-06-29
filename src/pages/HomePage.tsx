@@ -314,13 +314,16 @@ export const HomePage: React.FC = () => {
           </div>
           
           <h1 className="text-5xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
-            Your Voice
-            <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent"> Matters</span>
+            Every Voice
+            <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent"> Deserves</span>
+            <br />
+            to be Heard
           </h1>
           
           <p className="text-xl text-slate-600 mb-12 max-w-2xl mx-auto leading-relaxed">
-            BackFeed is a secure, AI-powered platform for anonymous employee feedback with natural conversation. 
-            Talk to our AI assistant, share your concerns, and make a difference in your workplace.
+            The most human way to share workplace feedback. 
+            <br />
+            Simply speak. We listen. Change happens.
           </p>
 
           {/* Aegis AI Interface Section */}
@@ -329,11 +332,11 @@ export const HomePage: React.FC = () => {
               <div className="flex items-center justify-center gap-2 mb-4">
                 <Mic className="w-6 h-6 text-purple-600" />
                 <h3 className="text-xl font-semibold text-slate-900">
-                  First step of making the world better is Speaking UP !
+                  Your moment to make a difference
                 </h3>
               </div>
               <p className="text-slate-600 mb-6">
-                Lets make our organization awesome..
+                Because every great workplace starts with honest conversation.
               </p>
             </div>
 
