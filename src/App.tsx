@@ -7,6 +7,7 @@ import { TrackCase } from './pages/TrackCase';
 import { HRLogin } from './pages/HRLogin';
 import { DatabaseStatus } from './pages/DatabaseStatus';
 import { Footer } from './components/Footer';
+import { MagicalBoltLogo } from './components/MagicalBoltLogo';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           </Routes>
         </main>
         <Footer />
+        <MagicalBoltLogo />
       </div>
     </Router>
   );
