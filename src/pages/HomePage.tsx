@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Mic, Check, MessageSquare, ExternalLink } from 'lucide-react';
+import { Mic, Check, MessageSquare, ExternalLink, ArrowRight } from 'lucide-react';
 import { handleElevenLabsWebhook } from '../lib/elevenlabs-webhook';
 
 export const HomePage: React.FC = () => {
@@ -223,7 +223,7 @@ export const HomePage: React.FC = () => {
             Talk to our AI assistant, share your concerns, and make a difference in your workplace.
           </p>
 
-          {/* ElevenLabs Widget Section */}
+          {/* Aegis AI Interface Section */}
           <div className="bg-white rounded-2xl shadow-xl border border-slate-200 p-8 mb-12 max-w-2xl mx-auto">
             <div className="text-center mb-6">
               <div className="flex items-center justify-center gap-2 mb-4">
@@ -232,8 +232,8 @@ export const HomePage: React.FC = () => {
                   Speak to Aegis AI
                 </h3>
               </div>
-              <p className="text-slate-600">
-                Click the microphone icon below to start your conversation with our AI assistant
+              <p className="text-slate-600 mb-6">
+                Start your conversation with our advanced AI assistant for secure, anonymous feedback
               </p>
             </div>
 
@@ -249,20 +249,41 @@ export const HomePage: React.FC = () => {
               </div>
             )}
 
-            {/* ElevenLabs Iframe */}
-            <div className="flex justify-center mb-6">
-              <iframe 
-                src="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
-                width="100%" 
-                height="600"
-                allow="microphone; camera"
-                style={{
-                  border: 'none',
-                  borderRadius: '15px',
-                  maxWidth: '100%'
-                }}
-                title="Aegis AI Conversation Interface"
-              />
+            {/* Direct Link to ElevenLabs Interface */}
+            <div className="bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-200 rounded-xl p-8 mb-6">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Mic className="w-8 h-8 text-white" />
+                </div>
+                <h4 className="text-lg font-semibold text-slate-900 mb-2">
+                  Ready to Share Your Feedback?
+                </h4>
+                <p className="text-slate-600 mb-6">
+                  Click below to open the Aegis AI conversation interface in a new window
+                </p>
+                <a
+                  href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-semibold text-lg hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
+                >
+                  <MessageSquare className="w-6 h-6" />
+                  Start Conversation with Aegis AI
+                  <ArrowRight className="w-5 h-5" />
+                </a>
+              </div>
+            </div>
+
+            {/* Instructions */}
+            <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+              <h4 className="font-medium text-slate-900 mb-2">How it works:</h4>
+              <ul className="text-sm text-slate-600 space-y-1">
+                <li>• Click the button above to open Aegis AI in a new window</li>
+                <li>• Allow microphone access when prompted</li>
+                <li>• Have a natural conversation about your feedback</li>
+                <li>• Your conversation is automatically processed and sent to HR</li>
+                <li>• You'll receive a confirmation code when complete</li>
+              </ul>
             </div>
           </div>
           
