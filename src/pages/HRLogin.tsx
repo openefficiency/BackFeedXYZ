@@ -57,6 +57,9 @@ export const HRLogin: React.FC = () => {
     }
   };
 
+  // Check if demo credentials are filled in
+  const isDemoCredentialsFilled = formData.email === 'hr@company.com' && formData.password === 'demo123';
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex flex-col">
       <div className="flex-1 py-8 px-4">
@@ -148,46 +151,58 @@ export const HRLogin: React.FC = () => {
               </button>
             </form>
 
-            <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-              <h3 className="font-semibold text-blue-900 mb-2">Demo Credentials</h3>
-              <p className="text-sm text-blue-700 mb-4">
-                Try use demo user account credentials to explore the HR dashboard and company investigation flow, experience.
-              </p>
-              
-              <div className="space-y-3">
-                <div className="bg-white border border-blue-200 rounded-lg p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-blue-800">Email:</span>
-                    <span className="font-mono text-sm text-blue-800">hr@company.com</span>
+            {/* Demo Credentials - Only show when not filled in */}
+            {!isDemoCredentialsFilled && (
+              <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <h3 className="font-semibold text-blue-900 mb-2">Demo Credentials</h3>
+                <p className="text-sm text-blue-700 mb-4">
+                  Try use demo user account credentials to explore the HR dashboard and company investigation flow, experience.
+                </p>
+                
+                <div className="space-y-3">
+                  <div className="bg-white border border-blue-200 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium text-blue-800">Email:</span>
+                      <span className="font-mono text-sm text-blue-800">hr@company.com</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-blue-800">Password:</span>
+                      <span className="font-mono text-sm text-blue-800">demo123</span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-blue-800">Password:</span>
-                    <span className="font-mono text-sm text-blue-800">demo123</span>
-                  </div>
+
+                  <button
+                    onClick={copyCredentials}
+                    className="w-full flex items-center justify-center gap-2 p-3 bg-slate-100 text-slate-700 border border-slate-200 rounded-lg hover:bg-slate-200 hover:border-slate-300 transition-colors"
+                  >
+                    {copied ? (
+                      <>
+                        <Check className="w-4 h-4" />
+                        Copied & Auto-filled!
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-4 h-4" />
+                        Copy Both & Auto-fill Form
+                      </>
+                    )}
+                  </button>
                 </div>
 
-                <button
-                  onClick={copyCredentials}
-                  className="w-full flex items-center justify-center gap-2 p-3 bg-slate-100 text-slate-700 border border-slate-200 rounded-lg hover:bg-slate-200 hover:border-slate-300 transition-colors"
-                >
-                  {copied ? (
-                    <>
-                      <Check className="w-4 h-4" />
-                      Copied & Auto-filled!
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-4 h-4" />
-                      Copy Both & Auto-fill Form
-                    </>
-                  )}
-                </button>
+                <p className="text-xs text-blue-600 mt-3">
+                  Click the button above to copy both credentials and auto-fill the login form
+                </p>
               </div>
+            )}
 
-              <p className="text-xs text-blue-600 mt-3">
-                Click the button above to copy both credentials and auto-fill the login form
-              </p>
-            </div>
+            {/* Show a subtle hint when demo credentials are filled */}
+            {isDemoCredentialsFilled && (
+              <div className="mt-8 p-3 bg-green-50 border border-green-200 rounded-lg text-center">
+                <p className="text-green-700 text-sm font-medium">
+                  ✓ Demo credentials loaded - ready to sign in
+                </p>
+              </div>
+            )}
 
             <div className="mt-6 text-center text-sm text-slate-500">
               This is a secure area for authorized HR personnel only.
