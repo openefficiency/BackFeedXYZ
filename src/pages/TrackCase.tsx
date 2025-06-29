@@ -85,6 +85,13 @@ export const TrackCase: React.FC = () => {
     setCaseData(null);
   };
 
+  const resetTracking = () => {
+    setConfirmationCode('');
+    setCaseData(null);
+    setError('');
+    setNewMessage('');
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'open': return 'text-blue-600 bg-blue-100';
@@ -186,11 +193,19 @@ export const TrackCase: React.FC = () => {
             <div className="space-y-6">
               {/* Case Header - Mobile Optimized */}
               <div className="bg-slate-50/80 rounded-2xl p-6">
-                <div className="text-center mb-6">
-                  <h2 className="text-xl font-semibold text-slate-900 mb-2">
-                    Case #{caseData.confirmation_code}
-                  </h2>
-                  <p className="text-slate-600">{caseData.category}</p>
+                <div className="flex items-center justify-between mb-6">
+                  <div className="text-center flex-1">
+                    <h2 className="text-xl font-semibold text-slate-900 mb-2">
+                      Case #{caseData.confirmation_code}
+                    </h2>
+                    <p className="text-slate-600">{caseData.category}</p>
+                  </div>
+                  <button
+                    onClick={resetTracking}
+                    className="px-4 py-2 text-sm text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                  >
+                    Track Another
+                  </button>
                 </div>
                 
                 <div className="flex justify-center gap-3 mb-6">
@@ -279,26 +294,28 @@ export const TrackCase: React.FC = () => {
             </div>
           )}
 
-          {/* Demo Codes - Mobile Optimized */}
-          <div className="mt-8 bg-blue-50/80 border border-blue-200/50 rounded-2xl p-6">
-            <p className="text-blue-700 text-sm mb-4 text-center font-medium">
-              💡 Try Demo Cases
-            </p>
-            <div className="grid grid-cols-2 gap-3">
-              {demoCodes.map((code) => (
-                <button
-                  key={code}
-                  onClick={() => populateDemoCode(code)}
-                  className="flex items-center justify-center p-3 bg-white/80 border border-blue-200 rounded-xl hover:bg-white transition-colors group"
-                >
-                  <span className="font-mono text-sm font-medium text-blue-800">{code}</span>
-                </button>
-              ))}
+          {/* Demo Codes - Only show when no case is being tracked */}
+          {!caseData && (
+            <div className="mt-8 bg-blue-50/80 border border-blue-200/50 rounded-2xl p-6">
+              <p className="text-blue-700 text-sm mb-4 text-center font-medium">
+                💡 Try Demo Cases
+              </p>
+              <div className="grid grid-cols-2 gap-3">
+                {demoCodes.map((code) => (
+                  <button
+                    key={code}
+                    onClick={() => populateDemoCode(code)}
+                    className="flex items-center justify-center p-3 bg-white/80 border border-blue-200 rounded-xl hover:bg-white transition-colors group"
+                  >
+                    <span className="font-mono text-sm font-medium text-blue-800">{code}</span>
+                  </button>
+                ))}
+              </div>
+              <p className="text-xs text-blue-600 mt-3 text-center">
+                Tap any code to try the tracking feature
+              </p>
             </div>
-            <p className="text-xs text-blue-600 mt-3 text-center">
-              Tap any code to try the tracking feature
-            </p>
-          </div>
+          )}
         </div>
       </div>
     </div>
