@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Mic, Check, MessageSquare, ExternalLink, ArrowRight } from 'lucide-react';
+import { Mic, Check, MessageSquare, ArrowRight } from 'lucide-react';
 import { handleElevenLabsWebhook } from '../lib/elevenlabs-webhook';
 
 export const HomePage: React.FC = () => {
@@ -365,7 +365,7 @@ export const HomePage: React.FC = () => {
             <div className="bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-200 rounded-xl p-6">
               <div className="text-center">
                 <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <ExternalLink className="w-6 h-6 text-white" />
+                  <Mic className="w-6 h-6 text-white" />
                 </div>
                 <p className="text-sm text-purple-700 mb-3">
                   Speak to Aegis
@@ -376,8 +376,8 @@ export const HomePage: React.FC = () => {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
                 >
-                  <MessageSquare className="w-5 h-5" />
-                  Open in New Window
+                  <Mic className="w-5 h-5" />
+                  Speak to Aegis
                   <ArrowRight className="w-4 h-4" />
                 </a>
               </div>
@@ -414,7 +414,7 @@ export const HomePage: React.FC = () => {
             >
               <MessageSquare className="w-6 h-6" />
               How can Aegis AI help you today?
-              <ExternalLink className="w-4 h-4" />
+              <Mic className="w-4 h-4" />
             </a>
           </div>
         </div>
