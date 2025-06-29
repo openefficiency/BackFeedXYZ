@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Zap } from 'lucide-react';
 
 export const MagicalBoltLogo: React.FC = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -29,7 +28,7 @@ export const MagicalBoltLogo: React.FC = () => {
         </div>
       )}
 
-      {/* Round White Badge */}
+      {/* Circular Badge */}
       <div
         className={`cursor-pointer transition-all duration-300 ${
           isHovered ? 'scale-110 shadow-xl' : 'scale-100 shadow-lg'
@@ -38,14 +37,25 @@ export const MagicalBoltLogo: React.FC = () => {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        <div className="w-16 h-16 bg-white rounded-full flex flex-col items-center justify-center border border-gray-200 hover:border-gray-300">
-          {/* Bolt Icon */}
-          <Zap className="w-5 h-5 text-blue-600 mb-0.5" />
+        <div className="relative w-16 h-16 bg-black rounded-full flex items-center justify-center border-2 border-gray-800 hover:border-gray-600">
+          {/* Circular Text */}
+          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 64 64">
+            <defs>
+              <path
+                id="circle-path"
+                d="M 32, 32 m -26, 0 a 26,26 0 1,1 52,0 a 26,26 0 1,1 -52,0"
+              />
+            </defs>
+            <text className="fill-white text-[6px] font-bold tracking-wider">
+              <textPath href="#circle-path" startOffset="0%">
+                POWERED BY BOLT.NEW • POWERED BY BOLT.NEW • 
+              </textPath>
+            </text>
+          </svg>
           
-          {/* Text */}
-          <div className="text-center">
-            <div className="text-[6px] text-gray-500 font-medium leading-none">Powered by</div>
-            <div className="text-[7px] text-gray-800 font-bold leading-none mt-0.5">Bolt.new</div>
+          {/* Central "b" Logo */}
+          <div className="relative z-10 w-8 h-8 bg-white rounded-full flex items-center justify-center">
+            <span className="text-black text-lg font-black italic">b</span>
           </div>
         </div>
       </div>
