@@ -255,12 +255,6 @@ export const HomePage: React.FC = () => {
                 <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Mic className="w-8 h-8 text-white" />
                 </div>
-                <h4 className="text-lg font-semibold text-slate-900 mb-2">
-                  Ready to Share Your Feedback?
-                </h4>
-                <p className="text-slate-600 mb-6">
-                  Click below to open the Aegis AI conversation interface in a new window
-                </p>
                 <a
                   href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
                   target="_blank"
