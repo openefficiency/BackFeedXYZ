@@ -4,7 +4,6 @@ import { Mic, Check, MessageSquare, ExternalLink } from 'lucide-react';
 import { handleElevenLabsWebhook } from '../lib/elevenlabs-webhook';
 
 export const HomePage: React.FC = () => {
-  const [widgetLoaded, setWidgetLoaded] = useState(false);
   const [result, setResult] = useState<{
     caseId: string;
     confirmationCode: string;
@@ -12,108 +11,23 @@ export const HomePage: React.FC = () => {
   } | null>(null);
   const [error, setError] = useState('');
 
-  // Load ElevenLabs widget script and set up event listeners
+  // Listen for iframe messages from ElevenLabs
   useEffect(() => {
-    // Remove any existing script first
-    const existingScript = document.querySelector('script[src*="elevenlabs"]');
-    if (existingScript) {
-      existingScript.remove();
-    }
-
-    // Create and load the ElevenLabs widget script
-    const script = document.createElement('script');
-    script.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
-    script.async = true;
-    script.type = 'text/javascript';
-    
-    script.onload = () => {
-      console.log('✅ Widget script loaded successfully');
-      setWidgetLoaded(true);
-      
-      // Set up widget event listeners after script loads
-      setTimeout(() => {
-        setupWidgetEventListeners();
-      }, 1000);
-    };
-    
-    script.onerror = () => {
-      console.error('❌ Failed to load widget script');
-      setError('Failed to load the conversation widget. Please refresh the page and try again.');
-    };
-    
-    document.head.appendChild(script);
-
-    return () => {
-      // Cleanup on unmount
-      if (document.head.contains(script)) {
-        document.head.removeChild(script);
-      }
-    };
-  }, []);
-
-  const setupWidgetEventListeners = () => {
-    // Listen for ElevenLabs widget events
-    const handleWidgetEvent = (event: MessageEvent) => {
-      console.log('📨 Received message event:', event);
-      
-      // Check for ElevenLabs widget events from various origins
-      if (event.origin.includes('elevenlabs') || 
-          event.origin.includes('widget') || 
-          event.origin === window.location.origin) {
+    const handleMessage = (event: MessageEvent) => {
+      // Check for ElevenLabs events
+      if (event.origin.includes('elevenlabs') && event.data) {
+        console.log('📨 Received ElevenLabs event:', event.data);
         
-        if (event.data && typeof event.data === 'object') {
-          const { type, payload } = event.data;
-          
-          console.log('Event type:', type, 'Payload:', payload);
-          
-          if (type === 'conversation_ended' || 
-              type === 'conversationEnded' || 
-              type === 'conversation_complete' ||
-              type === 'convai_conversation_ended') {
-            console.log('🎤 Conversation ended event detected');
-            handleElevenLabsConversationComplete(payload || event.data);
-          }
-          
-          // Also check for direct conversation data
-          if (event.data.conversation_id || event.data.transcript || event.data.messages) {
-            console.log('🎤 Direct conversation data detected');
-            handleElevenLabsConversationComplete(event.data);
-          }
+        if (event.data.type === 'conversation_ended' || 
+            event.data.type === 'conversation_complete') {
+          handleElevenLabsConversationComplete(event.data);
         }
       }
     };
 
-    // Listen for all message events
-    window.addEventListener('message', handleWidgetEvent);
-
-    // Also listen for custom ElevenLabs events
-    const handleCustomEvent = (event: CustomEvent) => {
-      console.log('📨 Received custom event:', event);
-      if (event.detail) {
-        handleElevenLabsConversationComplete(event.detail);
-      }
-    };
-
-    // Listen for various ElevenLabs event types
-    const eventTypes = [
-      'elevenlabs:conversation:ended',
-      'elevenlabs:conversation:complete',
-      'convai:conversation:ended',
-      'convai:conversation:complete'
-    ];
-
-    eventTypes.forEach(eventType => {
-      window.addEventListener(eventType as any, handleCustomEvent);
-    });
-
-    // Cleanup function
-    return () => {
-      window.removeEventListener('message', handleWidgetEvent);
-      eventTypes.forEach(eventType => {
-        window.removeEventListener(eventType as any, handleCustomEvent);
-      });
-    };
-  };
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
 
   const handleElevenLabsConversationComplete = async (payload: any) => {
     try {
@@ -315,14 +229,11 @@ export const HomePage: React.FC = () => {
               <div className="flex items-center justify-center gap-2 mb-4">
                 <MessageSquare className="w-6 h-6 text-purple-600" />
                 <h3 className="text-xl font-semibold text-slate-900">
-                  Start Your Conversation
+                  Speak to Aegis AI
                 </h3>
               </div>
               <p className="text-slate-600">
-                {widgetLoaded 
-                  ? "Click the microphone icon below to start your conversation with our AI assistant"
-                  : "Loading conversation widget..."
-                }
+                Click the microphone icon below to start your conversation with our AI assistant
               </p>
             </div>
 
@@ -338,29 +249,21 @@ export const HomePage: React.FC = () => {
               </div>
             )}
 
-            {/* Widget Loading State */}
-            {!widgetLoaded && (
-              <div className="flex justify-center items-center py-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
-              </div>
-            )}
-
-            {/* ElevenLabs Widget */}
-            {widgetLoaded && (
-              <div className="flex justify-center mb-6">
-                <div className="w-full max-w-md">
-                  <elevenlabs-convai 
-                    agent-id="agent_01jydtj6avef99c1ne0eavf0ww"
-                    style={{
-                      width: '100%',
-                      height: '400px',
-                      border: 'none',
-                      borderRadius: '12px'
-                    }}
-                  ></elevenlabs-convai>
-                </div>
-              </div>
-            )}
+            {/* ElevenLabs Iframe */}
+            <div className="flex justify-center mb-6">
+              <iframe 
+                src="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
+                width="100%" 
+                height="600"
+                allow="microphone; camera"
+                style={{
+                  border: 'none',
+                  borderRadius: '15px',
+                  maxWidth: '100%'
+                }}
+                title="Aegis AI Conversation Interface"
+              />
+            </div>
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
