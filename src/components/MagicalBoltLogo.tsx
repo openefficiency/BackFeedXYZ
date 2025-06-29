@@ -9,9 +9,9 @@ export const MagicalBoltLogo: React.FC = () => {
 
   // Generate random sparkles around the logo
   const generateSparkles = () => {
-    const newSparkles = Array.from({ length: 12 }, (_, i) => ({
+    const newSparkles = Array.from({ length: 8 }, (_, i) => ({
       id: i,
-      x: Math.random() * 200 - 100,
+      x: Math.random() * 80 - 40,
       y: Math.random() * 80 - 40,
       delay: Math.random() * 0.8
     }));
@@ -47,23 +47,22 @@ export const MagicalBoltLogo: React.FC = () => {
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
-      {/* Enhanced Tooltip */}
+      {/* Compact Tooltip */}
       {showTooltip && (
-        <div className="absolute -top-20 right-0 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white text-sm px-4 py-3 rounded-xl shadow-2xl whitespace-nowrap animate-in fade-in slide-in-from-top-2 duration-200 border border-slate-700">
-          <div className="flex items-center gap-2">
-            <Code className="w-4 h-4 text-blue-400" />
-            <span className="font-medium">Click to explore Bolt.new</span>
-            <ExternalLink className="w-3 h-3 text-slate-400" />
+        <div className="absolute -top-12 -left-8 bg-gradient-to-r from-slate-900 to-slate-800 text-white text-xs px-3 py-2 rounded-lg shadow-xl whitespace-nowrap animate-in fade-in slide-in-from-top-2 duration-200 border border-slate-600">
+          <div className="flex items-center gap-1">
+            <Code className="w-3 h-3 text-blue-400" />
+            <span className="font-medium">Built with Bolt.new</span>
+            <ExternalLink className="w-2 h-2 text-slate-400" />
           </div>
-          <div className="text-xs text-slate-400 mt-1">The AI-powered development platform</div>
-          <div className="absolute bottom-0 right-6 translate-y-1 w-3 h-3 bg-slate-900 rotate-45 border-r border-b border-slate-700"></div>
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1 w-2 h-2 bg-slate-900 rotate-45 border-r border-b border-slate-600"></div>
         </div>
       )}
 
-      {/* Main Logo Container */}
+      {/* Main Circular Logo Container */}
       <div
         className={`relative cursor-pointer transition-all duration-500 ${
-          isHovered ? 'scale-105' : 'scale-100'
+          isHovered ? 'scale-110' : 'scale-100'
         } ${isClicked ? 'scale-95' : ''}`}
         onClick={handleClick}
         onMouseEnter={handleMouseEnter}
@@ -75,103 +74,75 @@ export const MagicalBoltLogo: React.FC = () => {
             key={sparkle.id}
             className="absolute pointer-events-none z-10"
             style={{
-              left: `${sparkle.x + 80}px`,
-              top: `${sparkle.y + 20}px`,
+              left: `${sparkle.x + 24}px`,
+              top: `${sparkle.y + 24}px`,
               animationDelay: `${sparkle.delay}s`
             }}
           >
             <Sparkles 
-              className="w-3 h-3 text-yellow-400 animate-ping" 
+              className="w-2 h-2 text-yellow-400 animate-ping" 
               style={{
                 animationDuration: '1.5s',
-                animationIterationCount: '4'
+                animationIterationCount: '3'
               }}
             />
           </div>
         ))}
 
         {/* Outer Glow */}
-        <div className={`absolute inset-0 rounded-2xl transition-all duration-700 ${
+        <div className={`absolute inset-0 rounded-full transition-all duration-700 ${
           isHovered 
-            ? 'bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-pink-400/20 blur-xl scale-110' 
-            : 'bg-gradient-to-r from-blue-400/5 via-purple-400/5 to-pink-400/5 blur-lg scale-105'
+            ? 'bg-gradient-to-r from-blue-400/30 via-purple-400/30 to-pink-400/30 blur-lg scale-125' 
+            : 'bg-gradient-to-r from-blue-400/10 via-purple-400/10 to-pink-400/10 blur-md scale-110'
         }`}></div>
 
-        {/* Main Badge Container */}
-        <div className={`relative px-4 py-2 rounded-2xl transition-all duration-500 ${
+        {/* Main Circular Badge */}
+        <div className={`relative w-12 h-12 rounded-full transition-all duration-500 ${
           isHovered 
-            ? 'bg-gradient-to-r from-slate-900/95 via-slate-800/95 to-slate-900/95 shadow-2xl shadow-purple-500/30 border-2 border-purple-400/30' 
-            : 'bg-gradient-to-r from-slate-900/90 via-slate-800/90 to-slate-900/90 shadow-xl shadow-slate-900/50 border-2 border-slate-700/50'
-        } backdrop-blur-md`}>
+            ? 'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 shadow-2xl shadow-purple-500/40 border-2 border-purple-400/40' 
+            : 'bg-gradient-to-br from-slate-900/95 via-slate-800/95 to-slate-900/95 shadow-xl shadow-slate-900/60 border-2 border-slate-700/60'
+        } backdrop-blur-md flex items-center justify-center`}>
           
           {/* Inner Glow */}
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/5 via-white/10 to-white/5"></div>
+          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/10 via-white/20 to-white/10"></div>
           
-          {/* Content */}
-          <div className="relative flex items-center gap-3">
-            {/* Bolt Icon */}
-            <div className={`transition-all duration-300 ${
-              isHovered ? 'scale-110' : 'scale-100'
-            } ${isClicked ? 'animate-pulse' : ''}`}>
-              <div className={`p-2 rounded-xl transition-all duration-300 ${
-                isHovered 
-                  ? 'bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 shadow-lg shadow-purple-500/50' 
-                  : 'bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 shadow-md'
-              }`}>
-                <Zap className="w-4 h-4 text-white" />
-              </div>
-            </div>
-
-            {/* Text Content */}
-            <div className="flex flex-col">
-              <div className={`text-sm font-semibold transition-all duration-300 ${
-                isHovered 
-                  ? 'bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent' 
-                  : 'text-white'
-              }`}>
-                Built with
-              </div>
-              <div className={`text-lg font-bold transition-all duration-300 ${
-                isHovered 
-                  ? 'bg-gradient-to-r from-blue-300 via-purple-300 to-pink-300 bg-clip-text text-transparent' 
-                  : 'text-slate-200'
-              } leading-tight`}>
-                Bolt.new
-              </div>
-            </div>
-
-            {/* Arrow Icon */}
-            <div className={`transition-all duration-300 ${
-              isHovered ? 'translate-x-1 opacity-100' : 'translate-x-0 opacity-60'
+          {/* Bolt Icon */}
+          <div className={`relative transition-all duration-300 ${
+            isHovered ? 'scale-110' : 'scale-100'
+          } ${isClicked ? 'animate-pulse' : ''}`}>
+            <div className={`p-1.5 rounded-lg transition-all duration-300 ${
+              isHovered 
+                ? 'bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 shadow-lg shadow-purple-500/60' 
+                : 'bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 shadow-md'
             }`}>
-              <ExternalLink className="w-4 h-4 text-slate-400" />
+              <Zap className="w-3 h-3 text-white" />
             </div>
           </div>
 
           {/* Animated Border */}
-          <div className={`absolute inset-0 rounded-2xl transition-all duration-1000 ${
+          <div className={`absolute inset-0 rounded-full transition-all duration-1000 ${
             isHovered ? 'opacity-100' : 'opacity-0'
           }`}>
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse"></div>
+            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse"></div>
           </div>
         </div>
 
         {/* Pulse Effect */}
         {isClicked && (
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-400/30 via-purple-400/30 to-pink-400/30 animate-ping"></div>
+          <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400/40 via-purple-400/40 to-pink-400/40 animate-ping"></div>
         )}
 
         {/* Floating Celebration Icons (Easter Egg) */}
         {isClicked && (
           <>
-            <div className="absolute -top-8 left-1/2 -translate-x-1/2 animate-bounce">
-              <Heart className="w-5 h-5 text-red-400 fill-current animate-pulse" />
+            <div className="absolute -top-6 left-1/2 -translate-x-1/2 animate-bounce">
+              <Heart className="w-3 h-3 text-red-400 fill-current animate-pulse" />
             </div>
-            <div className="absolute -top-6 -right-8 animate-bounce" style={{ animationDelay: '0.2s' }}>
-              <Rocket className="w-4 h-4 text-yellow-400 animate-pulse" />
+            <div className="absolute -top-4 -right-6 animate-bounce" style={{ animationDelay: '0.2s' }}>
+              <Rocket className="w-3 h-3 text-yellow-400 animate-pulse" />
             </div>
-            <div className="absolute -top-4 -left-8 animate-bounce" style={{ animationDelay: '0.4s' }}>
-              <Code className="w-4 h-4 text-green-400 animate-pulse" />
+            <div className="absolute -top-2 -left-6 animate-bounce" style={{ animationDelay: '0.4s' }}>
+              <Code className="w-3 h-3 text-green-400 animate-pulse" />
             </div>
           </>
         )}
@@ -180,7 +151,7 @@ export const MagicalBoltLogo: React.FC = () => {
       {/* Background Ambient Light */}
       {isHovered && (
         <div className="fixed inset-0 pointer-events-none">
-          <div className="absolute bottom-4 right-4 w-48 h-32 bg-gradient-radial from-purple-500/10 via-blue-500/5 to-transparent rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-4 right-4 w-24 h-24 bg-gradient-radial from-purple-500/15 via-blue-500/8 to-transparent rounded-full blur-2xl animate-pulse"></div>
         </div>
       )}
     </div>
