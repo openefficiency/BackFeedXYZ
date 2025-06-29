@@ -577,21 +577,6 @@ export const HomePage: React.FC = () => {
                 Apply for Aegis AI Pilot Waitlist
                 <ArrowRight className="w-5 h-5" />
               </button>
-
-              <div className="mt-6 grid md:grid-cols-3 gap-4 text-sm text-purple-200">
-                <div>
-                  <div className="font-semibold text-white">✓ Priority Support</div>
-                  <div>Dedicated implementation team</div>
-                </div>
-                <div>
-                  <div className="font-semibold text-white">✓ Custom Setup</div>
-                  <div>Tailored to your organization</div>
-                </div>
-                <div>
-                  <div className="font-semibold text-white">✓ Early Pricing</div>
-                  <div>Pilot program discounts</div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
