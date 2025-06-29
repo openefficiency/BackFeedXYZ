@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Clock, CheckCircle, AlertCircle, MessageSquare, ArrowLeft, Copy } from 'lucide-react';
+import { ArrowRight, Clock, CheckCircle, AlertCircle, MessageSquare, ArrowLeft, Copy } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { dbService } from '../lib/supabase';
 
@@ -174,14 +174,14 @@ export const TrackCase: React.FC = () => {
                 <button
                   onClick={searchCase}
                   disabled={loading}
-                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
                 >
                   {loading ? (
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                   ) : (
-                    <Search className="w-5 h-5" />
+                    <ArrowRight className="w-5 h-5" />
                   )}
-                  Search
+                  Follow-Up!
                 </button>
               </div>
             </div>
@@ -313,7 +313,7 @@ export const TrackCase: React.FC = () => {
               ))}
             </div>
             <p className="text-xs text-blue-600 mt-2">
-              Click any code to populate the confirmation code field, then click Search
+              Click any code to populate the confirmation code field, then click Follow-Up!
             </p>
           </div>
         </div>
