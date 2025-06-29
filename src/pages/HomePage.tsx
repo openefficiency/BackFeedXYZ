@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Mic, Check, MessageSquare, ArrowRight, Volume2, ExternalLink, Zap, Star, Shield, Brain, Clock, Users, Sparkles } from 'lucide-react';
 import { handleElevenLabsWebhook } from '../lib/elevenlabs-webhook';
+import { PilotWaitlistModal } from '../components/PilotWaitlistModal';
 
 export const HomePage: React.FC = () => {
   const [result, setResult] = useState<{
@@ -11,8 +12,7 @@ export const HomePage: React.FC = () => {
   } | null>(null);
   const [error, setError] = useState('');
   const [widgetLoaded, setWidgetLoaded] = useState(false);
-  const [waitlistEmail, setWaitlistEmail] = useState('');
-  const [waitlistSubmitted, setWaitlistSubmitted] = useState(false);
+  const [showPilotModal, setShowPilotModal] = useState(false);
 
   // Load ElevenLabs widget script and set up event listeners
   useEffect(() => {
@@ -206,20 +206,6 @@ export const HomePage: React.FC = () => {
   const resetWidget = () => {
     setResult(null);
     setError('');
-  };
-
-  const handleWaitlistSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!waitlistEmail.trim()) return;
-    
-    // Simulate submission
-    setWaitlistSubmitted(true);
-    setWaitlistEmail('');
-    
-    // Reset after 3 seconds
-    setTimeout(() => {
-      setWaitlistSubmitted(false);
-    }, 3000);
   };
 
   // Show success page if conversation completed
@@ -504,70 +490,37 @@ export const HomePage: React.FC = () => {
             </div>
           </div>
 
-          {/* Waitlist Form */}
-          <div className="max-w-2xl mx-auto">
+          {/* Waitlist CTA */}
+          <div className="max-w-2xl mx-auto text-center">
             <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8">
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-white mb-4">
-                  Join the Pilot Program
-                </h3>
-                <p className="text-purple-100">
-                  Limited spots available. Priority access for organizations ready to transform their employee feedback systems.
-                </p>
-              </div>
+              <h3 className="text-2xl font-bold text-white mb-4">
+                Ready to Transform Your Organization?
+              </h3>
+              <p className="text-purple-100 mb-8">
+                Join the exclusive pilot program and be among the first to experience the future of employee engagement.
+              </p>
+              
+              <button
+                onClick={() => setShowPilotModal(true)}
+                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
+              >
+                <Star className="w-5 h-5" />
+                Apply for Aegis AI Pilot Waitlist
+                <ArrowRight className="w-5 h-5" />
+              </button>
 
-              {waitlistSubmitted ? (
-                <div className="text-center py-8">
-                  <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Check className="w-8 h-8 text-white" />
-                  </div>
-                  <h4 className="text-xl font-bold text-white mb-2">You're on the list!</h4>
-                  <p className="text-green-200">
-                    We'll contact you soon with pilot program details and next steps.
-                  </p>
+              <div className="mt-6 grid md:grid-cols-3 gap-4 text-sm text-purple-200">
+                <div>
+                  <div className="font-semibold text-white">✓ Priority Support</div>
+                  <div>Dedicated implementation team</div>
                 </div>
-              ) : (
-                <form onSubmit={handleWaitlistSubmit} className="space-y-6">
-                  <div>
-                    <label htmlFor="waitlist-email" className="block text-sm font-medium text-white mb-2">
-                      Work Email Address
-                    </label>
-                    <input
-                      type="email"
-                      id="waitlist-email"
-                      value={waitlistEmail}
-                      onChange={(e) => setWaitlistEmail(e.target.value)}
-                      placeholder="your.email@company.com"
-                      required
-                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-purple-200 focus:ring-2 focus:ring-purple-400 focus:border-transparent backdrop-blur-sm"
-                    />
-                  </div>
-                  
-                  <button
-                    type="submit"
-                    className="w-full flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
-                  >
-                    <Star className="w-5 h-5" />
-                    Apply for Early Access
-                    <ArrowRight className="w-5 h-5" />
-                  </button>
-                </form>
-              )}
-
-              <div className="mt-8 pt-6 border-t border-white/20">
-                <div className="grid md:grid-cols-3 gap-4 text-center text-sm text-purple-200">
-                  <div>
-                    <div className="font-semibold text-white">✓ Priority Support</div>
-                    <div>Dedicated implementation team</div>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-white">✓ Custom Setup</div>
-                    <div>Tailored to your organization</div>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-white">✓ Early Pricing</div>
-                    <div>Pilot program discounts</div>
-                  </div>
+                <div>
+                  <div className="font-semibold text-white">✓ Custom Setup</div>
+                  <div>Tailored to your organization</div>
+                </div>
+                <div>
+                  <div className="font-semibold text-white">✓ Early Pricing</div>
+                  <div>Pilot program discounts</div>
                 </div>
               </div>
             </div>
@@ -607,6 +560,12 @@ export const HomePage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Pilot Waitlist Modal */}
+      <PilotWaitlistModal 
+        isOpen={showPilotModal} 
+        onClose={() => setShowPilotModal(false)} 
+      />
     </div>
   );
 };
