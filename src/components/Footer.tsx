@@ -25,14 +25,16 @@ export const Footer: React.FC = () => {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-200">
               <Heart className="w-4 h-4 text-red-500 fill-current" />
-              <span className="text-sm font-medium text-blue-700">Show your love in</span>
+              <span className="text-sm font-medium text-blue-700">Show BackFeed your love</span>
+              <Heart className="w-4 h-4 text-red-500 fill-current" />
+              <span className="text-sm font-medium text-blue-700">g us in</span>
               <a 
-                href="https://bolt.new/gallery/categories/all" 
+                href="https://bolt.new/gallery/categories/community-social" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-blue-600 hover:text-blue-800 font-semibold transition-colors"
               >
-                Bolt Gallery
+                Bolt Gallery - Community/Social
                 <ExternalLink className="w-3 h-3" />
               </a>
             </div>
