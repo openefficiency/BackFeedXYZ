@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Mic, Shield, Search, MessageSquare, BarChart3, Lock, Zap, Users, Check, ArrowLeft } from 'lucide-react';
+import { Mic, Check, MessageSquare, ExternalLink, ArrowRight } from 'lucide-react';
 import { handleElevenLabsWebhook } from '../lib/elevenlabs-webhook';
 
 export const HomePage: React.FC = () => {
-  const [widgetLoaded, setWidgetLoaded] = useState(false);
   const [result, setResult] = useState<{
     caseId: string;
     confirmationCode: string;
     transcript: string;
   } | null>(null);
   const [error, setError] = useState('');
+  const [widgetLoaded, setWidgetLoaded] = useState(false);
 
   // Load ElevenLabs widget script and set up event listeners
   useEffect(() => {
-    // Remove any existing script first
+    // Check if widget script is already loaded
     const existingScript = document.querySelector('script[src*="elevenlabs"]');
     if (existingScript) {
-      existingScript.remove();
+      setWidgetLoaded(true);
+      setupWidgetEventListeners();
+      return;
     }
 
     // Create and load the ElevenLabs widget script
@@ -117,7 +119,7 @@ export const HomePage: React.FC = () => {
 
   const handleElevenLabsConversationComplete = async (payload: any) => {
     try {
-      console.log('🎤 Processing ElevenLabs conversation completion:', payload);
+      console.log('🎤 Processing conversation completion:', payload);
       
       // Create a comprehensive payload with all possible data
       const enhancedPayload = {
@@ -179,7 +181,7 @@ export const HomePage: React.FC = () => {
         throw new Error(result.error || 'Failed to process conversation');
       }
     } catch (err: any) {
-      console.error('Failed to process ElevenLabs conversation:', err);
+      console.error('Failed to process conversation:', err);
       setError(`Failed to process conversation: ${err.message}`);
     }
   };
@@ -196,90 +198,13 @@ export const HomePage: React.FC = () => {
         .map((msg: any) => msg.content)
         .join('\n');
     }
-    return 'Conversation completed through ElevenLabs widget';
-  };
-
-  const generateConfirmationCode = (): string => {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let result = '';
-    for (let i = 0; i < 10; i++) {
-      result += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return result;
+    return 'Conversation completed through the widget';
   };
 
   const resetWidget = () => {
     setResult(null);
     setError('');
   };
-
-  // Test function to simulate conversation completion
-  const testConversation = () => {
-    const testPayload = {
-      conversation_id: `test_conv_${Date.now()}`,
-      agent_id: 'agent_01jydtj6avef99c1ne0eavf0ww',
-      status: 'completed',
-      transcript: {
-        user_messages: [
-          {
-            text: 'I need to report a safety issue in our workplace. The equipment in our department has not been properly maintained and there have been several near-miss incidents.',
-            timestamp: new Date().toISOString()
-          }
-        ],
-        agent_messages: [
-          {
-            text: 'Thank you for bringing this safety concern to my attention. Can you tell me more about the specific equipment and incidents?',
-            timestamp: new Date().toISOString()
-          }
-        ]
-      },
-      conversation_metadata: {
-        duration_seconds: 180,
-        started_at: new Date(Date.now() - 180000).toISOString(),
-        ended_at: new Date().toISOString()
-      },
-      sentiment_analysis: {
-        overall_sentiment: 'negative',
-        confidence: 0.85,
-        emotions: ['concerned', 'worried']
-      }
-    };
-    
-    handleElevenLabsConversationComplete(testPayload);
-  };
-
-  const features = [
-    {
-      icon: <MessageSquare className="w-8 h-8 text-purple-600" />,
-      title: "ElevenLabs Conversational AI",
-      description: "Have natural conversations with our AI assistant powered by ElevenLabs for the most human-like interaction."
-    },
-    {
-      icon: <Lock className="w-8 h-8 text-green-600" />,
-      title: "Anonymous & Secure",
-      description: "Your identity remains protected while ensuring your voice is heard with enterprise-grade security."
-    },
-    {
-      icon: <Zap className="w-8 h-8 text-blue-600" />,
-      title: "Intelligent Follow-ups",
-      description: "Our AI asks thoughtful follow-up questions to help you share comprehensive, actionable feedback."
-    },
-    {
-      icon: <BarChart3 className="w-8 h-8 text-orange-600" />,
-      title: "Real-time Analytics",
-      description: "HR teams get comprehensive insights and analytics for better decision making."
-    },
-    {
-      icon: <Users className="w-8 h-8 text-indigo-600" />,
-      title: "Two-way Communication",
-      description: "Secure messaging system allows HR to communicate back using your confirmation code."
-    },
-    {
-      icon: <Shield className="w-8 h-8 text-red-600" />,
-      title: "Enterprise Security",
-      description: "All conversations are processed with enterprise-grade security and compliance standards."
-    }
-  ];
 
   // Show success page if conversation completed
   if (result) {
@@ -322,7 +247,7 @@ export const HomePage: React.FC = () => {
                 <span className="font-semibold text-purple-900">AI Processing Confirmed</span>
               </div>
               <div className="text-sm text-purple-800 space-y-1">
-                <p>✅ Processed with ElevenLabs Conversational AI</p>
+                <p>✅ Processed with Aegis AI Conversational Technology</p>
                 <p>✅ Natural conversation flow completed</p>
                 <p>✅ Real-time voice interaction processed</p>
                 <p>✅ Tagged with case ID: {result.caseId.substring(0, 12)}...</p>
@@ -373,7 +298,7 @@ export const HomePage: React.FC = () => {
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-100 to-blue-100 text-purple-700 rounded-full text-sm font-medium mb-8">
             <MessageSquare className="w-4 h-4" />
-            Powered by ElevenLabs Conversational AI
+            Powered by Aegis AI
           </div>
           
           <h1 className="text-5xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
@@ -382,24 +307,21 @@ export const HomePage: React.FC = () => {
           </h1>
           
           <p className="text-xl text-slate-600 mb-12 max-w-2xl mx-auto leading-relaxed">
-            A secure, AI-powered platform for anonymous employee feedback with natural conversation. 
+            BackFeed is a secure, AI-powered platform for anonymous employee feedback with natural conversation. 
             Talk to our AI assistant, share your concerns, and make a difference in your workplace.
           </p>
 
-          {/* ElevenLabs Widget Section */}
+          {/* Aegis AI Interface Section */}
           <div className="bg-white rounded-2xl shadow-xl border border-slate-200 p-8 mb-12 max-w-2xl mx-auto">
             <div className="text-center mb-6">
               <div className="flex items-center justify-center gap-2 mb-4">
                 <MessageSquare className="w-6 h-6 text-purple-600" />
                 <h3 className="text-xl font-semibold text-slate-900">
-                  Start Your Conversation
+                  Speak to Aegis AI
                 </h3>
               </div>
-              <p className="text-slate-600">
-                {widgetLoaded 
-                  ? "Click the microphone icon below to start your conversation with our AI assistant"
-                  : "Loading ElevenLabs widget..."
-                }
+              <p className="text-slate-600 mb-6">
+                Start your conversation with our advanced AI assistant for secure, anonymous feedback
               </p>
             </div>
 
@@ -415,17 +337,10 @@ export const HomePage: React.FC = () => {
               </div>
             )}
 
-            {/* Widget Loading State */}
-            {!widgetLoaded && (
-              <div className="flex justify-center items-center py-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
-              </div>
-            )}
-
             {/* ElevenLabs Widget */}
             {widgetLoaded && (
-              <div className="flex justify-center mb-6">
-                <div className="w-full max-w-md">
+              <div className="mb-6">
+                <div className="w-full max-w-md mx-auto">
                   <elevenlabs-convai 
                     agent-id="agent_01jydtj6avef99c1ne0eavf0ww"
                     style={{
@@ -439,41 +354,33 @@ export const HomePage: React.FC = () => {
               </div>
             )}
 
-            {/* Test Button for Development */}
-            <div className="mb-6">
-              <button
-                onClick={testConversation}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
-              >
-                Test Conversation (Demo)
-              </button>
-            </div>
+            {/* Widget Loading State */}
+            {!widgetLoaded && (
+              <div className="flex justify-center items-center py-12 mb-6">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+              </div>
+            )}
 
-            {/* Widget Instructions */}
-            <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-4">
-              <h4 className="font-medium text-purple-900 mb-2">How it works:</h4>
-              <ul className="text-sm text-purple-800 space-y-1">
-                <li>• Click the microphone icon in the widget above</li>
-                <li>• Allow microphone access when prompted</li>
-                <li>• Start speaking - the AI will respond naturally</li>
-                <li>• Have a conversation about your feedback</li>
-                <li>• The AI will guide you through sharing your thoughts</li>
-                <li>• Your conversation is automatically processed and sent to HR</li>
-                <li>• You'll receive a confirmation code when complete</li>
-                <li>• Or click "Test Conversation" to see a demo</li>
-              </ul>
-            </div>
-
-            {/* Troubleshooting */}
-            <div className="mt-4 bg-amber-50 border border-amber-200 rounded-lg p-4">
-              <h4 className="font-medium text-amber-900 mb-2">Troubleshooting:</h4>
-              <ul className="text-sm text-amber-800 space-y-1">
-                <li>• Make sure your microphone is connected and working</li>
-                <li>• Allow microphone permissions when prompted by your browser</li>
-                <li>• Try refreshing the page if the widget doesn't load</li>
-                <li>• Use the "Test Conversation" button to see how it works</li>
-                <li>• Check your browser's microphone settings if audio isn't working</li>
-              </ul>
+            {/* Alternative: Direct Link to ElevenLabs Interface */}
+            <div className="bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-200 rounded-xl p-6">
+              <div className="text-center">
+                <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <ExternalLink className="w-6 h-6 text-white" />
+                </div>
+                <p className="text-sm text-purple-700 mb-3">
+                  Prefer a full-screen experience?
+                </p>
+                <a
+                  href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
+                >
+                  <MessageSquare className="w-5 h-5" />
+                  Open in New Window
+                  <ArrowRight className="w-4 h-4" />
+                </a>
+              </div>
             </div>
           </div>
           
@@ -482,67 +389,9 @@ export const HomePage: React.FC = () => {
               to="/track"
               className="inline-flex items-center gap-3 px-8 py-4 bg-white text-slate-700 rounded-xl font-semibold text-lg border-2 border-slate-200 hover:border-purple-300 hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200"
             >
-              <Search className="w-6 h-6" />
+              <Mic className="w-6 h-6" />
               Track Case
             </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-20 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">
-              Powerful Features for
-              <span className="text-purple-600"> Everyone</span>
-            </h2>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-              Our platform combines cutting-edge conversational AI with secure communications 
-              to create a seamless feedback experience.
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="p-8 rounded-2xl border border-slate-200 hover:shadow-xl hover:border-purple-200 transition-all duration-300 group"
-              >
-                <div className="mb-6 transform group-hover:scale-110 transition-transform duration-200">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-semibold text-slate-900 mb-4">
-                  {feature.title}
-                </h3>
-                <p className="text-slate-600 leading-relaxed">
-                  {feature.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Technology Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-purple-50 to-blue-50">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-bold text-slate-900 mb-6">
-            Powered by Advanced Conversational AI
-          </h2>
-          <p className="text-xl text-slate-600 mb-12">
-            We use ElevenLabs' cutting-edge technology to create natural, human-like conversations.
-          </p>
-          
-          <div className="max-w-2xl mx-auto">
-            <div className="bg-white rounded-2xl p-8 shadow-lg">
-              <MessageSquare className="w-12 h-12 text-purple-600 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">ElevenLabs Conversational AI</h3>
-              <p className="text-slate-600">
-                Experience the most natural AI conversation available. Our AI assistant understands context, 
-                asks intelligent follow-up questions, and creates a comfortable environment for sharing feedback.
-              </p>
-            </div>
           </div>
         </div>
       </section>
@@ -554,23 +403,19 @@ export const HomePage: React.FC = () => {
             Ready to Share Your Feedback?
           </h2>
           <p className="text-xl text-purple-100 mb-8 max-w-2xl mx-auto">
-            Join thousands of employees who trust our platform to share their feedback through natural AI conversations.
+            Join thousands of employees who trust BackFeed to share their feedback through natural AI conversations.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            <a
+              href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-3 px-8 py-4 bg-white text-purple-600 rounded-xl font-semibold text-lg hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200"
             >
               <MessageSquare className="w-6 h-6" />
-              Start Conversation Now
-            </button>
-            <Link
-              to="/hr-login"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-transparent text-white border-2 border-white rounded-xl font-semibold text-lg hover:bg-white hover:text-purple-600 transition-all duration-200"
-            >
-              <Shield className="w-6 h-6" />
-              HR Portal Access
-            </Link>
+              How can Aegis AI help you today?
+              <ExternalLink className="w-4 h-4" />
+            </a>
           </div>
         </div>
       </section>
