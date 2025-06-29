@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Mic, Check, MessageSquare, ArrowRight, Volume2, ExternalLink, Zap } from 'lucide-react';
+import { Mic, Check, MessageSquare, ArrowRight, Volume2, ExternalLink, Zap, Star, Shield, Brain, Clock, Users, Sparkles } from 'lucide-react';
 import { handleElevenLabsWebhook } from '../lib/elevenlabs-webhook';
 
 export const HomePage: React.FC = () => {
@@ -11,6 +11,8 @@ export const HomePage: React.FC = () => {
   } | null>(null);
   const [error, setError] = useState('');
   const [widgetLoaded, setWidgetLoaded] = useState(false);
+  const [waitlistEmail, setWaitlistEmail] = useState('');
+  const [waitlistSubmitted, setWaitlistSubmitted] = useState(false);
 
   // Load ElevenLabs widget script and set up event listeners
   useEffect(() => {
@@ -204,6 +206,20 @@ export const HomePage: React.FC = () => {
   const resetWidget = () => {
     setResult(null);
     setError('');
+  };
+
+  const handleWaitlistSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!waitlistEmail.trim()) return;
+    
+    // Simulate submission
+    setWaitlistSubmitted(true);
+    setWaitlistEmail('');
+    
+    // Reset after 3 seconds
+    setTimeout(() => {
+      setWaitlistSubmitted(false);
+    }, 3000);
   };
 
   // Show success page if conversation completed
@@ -400,6 +416,161 @@ export const HomePage: React.FC = () => {
               <Mic className="w-6 h-6" />
               Track Case
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Aegis AI Pilot Waitlist Section */}
+      <section className="py-20 px-4 bg-gradient-to-br from-slate-900 via-purple-900 to-blue-900">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white text-sm font-medium mb-6">
+              <Sparkles className="w-4 h-4" />
+              Early Access Program
+            </div>
+            
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              Apply for 
+              <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent"> Aegis AI Pilot</span>
+              <br />Waitlist
+            </h2>
+            
+            <p className="text-xl text-purple-100 mb-12 max-w-3xl mx-auto leading-relaxed">
+              Join forward-thinking organizations implementing next-generation AI-powered employee feedback systems. 
+              Be among the first to experience the future of workplace communication.
+            </p>
+          </div>
+
+          {/* Key Features Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 hover:bg-white/15 transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl flex items-center justify-center mb-6">
+                <Brain className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4">Advanced AI Conversations</h3>
+              <p className="text-purple-100 leading-relaxed">
+                Natural language processing with emotional intelligence, context awareness, and real-time sentiment analysis for deeper insights.
+              </p>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 hover:bg-white/15 transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-green-500 rounded-xl flex items-center justify-center mb-6">
+                <Shield className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4">Enterprise Security</h3>
+              <p className="text-purple-100 leading-relaxed">
+                End-to-end encryption, GDPR compliance, SOC 2 certification, and anonymous feedback protection with audit trails.
+              </p>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 hover:bg-white/15 transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-yellow-500 rounded-xl flex items-center justify-center mb-6">
+                <Clock className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4">Real-time Processing</h3>
+              <p className="text-purple-100 leading-relaxed">
+                Instant feedback categorization, priority assignment, and automated routing to appropriate HR teams with smart escalation.
+              </p>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 hover:bg-white/15 transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-red-500 rounded-xl flex items-center justify-center mb-6">
+                <Star className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4">Intelligent Analytics</h3>
+              <p className="text-purple-100 leading-relaxed">
+                Predictive insights, trend analysis, risk assessment, and actionable recommendations powered by machine learning algorithms.
+              </p>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 hover:bg-white/15 transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-purple-500 rounded-xl flex items-center justify-center mb-6">
+                <Users className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4">Multi-Channel Integration</h3>
+              <p className="text-purple-100 leading-relaxed">
+                Voice, text, video, and mobile app integration with seamless cross-platform synchronization and unified reporting.
+              </p>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 hover:bg-white/15 transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mb-6">
+                <MessageSquare className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4">Custom AI Training</h3>
+              <p className="text-purple-100 leading-relaxed">
+                Organization-specific AI models trained on your policies, culture, and communication patterns for personalized experiences.
+              </p>
+            </div>
+          </div>
+
+          {/* Waitlist Form */}
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold text-white mb-4">
+                  Join the Pilot Program
+                </h3>
+                <p className="text-purple-100">
+                  Limited spots available. Priority access for organizations ready to transform their employee feedback systems.
+                </p>
+              </div>
+
+              {waitlistSubmitted ? (
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Check className="w-8 h-8 text-white" />
+                  </div>
+                  <h4 className="text-xl font-bold text-white mb-2">You're on the list!</h4>
+                  <p className="text-green-200">
+                    We'll contact you soon with pilot program details and next steps.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleWaitlistSubmit} className="space-y-6">
+                  <div>
+                    <label htmlFor="waitlist-email" className="block text-sm font-medium text-white mb-2">
+                      Work Email Address
+                    </label>
+                    <input
+                      type="email"
+                      id="waitlist-email"
+                      value={waitlistEmail}
+                      onChange={(e) => setWaitlistEmail(e.target.value)}
+                      placeholder="your.email@company.com"
+                      required
+                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-purple-200 focus:ring-2 focus:ring-purple-400 focus:border-transparent backdrop-blur-sm"
+                    />
+                  </div>
+                  
+                  <button
+                    type="submit"
+                    className="w-full flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
+                  >
+                    <Star className="w-5 h-5" />
+                    Apply for Early Access
+                    <ArrowRight className="w-5 h-5" />
+                  </button>
+                </form>
+              )}
+
+              <div className="mt-8 pt-6 border-t border-white/20">
+                <div className="grid md:grid-cols-3 gap-4 text-center text-sm text-purple-200">
+                  <div>
+                    <div className="font-semibold text-white">✓ Priority Support</div>
+                    <div>Dedicated implementation team</div>
+                  </div>
+                  <div>
+                    <div className="font-semibold text-white">✓ Custom Setup</div>
+                    <div>Tailored to your organization</div>
+                  </div>
+                  <div>
+                    <div className="font-semibold text-white">✓ Early Pricing</div>
+                    <div>Pilot program discounts</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
