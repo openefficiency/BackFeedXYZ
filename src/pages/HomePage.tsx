@@ -37,8 +37,8 @@ export const HomePage: React.FC = () => {
     };
     
     script.onerror = () => {
-      console.error('❌ Failed to load ElevenLabs widget script');
-      setError('Failed to load ElevenLabs widget. Please refresh the page and try again.');
+      console.error('❌ Failed to load widget script');
+      setError('Failed to load the conversation widget. Please refresh the page and try again.');
     };
     
     document.head.appendChild(script);
@@ -196,7 +196,7 @@ export const HomePage: React.FC = () => {
         .map((msg: any) => msg.content)
         .join('\n');
     }
-    return 'Conversation completed through ElevenLabs widget';
+    return 'Conversation completed through the widget';
   };
 
   const generateConfirmationCode = (): string => {
@@ -251,8 +251,8 @@ export const HomePage: React.FC = () => {
   const features = [
     {
       icon: <MessageSquare className="w-8 h-8 text-purple-600" />,
-      title: "ElevenLabs Conversational AI",
-      description: "Have natural conversations with our AI assistant powered by ElevenLabs for the most human-like interaction."
+      title: "Conversational AI",
+      description: "Have natural conversations with our AI assistant for the most human-like interaction."
     },
     {
       icon: <Lock className="w-8 h-8 text-green-600" />,
@@ -322,7 +322,7 @@ export const HomePage: React.FC = () => {
                 <span className="font-semibold text-purple-900">AI Processing Confirmed</span>
               </div>
               <div className="text-sm text-purple-800 space-y-1">
-                <p>✅ Processed with ElevenLabs Conversational AI</p>
+                <p>✅ Processed with advanced conversational AI</p>
                 <p>✅ Natural conversation flow completed</p>
                 <p>✅ Real-time voice interaction processed</p>
                 <p>✅ Tagged with case ID: {result.caseId.substring(0, 12)}...</p>
@@ -371,10 +371,6 @@ export const HomePage: React.FC = () => {
       {/* Hero Section with Widget */}
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-100 to-blue-100 text-purple-700 rounded-full text-sm font-medium mb-8">
-            <MessageSquare className="w-4 h-4" />
-            Powered by ElevenLabs Conversational AI
-          </div>
           
           <h1 className="text-5xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
             Your Voice
@@ -398,7 +394,7 @@ export const HomePage: React.FC = () => {
               <p className="text-slate-600">
                 {widgetLoaded 
                   ? "Click the microphone icon below to start your conversation with our AI assistant"
-                  : "Loading ElevenLabs widget..."
+                  : "Loading conversation widget..."
                 }
               </p>
             </div>
@@ -439,42 +435,6 @@ export const HomePage: React.FC = () => {
               </div>
             )}
 
-            {/* Test Button for Development */}
-            <div className="mb-6">
-              <button
-                onClick={testConversation}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
-              >
-                Test Conversation (Demo)
-              </button>
-            </div>
-
-            {/* Widget Instructions */}
-            <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-4">
-              <h4 className="font-medium text-purple-900 mb-2">How to use:</h4>
-              <ul className="text-sm text-purple-800 space-y-1">
-                <li>• Click the microphone icon in the widget above</li>
-                <li>• Allow microphone access when prompted</li>
-                <li>• Start speaking - the AI will respond naturally</li>
-                <li>• Have a conversation about your feedback</li>
-                <li>• The AI will guide you through sharing your thoughts</li>
-                <li>• Your conversation is automatically processed and sent to HR</li>
-                <li>• You'll receive a confirmation code when complete</li>
-                <li>• Or click "Test Conversation" to see a demo</li>
-              </ul>
-            </div>
-
-            {/* Troubleshooting */}
-            <div className="mt-4 bg-amber-50 border border-amber-200 rounded-lg p-4">
-              <h4 className="font-medium text-amber-900 mb-2">Troubleshooting:</h4>
-              <ul className="text-sm text-amber-800 space-y-1">
-                <li>• Make sure your microphone is connected and working</li>
-                <li>• Allow microphone permissions when prompted by your browser</li>
-                <li>• Try refreshing the page if the widget doesn't load</li>
-                <li>• Use the "Test Conversation" button to see how it works</li>
-                <li>• Check your browser's microphone settings if audio isn't working</li>
-              </ul>
-            </div>
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -531,13 +491,13 @@ export const HomePage: React.FC = () => {
             Powered by Advanced Conversational AI
           </h2>
           <p className="text-xl text-slate-600 mb-12">
-            We use ElevenLabs' cutting-edge technology to create natural, human-like conversations.
+            We use cutting-edge AI technology to create natural, human-like conversations.
           </p>
           
           <div className="max-w-2xl mx-auto">
             <div className="bg-white rounded-2xl p-8 shadow-lg">
               <MessageSquare className="w-12 h-12 text-purple-600 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">ElevenLabs Conversational AI</h3>
+              <h3 className="text-2xl font-bold text-slate-900 mb-4">Advanced Conversational AI</h3>
               <p className="text-slate-600">
                 Experience the most natural AI conversation available. Our AI assistant understands context, 
                 asks intelligent follow-up questions, and creates a comfortable environment for sharing feedback.
