@@ -1,113 +1,44 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js';
 
-// Environment variables with fallbacks
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || process.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY
+// Supabase configuration with your specific credentials
+const supabaseUrl = 'https://tnvyzdmgyvpzwxbravrx.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRudnl6ZG1neXZwend4YnJhdnJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAyMDg3MTYsImV4cCI6MjA2NTc4NDcxNn0.tgtFA4wHYLfa8pu3Oes2y4raVT-_2LuWFOWimXALbWI';
 
-// Validate required environment variables
-if (!supabaseUrl) {
-  throw new Error('Missing VITE_SUPABASE_URL environment variable')
+// Validate configuration
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error('Missing Supabase configuration. Please check your environment variables.');
 }
 
-if (!supabaseAnonKey) {
-  throw new Error('Missing VITE_SUPABASE_ANON_KEY environment variable')
-}
-
-// Create Supabase client with proper configuration
+// Create Supabase client with enhanced configuration for production
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    persistSession: true,
     autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true,
+    flowType: 'pkce'
+  },
+  realtime: {
+    params: {
+      eventsPerSecond: 10
+    }
   },
   global: {
-    fetch: (url, options = {}) => {
-      // Add timeout and better error handling
-      const controller = new AbortController()
-      const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
-      
-      return fetch(url, {
-        ...options,
-        signal: controller.signal,
-      }).finally(() => {
-        clearTimeout(timeoutId)
-      })
-    },
+    headers: {
+      'x-application-name': 'voice-ai-agent-system',
+      'x-client-info': 'voice-ai-agent/1.0.0'
+    }
   },
-})
-
-// Connection test function with better error handling
-export async function testSupabaseConnection(): Promise<{ success: boolean; error?: string }> {
-  try {
-    console.log('Testing Supabase connection...')
-    console.log('Supabase URL:', supabaseUrl)
-    console.log('Using anon key:', supabaseAnonKey ? 'Yes' : 'No')
-    
-    // Simple health check
-    const { data, error } = await supabase
-      .from('_supabase_health_check')
-      .select('*')
-      .limit(1)
-    
-    if (error && error.code !== 'PGRST116') { // PGRST116 = table not found, which is expected
-      throw error
-    }
-    
-    console.log('✅ Supabase connection successful')
-    return { success: true }
-    
-  } catch (error: any) {
-    console.error('❌ Supabase connection failed:', error)
-    
-    // Provide more specific error messages
-    let errorMessage = error.message
-    
-    if (error.name === 'AbortError') {
-      errorMessage = 'Connection timeout - check your internet connection and Supabase URL'
-    } else if (error.message?.includes('Failed to fetch')) {
-      errorMessage = 'Network error - check CORS settings and Supabase URL'
-    } else if (error.message?.includes('Invalid API key')) {
-      errorMessage = 'Invalid Supabase anon key'
-    }
-    
-    return { 
-      success: false, 
-      error: errorMessage 
-    }
+  db: {
+    schema: 'public'
   }
-}
-
-// Initialize connection with retry logic
-export async function initializeConnection(): Promise<void> {
-  let retries = 3
-  let lastError: string = ''
-  
-  while (retries > 0) {
-    const result = await testSupabaseConnection()
-    
-    if (result.success) {
-      console.log('Supabase initialized successfully')
-      return
-    }
-    
-    lastError = result.error || 'Unknown error'
-    retries--
-    
-    if (retries > 0) {
-      console.log(`Retrying connection... (${retries} attempts left)`)
-      await new Promise(resolve => setTimeout(resolve, 2000)) // Wait 2 seconds
-    }
-  }
-  
-  console.error('❌ Supabase connection initialization failed')
-  throw new Error(`Failed to connect to Supabase after 3 attempts: ${lastError}`)
-}
+});
 
 // Enhanced connection test with detailed diagnostics
 export const testConnection = async (): Promise<boolean> => {
   try {
-    console.log('🔍 Testing Supabase connection...')
-    console.log('📍 URL:', supabaseUrl)
-    console.log('🔑 Key:', supabaseAnonKey ? 'Present' : 'Missing')
+    console.log('🔍 Testing Supabase connection...');
+    console.log('📍 URL:', supabaseUrl);
+    console.log('🔑 Key:', supabaseAnonKey.substring(0, 20) + '...');
     
     // Test basic connectivity with a simple query
     const { data, error, status, statusText } = await supabase
@@ -756,7 +687,7 @@ export const apiService = {
 };
 
 // Initialize connection test and setup on module load
-(async () => {
+const initializeConnection = async () => {
   console.log('🚀 Initializing Supabase connection...');
   console.log('🌐 Environment:', import.meta.env.MODE);
   
@@ -788,4 +719,7 @@ export const apiService = {
   } catch (error) {
     console.error('❌ Connection initialization error:', error);
   }
-})();
+};
+
+// Run initialization
+initializeConnection();

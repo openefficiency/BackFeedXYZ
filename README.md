@@ -1,275 +1,332 @@
-# Voice AI Agent System with Netlify Edge Function Tracking
+# Standalone ElevenLabs ACK Generation System
 
-A comprehensive, production-ready employee feedback system using ElevenLabs Conversational AI with direct webhook integration via Netlify Edge Functions for real-time tracking code generation.
+A comprehensive, production-ready system for generating and injecting acknowledgment numbers into live conversations using ElevenLabs API, without requiring N8N workflows.
 
 ## 🚀 Features
 
 ### Core Functionality
-- **ElevenLabs Conversational AI Integration**: Natural voice conversations for employee feedback
-- **Netlify Edge Function Webhooks**: Direct webhook processing without external dependencies
-- **Real-time Tracking Code Generation**: Instant 10-digit tracking codes during conversations
-- **Global CDN Distribution**: Ultra-low latency with 100+ edge locations worldwide
-- **Comprehensive Database Integration**: Full audit trails and case management
+- **Direct ElevenLabs Integration**: No N8N dependency required
+- **Multiple Trigger Types**: Keyword, time-based, manual, and conversation-end triggers
+- **Real-time Processing**: Instant ACK generation and injection
+- **Conversation Monitoring**: Advanced state management and tracking
+- **Comprehensive Logging**: Full audit trails and database integration
 
-### Tracking Code System
+### Trigger Types
 
-#### Format: YYMMDDXXXX
-- **YY**: Year (e.g., 25 for 2025)
-- **MM**: Month (e.g., 01 for January)
-- **DD**: Day (e.g., 27 for 27th)
-- **XXXX**: Random 4-digit number
+1. **Keyword Triggers**
+   - "confirmation number", "reference code", "receipt number"
+   - Custom keywords: "backfeed", "employee feedback"
+   - Intelligent keyword detection in user messages
 
-Example: `2501274589` = January 27, 2025 + random 4589
+2. **Time-based Triggers**
+   - Automatic ACK generation every X minutes
+   - Configurable intervals (default: 5 minutes)
+   - Only active for ongoing conversations
 
-#### Automatic Triggers
-- **Keyword Detection**: "tracking code", "confirmation number", "receipt"
-- **Request Phrases**: "can I get", "please provide", "I need"
-- **Completion Words**: "completed", "finished", "successful"
-- **Conversation Events**: Start, end, or manual triggers
+3. **Manual Triggers**
+   - Admin-initiated ACK generation
+   - API endpoint for manual triggering
+   - Support for specific conversation targeting
+
+4. **Conversation End Triggers**
+   - Automatic ACK when conversation completes
+   - Metadata-rich generation with conversation context
 
 ## 📋 Requirements
 
-- Node.js 18+
-- ElevenLabs API key and Agent ID
-- Netlify account for Edge Function deployment
-- Optional: Supabase for database integration
+- Node.js 18+ 
+- ElevenLabs API key
+- ElevenLabs Agent ID
+- Database (PostgreSQL recommended)
 
-## 🛠️ Quick Setup
+## 🛠️ Installation
 
-### 1. Clone and Install
-```bash
-git clone <your-repo>
-cd voice-ai-agent-system
-npm install
-```
+### 1. Environment Setup
 
-### 2. Environment Configuration
-Create `.env` file:
+Create a `.env` file:
+
 ```env
+# ElevenLabs Configuration
 ELEVENLABS_API_KEY=sk_your_api_key_here
-ELEVENLABS_WEBHOOK_SECRET=whsec_your_webhook_secret_here
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+ELEVENLABS_AGENT_ID=agent_01jydtj6avef99c1ne0eavf0ww
+ELEVENLABS_WEBHOOK_SECRET=your_webhook_secret
+
+# ACK Configuration
+ACK_ENABLE_TIME_BASED=true
+ACK_TIME_INTERVAL_MINUTES=5
+CUSTOM_KEYWORDS=backfeed,employee feedback,confirmation code
+
+# Server Configuration
+PORT=3001
+NODE_ENV=production
+
+# Database
+DATABASE_URL=postgresql://user:pass@localhost:5432/ackdb
 ```
 
-### 3. Deploy to Netlify
+### 2. Install Dependencies
 
-#### Option A: Git-based Deployment (Recommended)
-1. Push code to GitHub/GitLab/Bitbucket
-2. Connect repository to Netlify
-3. Set environment variables in Netlify dashboard
-4. Automatic deployment with `netlify.toml`
-
-#### Option B: Manual Deployment
 ```bash
-# Install Netlify CLI
-npm install -g netlify-cli
-
-# Login and deploy
-netlify login
-netlify deploy --prod
+npm install express cors crypto
 ```
 
-### 4. Configure ElevenLabs Webhook
-1. Go to ElevenLabs Conversational AI settings
-2. Add Post-call webhook
-3. URL: `https://your-site.netlify.app/api/elevenlabs-webhook`
-4. Copy webhook secret to Netlify environment variables
+### 3. Basic Implementation
 
-### 5. Test Integration
-```bash
-# Test locally
-netlify dev
+```javascript
+// server.js
+const express = require('express');
+const { createStandaloneACKWebhookHandler } = require('./lib/standalone-ack-generator');
 
-# Test deployed function
-curl -X POST https://your-site.netlify.app/api/elevenlabs-webhook \
-  -H "Content-Type: application/json" \
-  -d '{"event_type":"manual_tracking_request","conversation_id":"test_123"}'
+const app = express();
+app.use(express.json());
+
+// Initialize ACK handler
+const ackHandler = createStandaloneACKWebhookHandler({
+  apiKey: process.env.ELEVENLABS_API_KEY,
+  agentId: process.env.ELEVENLABS_AGENT_ID,
+  enableTimeBasedACK: true,
+  timeIntervalMinutes: 5,
+  customKeywords: ['backfeed', 'employee feedback', 'confirmation']
+});
+
+// Webhook endpoint for ElevenLabs
+app.post('/webhook/elevenlabs', async (req, res) => {
+  const result = await ackHandler.handleConversationWebhook(req.body);
+  res.json(result);
+});
+
+// Manual ACK generation
+app.post('/api/ack/manual', async (req, res) => {
+  const result = await ackHandler.handleManualACKRequest(req.body);
+  res.json(result);
+});
+
+// Statistics endpoint
+app.get('/api/ack/stats', (req, res) => {
+  res.json(ackHandler.getStats());
+});
+
+app.listen(3001, () => {
+  console.log('Standalone ACK Generator running on port 3001');
+});
 ```
 
-## 🏗️ Architecture
+## 🔧 Configuration Options
 
-### Simple & Efficient
-```
-ElevenLabs → Netlify Edge Function → Database (optional)
+### ACK Generator Config
+
+```javascript
+const config = {
+  // Required
+  apiKey: 'your-elevenlabs-api-key',
+  agentId: 'your-agent-id',
+  
+  // Optional
+  voiceId: 'EXAVITQu4vr4xnSDxMaL', // Default voice
+  enableTimeBasedACK: true,
+  timeIntervalMinutes: 5,
+  customKeywords: [
+    'backfeed',
+    'employee feedback', 
+    'confirmation code',
+    'reference number'
+  ],
+  webhookSecret: 'your-webhook-secret'
+};
 ```
 
-### Previous Complex Architecture (Removed)
-```
-ElevenLabs → N8N → Supabase Edge Function → Database
+### Voice Settings
+
+The system uses optimized voice settings for clear number pronunciation:
+
+```javascript
+voiceSettings: {
+  stability: 0.8,        // Higher stability for numbers
+  similarity_boost: 0.7, // Clear pronunciation
+  style: 0.1,           // Neutral style
+  use_speaker_boost: true
+}
 ```
 
 ## 📡 API Endpoints
 
 ### Webhook Endpoint
 ```
-POST /api/elevenlabs-webhook
+POST /webhook/elevenlabs
 Content-Type: application/json
 
 {
   "event_type": "conversation.user_message",
   "conversation_id": "conv_123",
-  "user_message": "I need a tracking code",
-  "agent_id": "agent_456"
+  "user_message": "I need a confirmation number",
+  "user_id": "user_456"
 }
 ```
 
-### Response Format
-```json
+### Manual ACK Generation
+```
+POST /api/ack/manual
+Content-Type: application/json
+
 {
-  "success": true,
-  "tracking_data": {
-    "trackingCode": "2501274589",
-    "conversationId": "conv_123",
-    "timestamp": "2025-01-27T12:00:00Z",
-    "status": "injected",
-    "triggerType": "keyword",
-    "spokenText": [
-      "Your tracking code is: 2, 5, 0, 1, 2, 7, 4, 5, 8, 9. Please write this down.",
-      "I'll repeat that in groups: 250127, 4589.",
-      "Let me spell that out slowly: 2 pause 5 pause 0 pause 1 pause 2 pause 7 pause 4 pause 5 pause 8 pause 9.",
-      "To confirm, your tracking code is 2501274589. Please keep this for your records."
-    ]
-  }
+  "conversationId": "conv_123",
+  "userId": "user_456"
+}
+
+Response:
+{
+  "ackNumber": "1234567890",
+  "conversationId": "conv_123",
+  "timestamp": "2025-01-01T12:00:00Z",
+  "status": "injected",
+  "triggerType": "manual",
+  "spokenText": ["Your confirmation number is: 1, 2, 3, 4, 5, 6, 7, 8, 9, 0..."]
 }
 ```
 
-## 🎯 Key Benefits
+### Statistics
+```
+GET /api/ack/stats
 
-### Performance
-- **Sub-100ms Response Time**: Edge computing for ultra-low latency
-- **Zero Cold Starts**: Always-ready edge functions
-- **Global Distribution**: 100+ edge locations worldwide
-- **99.9% Uptime SLA**: Enterprise-grade reliability
-
-### Simplicity
-- **No Dependencies**: Direct ElevenLabs integration
-- **Git-based Deployment**: Automatic builds and deployments
-- **Built-in Monitoring**: Comprehensive logs and analytics
-- **Environment Management**: Secure secret handling
-
-### Cost Effectiveness
-- **Generous Free Tier**: 100,000 requests/month free
-- **Pay-per-Request**: No idle server costs
-- **No Infrastructure Management**: Fully serverless
-- **Automatic Scaling**: Handle any traffic volume
-
-## 🔧 Configuration Options
-
-### Netlify Edge Function
-```typescript
-// netlify/edge-functions/elevenlabs-webhook.ts
-export default async function handler(request: Request): Promise<Response> {
-  // Webhook processing logic
-  // Tracking code generation
-  // ElevenLabs integration
+Response:
+{
+  "totalConversations": 45,
+  "activeConversations": 12,
+  "totalACKsGenerated": 89,
+  "averageACKsPerConversation": 1.98
 }
 ```
 
-### Environment Variables
-```bash
-# Required
-ELEVENLABS_API_KEY=sk_your_key
-ELEVENLABS_WEBHOOK_SECRET=whsec_secret
+## 🔄 Event Flow
 
-# Optional
-SUPABASE_URL=https://project.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=service_key
-```
+1. **Conversation Start**: System begins monitoring conversation
+2. **Trigger Detection**: Keywords, time intervals, or manual triggers detected
+3. **ACK Generation**: Unique 10-digit number generated
+4. **Voice Synthesis**: Multiple spoken formats created for clarity
+5. **Injection**: Messages injected into live conversation
+6. **Logging**: Comprehensive audit trail stored in database
 
-### Netlify Configuration
-```toml
-# netlify.toml
-[build]
-  command = "npm run build"
-  edge_functions = "netlify/edge-functions"
+## 📊 Monitoring & Analytics
 
-[[edge_functions]]
-  function = "elevenlabs-webhook"
-  path = "/api/elevenlabs-webhook"
-```
+### Real-time Metrics
+- Total conversations tracked
+- Active conversation count
+- ACK generation success rate
+- Average ACKs per conversation
+- Trigger type distribution
+- Response time monitoring
 
-## 🧪 Testing
-
-### Local Development
-```bash
-# Run Netlify dev server
-netlify dev
-
-# Function available at:
-# http://localhost:8888/api/elevenlabs-webhook
-```
-
-### Production Testing
-```bash
-# Test keyword trigger
-curl -X POST https://your-site.netlify.app/api/elevenlabs-webhook \
-  -H "Content-Type: application/json" \
-  -d '{
-    "event_type": "conversation.user_message",
-    "conversation_id": "test_conv",
-    "user_message": "I need a tracking code",
-    "agent_id": "agent_123"
-  }'
-
-# Test conversation end
-curl -X POST https://your-site.netlify.app/api/elevenlabs-webhook \
-  -H "Content-Type: application/json" \
-  -d '{
-    "event_type": "conversation.ended",
-    "conversation_id": "test_conv",
-    "agent_id": "agent_123"
-  }'
-```
-
-## 📊 Monitoring
-
-### Netlify Dashboard
-- Function invocations and performance
-- Real-time logs and errors
-- Traffic analytics and metrics
-- Environment variable management
-
-### ElevenLabs Integration
-- Conversation completion rates
-- Tracking code injection success
-- Voice synthesis quality metrics
-- User interaction patterns
-
-## 🔒 Security
-
-### Webhook Verification
-- Signature validation with secret key
-- Request origin verification
-- Rate limiting and DDoS protection
-- Secure environment variable storage
-
-### Data Protection
-- No sensitive data in logs
-- Encrypted data transmission
-- Minimal data retention
-- GDPR compliance ready
+### Audit & Compliance
+- Comprehensive generation logs
+- Database audit trails
+- Error tracking and reporting
+- Performance analytics
+- Conversation state history
 
 ## 🚀 Deployment Options
 
-### Netlify (Recommended)
-- Git-based automatic deployment
-- Global edge function distribution
-- Built-in monitoring and analytics
-- Generous free tier
+### Standalone Server
+```bash
+npm start
+```
 
-### Alternative Platforms
-- Vercel Edge Functions
-- Cloudflare Workers
-- AWS Lambda@Edge
-- Azure Static Web Apps
+### Docker
+```bash
+docker-compose up
+```
+
+### Serverless (Vercel/AWS Lambda)
+```bash
+vercel deploy
+```
+
+## 🔒 Security Features
+
+- Webhook signature verification
+- API key authentication
+- Rate limiting support
+- Secure conversation state management
+- Comprehensive audit logging
+
+## 🧪 Testing
+
+The system includes comprehensive testing capabilities:
+
+- Manual ACK generation testing
+- Keyword trigger simulation
+- Conversation end event testing
+- Real-time statistics monitoring
+- Error handling validation
+
+## 📈 Performance
+
+- Sub-second ACK generation
+- Real-time conversation monitoring
+- Automatic cleanup of inactive conversations
+- Optimized database queries
+- Efficient memory management
+
+## 🤝 Integration Examples
+
+### React Hook
+```javascript
+import { useACKGenerator } from './hooks/useACKGenerator';
+
+const MyComponent = () => {
+  const { ackGenerator, stats, generateManualACK } = useACKGenerator({
+    apiKey: process.env.REACT_APP_ELEVENLABS_API_KEY,
+    agentId: process.env.REACT_APP_AGENT_ID
+  });
+
+  const handleGenerateACK = async () => {
+    const result = await generateManualACK('conv_123');
+    console.log('ACK generated:', result.ackNumber);
+  };
+
+  return (
+    <div>
+      <button onClick={handleGenerateACK}>Generate ACK</button>
+      <p>Total ACKs: {stats?.totalACKsGenerated}</p>
+    </div>
+  );
+};
+```
+
+### Express Middleware
+```javascript
+const ackMiddleware = createStandaloneACKMiddleware({
+  apiKey: process.env.ELEVENLABS_API_KEY,
+  agentId: process.env.ELEVENLABS_AGENT_ID
+});
+
+app.use('/api/ack', ackMiddleware);
+```
 
 ## 📚 Documentation
 
-- [Netlify Edge Functions](https://docs.netlify.com/edge-functions/overview/)
-- [ElevenLabs Conversational AI](https://docs.elevenlabs.io/api-reference/conversational-ai)
-- [ElevenLabs Webhooks](https://docs.elevenlabs.io/api-reference/webhooks)
-- [Voice AI Agent System Guide](./docs/system-guide.md)
+- [ElevenLabs Conversational AI API](https://docs.elevenlabs.io/api-reference/conversational-ai)
+- [ElevenLabs Text-to-Speech API](https://docs.elevenlabs.io/api-reference/text-to-speech)
+- [System Architecture Guide](./docs/architecture.md)
+- [Deployment Guide](./docs/deployment.md)
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+1. **ACK not generating**: Check API key and agent ID configuration
+2. **Webhook not triggering**: Verify webhook URL and signature
+3. **Time-based ACKs not working**: Ensure `enableTimeBasedACK` is true
+4. **Database errors**: Check connection string and permissions
+
+### Debug Mode
+```javascript
+process.env.DEBUG = "ack:*";
+process.env.LOG_LEVEL = "debug";
+```
+
+## 📄 License
+
+MIT License - see LICENSE file for details.
 
 ## 🤝 Contributing
 
@@ -279,10 +336,13 @@ curl -X POST https://your-site.netlify.app/api/elevenlabs-webhook \
 4. Add tests
 5. Submit a pull request
 
-## 📄 License
+## 📞 Support
 
-MIT License - see LICENSE file for details.
+For support and questions:
+- Create an issue on GitHub
+- Check the documentation
+- Review the troubleshooting guide
 
 ---
 
-**Built with ❤️ for seamless voice AI integration and real-time tracking code generation.**
+**Built with ❤️ for seamless customer experience and employee feedback systems.**

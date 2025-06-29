@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Database, CheckCircle, XCircle, Clock, RefreshCw, AlertTriangle, Wifi, WifiOff, Shield, Lock } from 'lucide-react';
-import { runComprehensiveTests, quickTest } from '../lib/database-test-comprehensive';
+import { runDatabaseTests } from '../lib/database-test';
 import { dbService } from '../lib/supabase';
 
 interface DatabaseStats {
@@ -87,7 +87,7 @@ export const DatabaseStatus: React.FC = () => {
   const runTests = async () => {
     setIsRunningTests(true);
     try {
-      await runComprehensiveTests();
+      await runDatabaseTests();
     } catch (err: any) {
       setError(`Test execution failed: ${err.message}`);
     } finally {
@@ -301,50 +301,41 @@ export const DatabaseStatus: React.FC = () => {
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className="text-lg font-semibold text-slate-900">Database Test Suite</h3>
-              <p className="text-slate-600">Run comprehensive tests with realistic scenarios and dummy data</p>
+              <p className="text-slate-600">Run comprehensive tests to verify database functionality and RLS policies</p>
             </div>
-            <div className="flex gap-2">
-              <button
-                onClick={() => quickTest('auth')}
-                disabled={isRunningTests || connectionStatus !== 'connected'}
-                className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Quick Auth Test
-              </button>
-              <button
-                onClick={runTests}
-                disabled={isRunningTests || connectionStatus !== 'connected'}
-                className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isRunningTests ? (
-                  <>
-                    <RefreshCw className="w-4 h-4 animate-spin" />
-                    Running Tests...
-                  </>
-                ) : (
-                  <>
-                    <CheckCircle className="w-4 h-4" />
-                    Full Test Suite
-                  </>
-                )}
-              </button>
-            </div>
+            <button
+              onClick={runTests}
+              disabled={isRunningTests || connectionStatus !== 'connected'}
+              className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isRunningTests ? (
+                <>
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                  Running Tests...
+                </>
+              ) : (
+                <>
+                  <CheckCircle className="w-4 h-4" />
+                  Run Tests
+                </>
+              )}
+            </button>
           </div>
           
           <div className="text-sm text-slate-600">
-            <p className="mb-2">The comprehensive test suite will verify:</p>
+            <p className="mb-2">The test suite will verify:</p>
             <ul className="list-disc list-inside space-y-1 ml-4">
               <li>Database connection and authentication</li>
-              <li>HR authentication with dummy credentials</li>
-              <li>Case management with realistic test data</li>
-              <li>Two-way communication system</li>
+              <li>Table structure and constraints</li>
               <li>Row Level Security (RLS) policies</li>
-              <li>Data integrity and foreign key relationships</li>
-              <li>Performance testing with concurrent operations</li>
-              <li>Security testing and data sanitization</li>
+              <li>Data retrieval operations</li>
+              <li>Data insertion and updates</li>
+              <li>HR user authentication</li>
+              <li>Performance and latency</li>
+              <li>AI insights and transcript processing</li>
             </ul>
             <p className="mt-4 text-xs text-slate-500">
-              Check the browser console for detailed test results, performance metrics, and dummy credentials.
+              Check the browser console for detailed test results and performance metrics.
             </p>
           </div>
         </div>
@@ -378,40 +369,31 @@ export const DatabaseStatus: React.FC = () => {
         </div>
 
         {/* Sample Data Info */}
-        <div className="mt-8 bg-green-50 border border-green-200 rounded-lg p-4">
-          <h4 className="font-semibold text-green-900 mb-2">Comprehensive Test Data Available</h4>
+        <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <h4 className="font-semibold text-blue-900 mb-2">Sample Data Available</h4>
           <p className="text-blue-700 text-sm mb-3">
-            The database includes realistic dummy data for testing all features:
+            The database includes comprehensive sample data for testing all features:
           </p>
           <div className="grid md:grid-cols-2 gap-4 text-sm">
             <div>
-              <p className="font-medium text-green-800 mb-1">Test Confirmation Codes:</p>
-              <ul className="text-green-700 space-y-1">
-                <li>• AB7X9K2M4P (Safety - High Priority)</li>
-                <li>• CD8Y5N3Q1R (Harassment - Active)</li>
-                <li>• GH1A7R5U3V (Discrimination - Critical)</li>
-                <li>• EF9Z6P4S2T (Policy - Resolved)</li>
-                <li>• ST6F3W1Y8C (Today's harassment case)</li>
-                <li>• + 7 more realistic test scenarios</li>
+              <p className="font-medium text-blue-800 mb-1">Test Confirmation Codes:</p>
+              <ul className="text-blue-700 space-y-1">
+                <li>• AB7X9K2M4P (Safety - Investigating)</li>
+                <li>• CD8Y5N3Q1R (Harassment - Open)</li>
+                <li>• GH1A7R5U3V (Discrimination - Investigating)</li>
+                <li>• EF9Z6P4S2T (Policy - Closed)</li>
+                <li>• + 8 more realistic test cases</li>
               </ul>
             </div>
             <div>
-              <p className="font-medium text-green-800 mb-1">Dummy HR Login Credentials:</p>
-              <ul className="text-green-700 space-y-1">
-                <li>• hr@company.com / demo123</li>
-                <li>• admin@company.com / admin123</li>
-                <li>• test@company.com / StartNew25!</li>
-                <li>• manager@company.com / demo123</li>
-                <li>• specialist@company.com / demo123</li>
+              <p className="font-medium text-blue-800 mb-1">HR Login Credentials:</p>
+              <ul className="text-blue-700 space-y-1">
+                <li>• Email: hr@company.com</li>
+                <li>• Password: demo123 or StartNew25!</li>
+                <li>• (Works for all HR users)</li>
+                <li>• 5 HR users available for testing</li>
               </ul>
             </div>
-          </div>
-          <div className="mt-4 p-3 bg-white border border-green-300 rounded">
-            <p className="text-green-800 text-sm">
-              <strong>🎯 Testing Features:</strong> Full conversation transcripts, AI insights, 
-              two-way communication, case status tracking, realistic employee feedback scenarios, 
-              HR workflow management, and comprehensive security testing.
-            </p>
           </div>
         </div>
       </div>
