@@ -406,55 +406,57 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Show us your Love Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-slate-50 via-white to-slate-50">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+      {/* Show us your Love Section - Steve Jobs inspired with different background */}
+      <section className="py-24 px-4 bg-gradient-to-br from-gray-50 via-slate-50 to-gray-100 relative overflow-hidden">
+        {/* Subtle background pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(0,0,0,0.15) 1px, transparent 0)',
+            backgroundSize: '20px 20px'
+          }}></div>
+        </div>
+        
+        <div className="max-w-5xl mx-auto relative">
+          <div className="text-center mb-20">
+            <h2 className="text-5xl md:text-6xl font-light text-slate-900 mb-8 tracking-tight">
               Show us your 
-              <span className="bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent"> Love</span>
+              <span className="bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent font-medium"> Love</span>
             </h2>
-            
-            <p className="text-xl text-slate-600 mb-12 max-w-2xl mx-auto leading-relaxed">
-              BackFeed is featured in the Bolt Gallery! Help us climb to the top.
-            </p>
           </div>
 
-          {/* Gallery Showcase */}
-          <div className="relative mb-16">
+          {/* Gallery Showcase - Minimalist */}
+          <div className="relative mb-20">
             <a
               href="https://bolt.new/gallery/categories/community-social"
               target="_blank"
               rel="noopener noreferrer"
-              className="block relative overflow-hidden rounded-2xl shadow-2xl border border-slate-200 hover:shadow-3xl transition-all duration-300 transform hover:scale-[1.02]"
+              className="block relative overflow-hidden rounded-3xl shadow-2xl border border-white/50 hover:shadow-3xl transition-all duration-500 transform hover:scale-[1.01] bg-white/80 backdrop-blur-sm"
             >
-              {/* Background Image with Fade Effect */}
               <div className="relative">
                 <img 
                   src="/image.png" 
                   alt="Bolt Gallery Community & Social builds featuring BackFeed"
-                  className="w-full h-auto"
+                  className="w-full h-auto opacity-90"
                 />
                 
-                {/* Overlay to fade out everything except BackFeed */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-black/60"></div>
+                {/* Elegant overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40"></div>
                 
-                {/* Highlight BackFeed project */}
+                {/* Spotlight on BackFeed */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="relative">
-                    {/* Spotlight effect on BackFeed */}
-                    <div className="absolute -inset-12 bg-gradient-radial from-white/30 via-white/10 to-transparent rounded-full blur-2xl"></div>
+                    <div className="absolute -inset-16 bg-gradient-radial from-white/40 via-white/20 to-transparent rounded-full blur-3xl"></div>
                     
-                    {/* Arrow pointing to BackFeed */}
-                    <div className="absolute -top-20 left-1/2 transform -translate-x-1/2">
-                      <div className="flex flex-col items-center animate-bounce">
-                        <div className="bg-white/95 backdrop-blur-sm px-6 py-3 rounded-xl shadow-lg border border-white/30">
-                          <p className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                            <Heart className="w-5 h-5 text-red-500 fill-current" />
+                    {/* Clean indicator */}
+                    <div className="absolute -top-24 left-1/2 transform -translate-x-1/2">
+                      <div className="flex flex-col items-center animate-pulse">
+                        <div className="bg-white/95 backdrop-blur-md px-8 py-4 rounded-2xl shadow-xl border border-white/40">
+                          <p className="text-xl font-medium text-slate-900 flex items-center gap-3">
+                            <Heart className="w-6 h-6 text-red-500 fill-current" />
                             BackFeed
                           </p>
                         </div>
-                        <div className="w-0 h-0 border-l-6 border-r-6 border-t-6 border-transparent border-t-white/95 mt-2"></div>
+                        <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-white/95 mt-3"></div>
                       </div>
                     </div>
                   </div>
@@ -463,23 +465,20 @@ export const HomePage: React.FC = () => {
             </a>
           </div>
 
-          {/* Steve Jobs-inspired 1-2-3 Steps */}
-          <div className="relative mb-16">
-            {/* Connection Lines */}
-            <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-slate-300 to-transparent transform -translate-y-1/2 hidden md:block"></div>
-            
-            <div className="grid md:grid-cols-3 gap-8 relative">
+          {/* Steve Jobs-inspired 1-2-3 Steps - Ultra Clean */}
+          <div className="relative mb-20">
+            <div className="grid md:grid-cols-3 gap-12 relative">
               {/* Step 1 */}
               <a
                 href="https://bolt.new/gallery/categories/community-social"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group text-center p-8 bg-white rounded-2xl border border-slate-200 hover:border-red-300 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-2"
+                className="group text-center p-10 bg-white/70 backdrop-blur-sm rounded-3xl border border-white/60 hover:bg-white/90 transition-all duration-500 hover:shadow-2xl transform hover:-translate-y-3"
               >
-                <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <span className="text-3xl font-bold text-white">1</span>
+                <div className="w-20 h-20 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-8 group-hover:scale-110 transition-transform duration-500 shadow-lg">
+                  <span className="text-4xl font-light text-white">1</span>
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3">Visit Gallery</h3>
+                <h3 className="text-2xl font-light text-slate-900 mb-2">Visit Gallery</h3>
               </a>
 
               {/* Step 2 */}
@@ -487,13 +486,13 @@ export const HomePage: React.FC = () => {
                 href="https://bolt.new/gallery/categories/community-social"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group text-center p-8 bg-white rounded-2xl border border-slate-200 hover:border-red-300 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-2"
+                className="group text-center p-10 bg-white/70 backdrop-blur-sm rounded-3xl border border-white/60 hover:bg-white/90 transition-all duration-500 hover:shadow-2xl transform hover:-translate-y-3"
                 style={{ animationDelay: '0.1s' }}
               >
-                <div className="w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <span className="text-3xl font-bold text-white">2</span>
+                <div className="w-20 h-20 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-8 group-hover:scale-110 transition-transform duration-500 shadow-lg">
+                  <span className="text-4xl font-light text-white">2</span>
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3">Find BackFeed</h3>
+                <h3 className="text-2xl font-light text-slate-900 mb-2">Find BackFeed</h3>
               </a>
 
               {/* Step 3 */}
@@ -501,42 +500,47 @@ export const HomePage: React.FC = () => {
                 href="https://bolt.new/gallery/categories/community-social"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group text-center p-8 bg-white rounded-2xl border border-slate-200 hover:border-red-300 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-2"
+                className="group text-center p-10 bg-white/70 backdrop-blur-sm rounded-3xl border border-white/60 hover:bg-white/90 transition-all duration-500 hover:shadow-2xl transform hover:-translate-y-3"
                 style={{ animationDelay: '0.2s' }}
               >
-                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <Heart className="w-8 h-8 text-white fill-current" />
+                <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-8 group-hover:scale-110 transition-transform duration-500 shadow-lg">
+                  <Heart className="w-10 h-10 text-white fill-current" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3">Show Love</h3>
+                <h3 className="text-2xl font-light text-slate-900 mb-2">Show Love</h3>
               </a>
             </div>
           </div>
 
-          {/* CTA Button */}
+          {/* Minimalist CTA */}
           <div className="text-center">
             <a
               href="https://bolt.new/gallery/categories/community-social"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-12 py-5 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-2xl font-bold text-xl hover:from-red-600 hover:to-pink-600 transform hover:scale-105 transition-all duration-200 shadow-xl hover:shadow-2xl"
+              className="inline-flex items-center gap-4 px-16 py-6 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-full font-medium text-xl hover:from-red-600 hover:to-pink-600 transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-3xl"
             >
-              <Heart className="w-7 h-7 fill-current" />
+              <Heart className="w-8 h-8 fill-current" />
               Show BackFeed Some Love
               <ExternalLink className="w-6 h-6" />
             </a>
             
-            <div className="mt-8 flex items-center justify-center gap-8 text-sm text-slate-500">
-              <div className="flex items-center gap-2">
-                <ThumbsUp className="w-4 h-4 text-blue-500" />
+            {/* Clean status indicators */}
+            <div className="mt-12 flex items-center justify-center gap-12 text-slate-600">
+              <div className="flex items-center gap-3 text-lg font-light">
+                <ThumbsUp className="w-5 h-5 text-blue-500" />
                 <span>Help us reach #1</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Award className="w-4 h-4 text-yellow-500" />
+              <div className="flex items-center gap-3 text-lg font-light">
+                <Award className="w-5 h-5 text-yellow-500" />
                 <span>Community favorite</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Users className="w-4 h-4 text-green-500" />
+              <div className="flex items-center gap-3 text-lg font-light">
+                <Users className="w-5 h-5 text-green-500" />
                 <span>Built with love</span>
+              </div>
+              <div className="flex items-center gap-3 text-lg font-light">
+                <Heart className="w-5 h-5 text-red-500 fill-current" />
+                <span>To spread love</span>
               </div>
             </div>
           </div>
