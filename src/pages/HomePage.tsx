@@ -317,11 +317,11 @@ export const HomePage: React.FC = () => {
               <div className="flex items-center justify-center gap-2 mb-4">
                 <MessageSquare className="w-6 h-6 text-purple-600" />
                 <h3 className="text-xl font-semibold text-slate-900">
-                  Speak to Aegis AI
+                  First step of making the world better is Speaking UP !
                 </h3>
               </div>
               <p className="text-slate-600 mb-6">
-                Start your conversation with our advanced AI assistant for secure, anonymous feedback
+                Lets make our organization awesome..
               </p>
             </div>
 
@@ -368,7 +368,7 @@ export const HomePage: React.FC = () => {
                   <ExternalLink className="w-6 h-6 text-white" />
                 </div>
                 <p className="text-sm text-purple-700 mb-3">
-                  Prefer a full-screen experience?
+                  Speak to Aegis
                 </p>
                 <a
                   href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
