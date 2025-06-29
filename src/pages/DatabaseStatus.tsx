@@ -3,12 +3,13 @@ import { Database, CheckCircle, XCircle, Clock, RefreshCw, AlertTriangle, Wifi, 
 import { runDatabaseTests } from '../lib/database-test';
 import { dbService } from '../lib/supabase';
 
-interface DatabaseStats {
-  cases: number;
-  transcripts: number;
-  interactions: number;
-  insights: number;
-  hrUsers: number;
+interface MonitoringData {
+  status: 'healthy' | 'warning' | 'error';
+  responseTime: number;
+  uptime: number;
+  totalRequests: number;
+  errorRate: number;
+  lastUpdate: string;
 }
 
 interface HealthCheck {
@@ -24,7 +25,7 @@ export const DatabaseStatus: React.FC = () => {
   const [isRunningTests, setIsRunningTests] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState<'connected' | 'disconnected' | 'checking'>('checking');
   const [healthCheck, setHealthCheck] = useState<HealthCheck | null>(null);
-  const [stats, setStats] = useState<DatabaseStats | null>(null);
+  const [stats, setStats] = useState<any>(null);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -124,6 +125,34 @@ export const DatabaseStatus: React.FC = () => {
       <XCircle className="w-4 h-4 text-red-600" />
     );
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-slate-600">Loading HR Dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <AlertCircle className="w-12 h-12 text-red-600 mx-auto mb-4" />
+          <p className="text-red-600 mb-4">{error}</p>
+          <button
+            onClick={checkDatabaseStatus}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 py-8 px-4">
@@ -315,6 +344,7 @@ export const DatabaseStatus: React.FC = () => {
                 </>
               ) : (
                 <>
+                  
                   <CheckCircle className="w-4 h-4" />
                   Run Tests
                 </>
@@ -348,7 +378,7 @@ export const DatabaseStatus: React.FC = () => {
           </h4>
           <div className="grid md:grid-cols-2 gap-4 text-sm text-blue-800">
             <div>
-              <p className="font-medium mb-2">Current RLS Policies:</p>
+              <p className="font-medium mb-1">Current RLS Policies:</p>
               <ul className="space-y-1">
                 <li>• Public can create and read all records</li>
                 <li>• Authenticated users can update records</li>
@@ -357,7 +387,7 @@ export const DatabaseStatus: React.FC = () => {
               </ul>
             </div>
             <div>
-              <p className="font-medium mb-2">Security Features:</p>
+              <p className="font-medium mb-1">Security Features:</p>
               <ul className="space-y-1">
                 <li>• Row-level access control active</li>
                 <li>• Anonymous case creation allowed</li>
