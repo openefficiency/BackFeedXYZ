@@ -79,12 +79,6 @@ export const TrackCase: React.FC = () => {
     }
   };
 
-  const populateDemoCode = (code: string) => {
-    setConfirmationCode(code);
-    setError('');
-    setCaseData(null);
-  };
-
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'open': return 'text-blue-600 bg-blue-100';
@@ -112,8 +106,6 @@ export const TrackCase: React.FC = () => {
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString();
   };
-
-  const demoCodes = ['AB7X9K2M4P', 'CD8Y5N3Q1R', 'EF9Z6P4S2T', 'GH1A7R5U3V'];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-4 px-4">
@@ -278,27 +270,6 @@ export const TrackCase: React.FC = () => {
               </div>
             </div>
           )}
-
-          {/* Demo Codes - Mobile Optimized */}
-          <div className="mt-8 bg-blue-50/80 border border-blue-200/50 rounded-2xl p-6">
-            <p className="text-blue-700 text-sm mb-4 text-center font-medium">
-              💡 Try Demo Cases
-            </p>
-            <div className="grid grid-cols-2 gap-3">
-              {demoCodes.map((code) => (
-                <button
-                  key={code}
-                  onClick={() => populateDemoCode(code)}
-                  className="flex items-center justify-center p-3 bg-white/80 border border-blue-200 rounded-xl hover:bg-white transition-colors group"
-                >
-                  <span className="font-mono text-sm font-medium text-blue-800">{code}</span>
-                </button>
-              ))}
-            </div>
-            <p className="text-xs text-blue-600 mt-3 text-center">
-              Tap any code to try the tracking feature
-            </p>
-          </div>
         </div>
       </div>
     </div>
