@@ -10,24 +10,112 @@ export const HomePage: React.FC = () => {
     transcript: string;
   } | null>(null);
   const [error, setError] = useState('');
+  const [widgetLoaded, setWidgetLoaded] = useState(false);
 
-  // Listen for iframe messages from ElevenLabs
+  // Load ElevenLabs widget script and set up event listeners
   useEffect(() => {
-    const handleMessage = (event: MessageEvent) => {
-      // Check for ElevenLabs events
-      if (event.origin.includes('elevenlabs') && event.data) {
-        console.log('📨 Received ElevenLabs event:', event.data);
+    // Check if widget script is already loaded
+    const existingScript = document.querySelector('script[src*="elevenlabs"]');
+    if (existingScript) {
+      setWidgetLoaded(true);
+      setupWidgetEventListeners();
+      return;
+    }
+
+    // Create and load the ElevenLabs widget script
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
+    script.async = true;
+    script.type = 'text/javascript';
+    
+    script.onload = () => {
+      console.log('✅ ElevenLabs widget script loaded successfully');
+      setWidgetLoaded(true);
+      
+      // Set up widget event listeners after script loads
+      setTimeout(() => {
+        setupWidgetEventListeners();
+      }, 1000);
+    };
+    
+    script.onerror = () => {
+      console.error('❌ Failed to load ElevenLabs widget script');
+      setError('Failed to load ElevenLabs widget. Please refresh the page and try again.');
+    };
+    
+    document.head.appendChild(script);
+
+    return () => {
+      // Cleanup on unmount
+      if (document.head.contains(script)) {
+        document.head.removeChild(script);
+      }
+    };
+  }, []);
+
+  const setupWidgetEventListeners = () => {
+    // Listen for ElevenLabs widget events
+    const handleWidgetEvent = (event: MessageEvent) => {
+      console.log('📨 Received message event:', event);
+      
+      // Check for ElevenLabs widget events from various origins
+      if (event.origin.includes('elevenlabs') || 
+          event.origin.includes('widget') || 
+          event.origin === window.location.origin) {
         
-        if (event.data.type === 'conversation_ended' || 
-            event.data.type === 'conversation_complete') {
-          handleElevenLabsConversationComplete(event.data);
+        if (event.data && typeof event.data === 'object') {
+          const { type, payload } = event.data;
+          
+          console.log('Event type:', type, 'Payload:', payload);
+          
+          if (type === 'conversation_ended' || 
+              type === 'conversationEnded' || 
+              type === 'conversation_complete' ||
+              type === 'convai_conversation_ended') {
+            console.log('🎤 Conversation ended event detected');
+            handleElevenLabsConversationComplete(payload || event.data);
+          }
+          
+          // Also check for direct conversation data
+          if (event.data.conversation_id || event.data.transcript || event.data.messages) {
+            console.log('🎤 Direct conversation data detected');
+            handleElevenLabsConversationComplete(event.data);
+          }
         }
       }
     };
 
-    window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
-  }, []);
+    // Listen for all message events
+    window.addEventListener('message', handleWidgetEvent);
+
+    // Also listen for custom ElevenLabs events
+    const handleCustomEvent = (event: CustomEvent) => {
+      console.log('📨 Received custom event:', event);
+      if (event.detail) {
+        handleElevenLabsConversationComplete(event.detail);
+      }
+    };
+
+    // Listen for various ElevenLabs event types
+    const eventTypes = [
+      'elevenlabs:conversation:ended',
+      'elevenlabs:conversation:complete',
+      'convai:conversation:ended',
+      'convai:conversation:complete'
+    ];
+
+    eventTypes.forEach(eventType => {
+      window.addEventListener(eventType as any, handleCustomEvent);
+    });
+
+    // Cleanup function
+    return () => {
+      window.removeEventListener('message', handleWidgetEvent);
+      eventTypes.forEach(eventType => {
+        window.removeEventListener(eventType as any, handleCustomEvent);
+      });
+    };
+  };
 
   const handleElevenLabsConversationComplete = async (payload: any) => {
     try {
@@ -249,21 +337,48 @@ export const HomePage: React.FC = () => {
               </div>
             )}
 
-            {/* Direct Link to ElevenLabs Interface */}
-            <div className="bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-200 rounded-xl p-8">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Mic className="w-8 h-8 text-white" />
+            {/* ElevenLabs Widget */}
+            {widgetLoaded && (
+              <div className="mb-6">
+                <div className="w-full max-w-md mx-auto">
+                  <elevenlabs-convai 
+                    agent-id="agent_01jydtj6avef99c1ne0eavf0ww"
+                    style={{
+                      width: '100%',
+                      height: '400px',
+                      border: 'none',
+                      borderRadius: '12px'
+                    }}
+                  ></elevenlabs-convai>
                 </div>
+              </div>
+            )}
+
+            {/* Widget Loading State */}
+            {!widgetLoaded && (
+              <div className="flex justify-center items-center py-12 mb-6">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+              </div>
+            )}
+
+            {/* Alternative: Direct Link to ElevenLabs Interface */}
+            <div className="bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-200 rounded-xl p-6">
+              <div className="text-center">
+                <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <ExternalLink className="w-6 h-6 text-white" />
+                </div>
+                <p className="text-sm text-purple-700 mb-3">
+                  Prefer a full-screen experience?
+                </p>
                 <a
                   href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-semibold text-lg hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
                 >
-                  <MessageSquare className="w-6 h-6" />
-                  Start Conversation with Aegis AI
-                  <ArrowRight className="w-5 h-5" />
+                  <MessageSquare className="w-5 h-5" />
+                  Open in New Window
+                  <ArrowRight className="w-4 h-4" />
                 </a>
               </div>
             </div>
