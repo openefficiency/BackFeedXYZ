@@ -26,10 +26,6 @@ export const Footer: React.FC = () => {
                 <ExternalLink className="w-3 h-3" />
               </a>
             </div>
-            
-            <div className="text-xs text-slate-500">
-              Employee Feedback Platform
-            </div>
           </div>
         </div>
       </div>
