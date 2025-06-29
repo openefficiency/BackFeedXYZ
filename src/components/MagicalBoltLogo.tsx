@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Zap } from 'lucide-react';
 
 export const MagicalBoltLogo: React.FC = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -19,68 +20,34 @@ export const MagicalBoltLogo: React.FC = () => {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div className="fixed bottom-6 right-6 z-50">
       {/* Tooltip */}
       {showTooltip && (
-        <div className="absolute -top-10 -left-16 bg-black/90 text-white text-xs px-2 py-1 rounded shadow-lg whitespace-nowrap animate-in fade-in duration-200">
-          Click to visit Bolt.new
+        <div className="absolute -top-12 -left-8 bg-black/90 text-white text-xs px-3 py-2 rounded-lg shadow-lg whitespace-nowrap animate-in fade-in duration-200">
+          Visit Bolt.new
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1 w-2 h-2 bg-black/90 rotate-45"></div>
         </div>
       )}
 
-      {/* Official Bolt.new Logo */}
+      {/* Round White Badge */}
       <div
-        className={`cursor-pointer transition-all duration-200 ${
-          isHovered ? 'scale-105 opacity-100' : 'scale-100 opacity-90'
-        } hover:drop-shadow-lg`}
+        className={`cursor-pointer transition-all duration-300 ${
+          isHovered ? 'scale-110 shadow-xl' : 'scale-100 shadow-lg'
+        }`}
         onClick={handleClick}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {/* Using the official Bolt.new logo as SVG */}
-        <svg
-          width="120"
-          height="32"
-          viewBox="0 0 120 32"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="drop-shadow-sm"
-        >
-          {/* Background */}
-          <rect width="120" height="32" rx="16" fill="white" />
-          
+        <div className="w-16 h-16 bg-white rounded-full flex flex-col items-center justify-center border border-gray-200 hover:border-gray-300">
           {/* Bolt Icon */}
-          <path
-            d="M12 8L8 16H12L10 24L16 12H12L12 8Z"
-            fill="#3B82F6"
-            stroke="#3B82F6"
-            strokeWidth="0.5"
-          />
+          <Zap className="w-5 h-5 text-blue-600 mb-0.5" />
           
-          {/* "Built with" text */}
-          <text
-            x="26"
-            y="12"
-            fontSize="8"
-            fill="#6B7280"
-            fontFamily="system-ui, -apple-system, sans-serif"
-            fontWeight="400"
-          >
-            Built with
-          </text>
-          
-          {/* "Bolt.new" text */}
-          <text
-            x="26"
-            y="22"
-            fontSize="10"
-            fill="#111827"
-            fontFamily="system-ui, -apple-system, sans-serif"
-            fontWeight="600"
-          >
-            Bolt.new
-          </text>
-        </svg>
+          {/* Text */}
+          <div className="text-center">
+            <div className="text-[6px] text-gray-500 font-medium leading-none">Powered by</div>
+            <div className="text-[7px] text-gray-800 font-bold leading-none mt-0.5">Bolt.new</div>
+          </div>
+        </div>
       </div>
     </div>
   );
