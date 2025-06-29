@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Phone, Zap, MessageSquare, Settings, ExternalLink, AlertCircle, CheckCircle } from 'lucide-react';
+import { StandaloneACKDemo } from '../components/StandaloneACKDemo';
 
 export const StandaloneACKDemoPage: React.FC = () => {
   return (
@@ -16,11 +17,11 @@ export const StandaloneACKDemoPage: React.FC = () => {
 
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-slate-900 mb-4">
-            Standalone ACK Generation System
+            Standalone ElevenLabs ACK Generation System
           </h1>
           <p className="text-slate-600 max-w-3xl mx-auto">
-            Direct integration with ElevenLabs for real-time acknowledgment number generation. 
-            Features intelligent trigger detection, conversation monitoring, 
+            Direct integration with ElevenLabs for real-time acknowledgment number generation 
+            without N8N dependency. Features intelligent trigger detection, conversation monitoring, 
             and comprehensive audit trails.
           </p>
         </div>
@@ -31,9 +32,9 @@ export const StandaloneACKDemoPage: React.FC = () => {
             <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-6 h-6 text-green-600" />
             </div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-2">No Dependencies</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">No N8N Required</h3>
             <p className="text-slate-600 text-sm">
-              Direct integration eliminates the need for middleware, reducing complexity and dependencies.
+              Direct integration eliminates the need for N8N workflows, reducing complexity and dependencies.
             </p>
           </div>
           
@@ -59,89 +60,7 @@ export const StandaloneACKDemoPage: React.FC = () => {
         </div>
 
         {/* Main Demo Component */}
-        <div className="bg-white rounded-2xl shadow-xl border border-slate-200 p-8 mb-8">
-          <div className="text-center mb-8">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <Phone className="w-6 h-6 text-blue-600" />
-              <h3 className="text-xl font-semibold text-slate-900">
-                Standalone ACK Generator Demo
-              </h3>
-            </div>
-            <p className="text-slate-600">
-              This demo shows how the standalone ACK generation system works without external dependencies.
-            </p>
-          </div>
-
-          {/* Demo Content */}
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
-            <div className="flex items-center gap-2 mb-2">
-              <AlertCircle className="w-5 h-5 text-amber-600" />
-              <h3 className="font-semibold text-amber-900">Demo Mode</h3>
-            </div>
-            <p className="text-amber-800 text-sm">
-              This is a demonstration of the ACK generation system. In a production environment, 
-              you would need valid API credentials and active conversation IDs. 
-              The demo shows the workflow and interface without making actual API calls.
-            </p>
-          </div>
-
-          {/* ACK Generation Form */}
-          <div className="space-y-6">
-            <div className="bg-slate-50 rounded-lg p-4">
-              <h4 className="font-medium text-slate-900 mb-3">Generate ACK Number</h4>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Conversation ID:</label>
-                  <input
-                    type="text"
-                    className="w-full px-3 py-2 border border-slate-300 rounded text-sm"
-                    placeholder="conv_123456789"
-                    value="demo_conversation_123"
-                    readOnly
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Trigger Type:</label>
-                  <select
-                    className="w-full px-3 py-2 border border-slate-300 rounded text-sm"
-                    defaultValue="manual"
-                  >
-                    <option value="manual">Manual</option>
-                    <option value="keyword">Keyword</option>
-                    <option value="time">Time-based</option>
-                    <option value="event">Event-based</option>
-                  </select>
-                </div>
-              </div>
-              <button
-                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                Generate ACK
-              </button>
-            </div>
-
-            {/* Sample ACK Result */}
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <h4 className="font-medium text-green-900 mb-3">Sample ACK Result</h4>
-              <div className="bg-white rounded-lg p-4 border border-green-200">
-                <div className="text-2xl font-mono font-bold text-green-600 mb-2">2501274589</div>
-                <div className="text-sm text-green-700 space-y-1">
-                  <p><span className="font-medium">Generated:</span> January 27, 2025</p>
-                  <p><span className="font-medium">Trigger:</span> Manual</p>
-                  <p><span className="font-medium">Status:</span> Generated</p>
-                </div>
-              </div>
-              <div className="mt-3 text-sm text-green-700">
-                <p className="font-medium mb-1">Speech Format:</p>
-                <ul className="space-y-1">
-                  <li>• "Your confirmation number is: 2, 5, 0, 1, 2, 7, 4, 5, 8, 9. Please write this down."</li>
-                  <li>• "I'll repeat that in groups: 250127, 4589."</li>
-                  <li>• "Let me spell that out slowly: 2 pause 5 pause 0 pause 1 pause 2 pause 7 pause 4 pause 5 pause 8 pause 9."</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
+        <StandaloneACKDemo className="mb-8" />
 
         {/* Implementation Guide */}
         <div className="grid lg:grid-cols-2 gap-8 mb-8">
