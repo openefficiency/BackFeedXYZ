@@ -489,12 +489,28 @@ export const dbService = {
     }
   },
 
-  // Add transcript with offline simulation
-  async addTranscript(caseId: string, transcript: string, summary: string, sentimentScore: number, metadata?: any): Promise<any> {
+  // Enhanced addTranscript method with ElevenLabs support
+  async addTranscript(
+    caseId: string,
+    rawTranscript: string,
+    processedSummary: string,
+    sentimentScore: number,
+    elevenLabsData?: {
+      elevenlabsJobId?: string;
+      audioDuration?: number;
+      confidenceScore?: number;
+      language?: string;
+      processingStatus?: string;
+      errorMessage?: string;
+      elevenlabsMetadata?: any;
+      webhookReceivedAt?: string;
+      processedAt?: string;
+    }
+  ): Promise<any> {
     try {
       // Validate inputs
-      if (!caseId || !transcript) {
-        throw new Error('Case ID and transcript are required');
+      if (!caseId || !rawTranscript) {
+        throw new Error('Case ID and raw transcript are required');
       }
 
       if (sentimentScore < -1 || sentimentScore > 1) {
@@ -508,10 +524,21 @@ export const dbService = {
         return {
           id: `transcript_${Date.now()}`,
           case_id: caseId,
-          raw_transcript: transcript,
-          processed_summary: summary || transcript.substring(0, 200) + '...',
+          raw_transcript: rawTranscript,
+          processed_summary: processedSummary || rawTranscript.substring(0, 200) + '...',
           sentiment_score: sentimentScore,
-          created_at: new Date().toISOString()
+          created_at: new Date().toISOString(),
+          ...(elevenLabsData && {
+            elevenlabs_job_id: elevenLabsData.elevenlabsJobId,
+            audio_duration: elevenLabsData.audioDuration,
+            confidence_score: elevenLabsData.confidenceScore,
+            language: elevenLabsData.language,
+            processing_status: elevenLabsData.processingStatus,
+            error_message: elevenLabsData.errorMessage,
+            elevenlabs_metadata: elevenLabsData.elevenlabsMetadata,
+            webhook_received_at: elevenLabsData.webhookReceivedAt,
+            processed_at: elevenLabsData.processedAt,
+          })
         };
       }
 
@@ -519,9 +546,20 @@ export const dbService = {
         .from('transcripts')
         .insert({
           case_id: caseId,
-          raw_transcript: transcript,
-          processed_summary: summary || transcript.substring(0, 200) + '...',
-          sentiment_score: sentimentScore
+          raw_transcript: rawTranscript,
+          processed_summary: processedSummary || rawTranscript.substring(0, 200) + '...',
+          sentiment_score: sentimentScore,
+          ...(elevenLabsData && {
+            elevenlabs_job_id: elevenLabsData.elevenlabsJobId,
+            audio_duration: elevenLabsData.audioDuration,
+            confidence_score: elevenLabsData.confidenceScore,
+            language: elevenLabsData.language,
+            processing_status: elevenLabsData.processingStatus,
+            error_message: elevenLabsData.errorMessage,
+            elevenlabs_metadata: elevenLabsData.elevenlabsMetadata,
+            webhook_received_at: elevenLabsData.webhookReceivedAt,
+            processed_at: elevenLabsData.processedAt,
+          })
         })
         .select()
         .single();
@@ -536,10 +574,21 @@ export const dbService = {
         return {
           id: `transcript_${Date.now()}`,
           case_id: caseId,
-          raw_transcript: transcript,
-          processed_summary: summary || transcript.substring(0, 200) + '...',
+          raw_transcript: rawTranscript,
+          processed_summary: processedSummary || rawTranscript.substring(0, 200) + '...',
           sentiment_score: sentimentScore,
-          created_at: new Date().toISOString()
+          created_at: new Date().toISOString(),
+          ...(elevenLabsData && {
+            elevenlabs_job_id: elevenLabsData.elevenlabsJobId,
+            audio_duration: elevenLabsData.audioDuration,
+            confidence_score: elevenLabsData.confidenceScore,
+            language: elevenLabsData.language,
+            processing_status: elevenLabsData.processingStatus,
+            error_message: elevenLabsData.errorMessage,
+            elevenlabs_metadata: elevenLabsData.elevenlabsMetadata,
+            webhook_received_at: elevenLabsData.webhookReceivedAt,
+            processed_at: elevenLabsData.processedAt,
+          })
         };
       }
       
@@ -551,11 +600,207 @@ export const dbService = {
       return {
         id: `transcript_${Date.now()}`,
         case_id: caseId,
-        raw_transcript: transcript,
-        processed_summary: summary || transcript.substring(0, 200) + '...',
+        raw_transcript: rawTranscript,
+        processed_summary: processedSummary || rawTranscript.substring(0, 200) + '...',
         sentiment_score: sentimentScore,
-        created_at: new Date().toISOString()
+        created_at: new Date().toISOString(),
+        ...(elevenLabsData && {
+          elevenlabs_job_id: elevenLabsData.elevenlabsJobId,
+          audio_duration: elevenLabsData.audioDuration,
+          confidence_score: elevenLabsData.confidenceScore,
+          language: elevenLabsData.language,
+          processing_status: elevenLabsData.processingStatus,
+          error_message: elevenLabsData.errorMessage,
+          elevenlabs_metadata: elevenLabsData.elevenlabsMetadata,
+          webhook_received_at: elevenLabsData.webhookReceivedAt,
+          processed_at: elevenLabsData.processedAt,
+        })
       };
+    }
+  },
+
+  // New voice service methods
+  async getVoiceTranscripts(caseId: string): Promise<any[]> {
+    try {
+      if (isOfflineMode()) {
+        console.log('📦 Returning demo voice transcripts - offline mode');
+        return [];
+      }
+
+      console.log(`🎤 Fetching voice transcripts for case: ${caseId}`);
+      
+      const { data, error } = await supabase
+        .from('transcripts')
+        .select('*')
+        .eq('case_id', caseId)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.warn('⚠️ Error fetching voice transcripts:', error);
+        return [];
+      }
+      
+      console.log(`✅ Successfully fetched ${data?.length || 0} voice transcripts`);
+      return data || [];
+    } catch (error: any) {
+      console.warn('⚠️ Exception in getVoiceTranscripts:', error);
+      return [];
+    }
+  },
+
+  async getAllVoiceTranscripts(): Promise<any[]> {
+    try {
+      if (isOfflineMode()) {
+        console.log('📦 Returning demo voice transcripts - offline mode');
+        return [];
+      }
+
+      console.log('🎤 Fetching all voice transcripts...');
+      
+      const { data, error } = await supabase
+        .from('transcripts')
+        .select(`
+          *,
+          cases (
+            confirmation_code,
+            status,
+            category,
+            summary
+          )
+        `)
+        .not('elevenlabs_job_id', 'is', null)
+        .order('created_at', { ascending: false })
+        .limit(10);
+
+      if (error) {
+        console.warn('⚠️ Error fetching all voice transcripts:', error);
+        return [];
+      }
+      
+      console.log(`✅ Successfully fetched ${data?.length || 0} voice transcripts`);
+      return data || [];
+    } catch (error: any) {
+      console.warn('⚠️ Exception in getAllVoiceTranscripts:', error);
+      return [];
+    }
+  },
+
+  async getVoiceSummary(caseId: string): Promise<any> {
+    try {
+      if (isOfflineMode()) {
+        console.log('📦 Returning demo voice summary - offline mode');
+        return {
+          total_transcripts: 0,
+          completed_transcripts: 0,
+          processing_transcripts: 0,
+          failed_transcripts: 0,
+          total_audio_duration: 0,
+          avg_confidence: 0,
+          avg_sentiment: 0,
+          latest_transcript: null,
+          latest_summary: null,
+          latest_processing_status: null
+        };
+      }
+
+      console.log(`🎤 Fetching voice summary for case: ${caseId}`);
+      
+      const { data, error } = await supabase
+        .rpc('get_case_voice_summary', { input_case_id: caseId });
+
+      if (error) {
+        console.warn('⚠️ Error fetching voice summary:', error);
+        return null;
+      }
+      
+      console.log('✅ Successfully fetched voice summary');
+      return data[0];
+    } catch (error: any) {
+      console.warn('⚠️ Exception in getVoiceSummary:', error);
+      return null;
+    }
+  },
+
+  async getLimitedCases(): Promise<any[]> {
+    try {
+      if (isOfflineMode()) {
+        console.log('📦 Returning demo limited cases - offline mode');
+        return getDemoCases().slice(0, 20);
+      }
+
+      console.log('📥 Fetching limited cases...');
+      
+      const { data, error } = await supabase
+        .from('cases')
+        .select('id, confirmation_code, status, category, summary, created_at')
+        .order('created_at', { ascending: false })
+        .limit(20);
+
+      if (error) {
+        console.warn('⚠️ Error fetching limited cases:', error);
+        return getDemoCases().slice(0, 20);
+      }
+      
+      console.log(`✅ Successfully fetched ${data?.length || 0} limited cases`);
+      return data || [];
+    } catch (error: any) {
+      console.warn('⚠️ Exception in getLimitedCases:', error);
+      return getDemoCases().slice(0, 20);
+    }
+  },
+
+  subscribeToVoiceUpdates(caseId: string, callback: (payload: any) => void): any {
+    try {
+      if (isOfflineMode()) {
+        console.log('📦 Voice updates subscription not available in offline mode');
+        return null;
+      }
+
+      console.log(`🎤 Subscribing to voice updates for case: ${caseId}`);
+      
+      return supabase
+        .channel(`voice_transcripts:${caseId}`)
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'transcripts',
+            filter: `case_id=eq.${caseId}`
+          },
+          callback
+        )
+        .subscribe();
+    } catch (error: any) {
+      console.warn('⚠️ Exception in subscribeToVoiceUpdates:', error);
+      return null;
+    }
+  },
+
+  subscribeToCaseUpdates(callback: (payload: any) => void): any {
+    try {
+      if (isOfflineMode()) {
+        console.log('📦 Case updates subscription not available in offline mode');
+        return null;
+      }
+
+      console.log('📥 Subscribing to case updates...');
+      
+      return supabase
+        .channel('cases_updates')
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'cases'
+          },
+          callback
+        )
+        .subscribe();
+    } catch (error: any) {
+      console.warn('⚠️ Exception in subscribeToCaseUpdates:', error);
+      return null;
     }
   },
 
@@ -927,17 +1172,15 @@ function getDemoHRUsers(): any[] {
     {
       id: 'demo_hr_1',
       name: 'Sarah Johnson',
-      email: 'sarah.johnson@company.com',
+      email: 'hr@company.com',
       role: 'HR Manager',
-      department: 'Human Resources',
       created_at: new Date(Date.now() - 2592000000).toISOString()
     },
     {
       id: 'demo_hr_2',
       name: 'Michael Chen',
-      email: 'michael.chen@company.com',
+      email: 'admin@company.com',
       role: 'HR Director',
-      department: 'Human Resources',
       created_at: new Date(Date.now() - 2592000000).toISOString()
     }
   ];

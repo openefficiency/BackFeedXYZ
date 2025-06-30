@@ -99,7 +99,17 @@ export class ElevenLabsWebhookHandler {
         caseData.id,
         userFeedback,
         payload.summary || aiResult.summary,
-        this.calculateSentimentScore(payload.sentiment_analysis)
+        this.calculateSentimentScore(payload.sentiment_analysis),
+        {
+          elevenlabsJobId: payload.conversation_id, // Use conversation_id as job_id
+          audioDuration: payload.conversation_metadata?.duration_seconds,
+          confidenceScore: payload.sentiment_analysis?.confidence,
+          language: 'en', // Assuming English for now, or derive from payload if available
+          processingStatus: payload.status === 'completed' ? 'completed' : 'failed', // Map ElevenLabs status
+          elevenlabsMetadata: payload, // Store the full payload as metadata
+          webhookReceivedAt: new Date().toISOString(),
+          processedAt: new Date().toISOString(),
+        }
       );
 
       console.log('Transcript added successfully');
