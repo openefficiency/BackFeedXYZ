@@ -377,49 +377,49 @@ export const HomePage: React.FC = () => {
             Simply speak. We listen. Change happens.
           </p>
 
-          {/* AI Interface - Compact Side-by-Side Layout */}
-          <div className="bg-white/60 backdrop-blur-xl border border-white/40 rounded-3xl p-6 md:p-8 mb-12 shadow-2xl hover:shadow-3xl transition-all duration-700">
+          {/* AI Interface - Ultra Compact Side-by-Side Layout */}
+          <div className="bg-white/60 backdrop-blur-xl border border-white/40 rounded-3xl p-4 md:p-6 mb-12 shadow-2xl hover:shadow-3xl transition-all duration-700">
             
-            {/* Desktop: Side-by-Side Layout */}
-            <div className="hidden lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center">
-              {/* Left Side - Compact Text */}
-              <div className="text-left">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center">
-                    <Mic className="w-5 h-5 text-white" />
+            {/* Desktop: Ultra Compact Side-by-Side Layout */}
+            <div className="hidden lg:grid lg:grid-cols-[300px_1fr] lg:gap-6 lg:items-center">
+              {/* Left Side - Ultra Compact Text */}
+              <div className="text-left space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center">
+                    <Mic className="w-4 h-4 text-white" />
                   </div>
-                  <h3 className="text-xl font-light text-slate-900">
-                    Your moment to make a difference
+                  <h3 className="text-lg font-medium text-slate-900">
+                    Make a difference
                   </h3>
                 </div>
-                <p className="text-slate-600 font-light mb-6">
-                  Because every great workplace starts with honest conversation.
+                <p className="text-sm text-slate-600 font-light">
+                  Every great workplace starts with honest conversation.
                 </p>
 
-                {/* Alternative Link for Desktop */}
+                {/* Compact CTA Button */}
                 <a
                   href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-medium hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg text-sm font-medium hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-md"
                 >
-                  <Volume2 className="w-4 h-4" />
+                  <Volume2 className="w-3 h-3" />
                   Speak to Aegis
-                  <Mic className="w-4 h-4" />
+                  <Mic className="w-3 h-3" />
                 </a>
               </div>
 
-              {/* Right Side - Widget */}
+              {/* Right Side - Maximum Widget Space */}
               <div className="flex justify-center">
                 {error && (
-                  <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-2xl">
-                    <div className="flex items-start gap-3">
-                      <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
+                  <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl">
+                    <div className="flex items-start gap-2">
+                      <AlertTriangle className="w-4 h-4 text-red-600 mt-0.5 flex-shrink-0" />
                       <div>
-                        <p className="text-red-700 text-sm">{error}</p>
+                        <p className="text-red-700 text-xs">{error}</p>
                         <button
                           onClick={() => setError('')}
-                          className="mt-2 text-sm text-red-600 hover:text-red-800 underline"
+                          className="mt-1 text-xs text-red-600 hover:text-red-800 underline"
                         >
                           Dismiss
                         </button>
@@ -428,31 +428,31 @@ export const HomePage: React.FC = () => {
                   </div>
                 )}
 
-                {/* ElevenLabs Widget */}
+                {/* ElevenLabs Widget - Maximum Size */}
                 {widgetLoaded && !widgetError && networkStatus === 'online' ? (
-                  <div className="w-full max-w-sm">
+                  <div className="w-full max-w-lg">
                     <elevenlabs-convai 
                       agent-id="agent_01jydtj6avef99c1ne0eavf0ww"
                       style={{
                         width: '100%',
-                        height: '300px',
+                        height: '400px',
                         border: 'none',
                         borderRadius: '16px'
                       }}
                     ></elevenlabs-convai>
                   </div>
                 ) : (
-                  /* Widget Loading/Error State */
-                  <div className="w-full max-w-sm p-6 bg-blue-50 border border-blue-200 rounded-2xl">
+                  /* Widget Loading/Error State - Compact */
+                  <div className="w-full max-w-lg p-4 bg-blue-50 border border-blue-200 rounded-xl">
                     <div className="text-center">
-                      <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
                         {networkStatus === 'offline' ? (
-                          <WifiOff className="w-6 h-6 text-blue-600" />
+                          <WifiOff className="w-5 h-5 text-blue-600" />
                         ) : (
-                          <ExternalLink className="w-6 h-6 text-blue-600" />
+                          <ExternalLink className="w-5 h-5 text-blue-600" />
                         )}
                       </div>
-                      <h4 className="text-sm font-medium text-blue-900 mb-2">
+                      <h4 className="text-sm font-medium text-blue-900 mb-1">
                         {networkStatus === 'offline' ? 'Offline Mode' : 'Widget Loading'}
                       </h4>
                       <p className="text-blue-700 text-xs">
