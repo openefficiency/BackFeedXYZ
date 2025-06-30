@@ -344,7 +344,7 @@ export const HomePage: React.FC = () => {
 
       {/* Hero Section - Mobile First */}
       <section className="py-12 md:py-20 px-4">
-        <div className="max-w-lg md:max-w-4xl mx-auto text-center">
+        <div className="max-w-lg md:max-w-6xl mx-auto text-center">
           {/* Powered by Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-md border border-white/50 rounded-full text-sm font-medium mb-8 shadow-lg">
             <MessageSquare className="w-4 h-4 text-purple-600" />
@@ -377,104 +377,192 @@ export const HomePage: React.FC = () => {
             Simply speak. We listen. Change happens.
           </p>
 
-          {/* AI Interface - Apple-inspired Card */}
+          {/* AI Interface - Compact Side-by-Side Layout */}
           <div className="bg-white/60 backdrop-blur-xl border border-white/40 rounded-3xl p-6 md:p-8 mb-12 shadow-2xl hover:shadow-3xl transition-all duration-700">
-            <div className="text-center mb-6">
-              <div className="flex items-center justify-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center">
-                  <Mic className="w-6 h-6 text-white" />
+            
+            {/* Desktop: Side-by-Side Layout */}
+            <div className="hidden lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center">
+              {/* Left Side - Compact Text */}
+              <div className="text-left">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center">
+                    <Mic className="w-5 h-5 text-white" />
+                  </div>
+                  <h3 className="text-xl font-light text-slate-900">
+                    Your moment to make a difference
+                  </h3>
                 </div>
-                <h3 className="text-xl font-light text-slate-900">
-                  Your moment to make a difference
-                </h3>
+                <p className="text-slate-600 font-light mb-6">
+                  Because every great workplace starts with honest conversation.
+                </p>
+
+                {/* Alternative Link for Desktop */}
+                <a
+                  href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-medium hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
+                >
+                  <Volume2 className="w-4 h-4" />
+                  Speak to Aegis
+                  <Mic className="w-4 h-4" />
+                </a>
               </div>
-              <p className="text-slate-600 font-light">
-                Because every great workplace starts with honest conversation.
-              </p>
+
+              {/* Right Side - Widget */}
+              <div className="flex justify-center">
+                {error && (
+                  <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-2xl">
+                    <div className="flex items-start gap-3">
+                      <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="text-red-700 text-sm">{error}</p>
+                        <button
+                          onClick={() => setError('')}
+                          className="mt-2 text-sm text-red-600 hover:text-red-800 underline"
+                        >
+                          Dismiss
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* ElevenLabs Widget */}
+                {widgetLoaded && !widgetError && networkStatus === 'online' ? (
+                  <div className="w-full max-w-sm">
+                    <elevenlabs-convai 
+                      agent-id="agent_01jydtj6avef99c1ne0eavf0ww"
+                      style={{
+                        width: '100%',
+                        height: '300px',
+                        border: 'none',
+                        borderRadius: '16px'
+                      }}
+                    ></elevenlabs-convai>
+                  </div>
+                ) : (
+                  /* Widget Loading/Error State */
+                  <div className="w-full max-w-sm p-6 bg-blue-50 border border-blue-200 rounded-2xl">
+                    <div className="text-center">
+                      <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        {networkStatus === 'offline' ? (
+                          <WifiOff className="w-6 h-6 text-blue-600" />
+                        ) : (
+                          <ExternalLink className="w-6 h-6 text-blue-600" />
+                        )}
+                      </div>
+                      <h4 className="text-sm font-medium text-blue-900 mb-2">
+                        {networkStatus === 'offline' ? 'Offline Mode' : 'Widget Loading'}
+                      </h4>
+                      <p className="text-blue-700 text-xs">
+                        Use the button to continue
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
-            {error && (
-              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-2xl">
-                <div className="flex items-start gap-3">
-                  <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <p className="text-red-700 text-sm">{error}</p>
-                    <button
-                      onClick={() => setError('')}
-                      className="mt-2 text-sm text-red-600 hover:text-red-800 underline"
-                    >
-                      Dismiss
-                    </button>
+            {/* Mobile: Stacked Layout */}
+            <div className="lg:hidden">
+              <div className="text-center mb-6">
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center">
+                    <Mic className="w-6 h-6 text-white" />
                   </div>
+                  <h3 className="text-xl font-light text-slate-900">
+                    Your moment to make a difference
+                  </h3>
                 </div>
-              </div>
-            )}
-
-            {/* ElevenLabs Widget - Simple Natural Positioning */}
-            {widgetLoaded && !widgetError && networkStatus === 'online' && (
-              <div className="mb-6">
-                <div className="w-full max-w-md mx-auto">
-                  <elevenlabs-convai 
-                    agent-id="agent_01jydtj6avef99c1ne0eavf0ww"
-                    style={{
-                      width: '100%',
-                      height: '350px',
-                      border: 'none',
-                      borderRadius: '16px'
-                    }}
-                  ></elevenlabs-convai>
-                </div>
-              </div>
-            )}
-
-            {/* Widget Loading State */}
-            {!widgetLoaded && !widgetError && networkStatus === 'checking' && (
-              <div className="flex justify-center items-center py-12 mb-6">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
-              </div>
-            )}
-
-            {/* Widget Error State or Offline Mode */}
-            {(widgetError || networkStatus === 'offline') && (
-              <div className="mb-6 p-6 bg-blue-50 border border-blue-200 rounded-2xl">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    {networkStatus === 'offline' ? (
-                      <WifiOff className="w-8 h-8 text-blue-600" />
-                    ) : (
-                      <ExternalLink className="w-8 h-8 text-blue-600" />
-                    )}
-                  </div>
-                  <h4 className="text-lg font-medium text-blue-900 mb-2">
-                    {networkStatus === 'offline' ? 'Offline Mode Active' : 'Widget Temporarily Unavailable'}
-                  </h4>
-                  <p className="text-blue-700 text-sm mb-4">
-                    {networkStatus === 'offline' 
-                      ? 'All features are available using our direct link below.'
-                      : 'Please use the direct link below to continue with your feedback.'
-                    }
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* Alternative Link - Always Available */}
-            <div className="text-center">
-              <a
-                href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-2xl font-medium hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
-              >
-                <Volume2 className="w-5 h-5" />
-                Speak to Aegis
-                <Mic className="w-4 h-4" />
-              </a>
-              {(widgetError || networkStatus === 'offline') && (
-                <p className="text-xs text-slate-500 mt-2">
-                  Opens in new tab • Fully functional
+                <p className="text-slate-600 font-light">
+                  Because every great workplace starts with honest conversation.
                 </p>
+              </div>
+
+              {error && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-2xl">
+                  <div className="flex items-start gap-3">
+                    <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-red-700 text-sm">{error}</p>
+                      <button
+                        onClick={() => setError('')}
+                        className="mt-2 text-sm text-red-600 hover:text-red-800 underline"
+                      >
+                        Dismiss
+                      </button>
+                    </div>
+                  </div>
+                </div>
               )}
+
+              {/* ElevenLabs Widget - Mobile */}
+              {widgetLoaded && !widgetError && networkStatus === 'online' && (
+                <div className="mb-6">
+                  <div className="w-full max-w-md mx-auto">
+                    <elevenlabs-convai 
+                      agent-id="agent_01jydtj6avef99c1ne0eavf0ww"
+                      style={{
+                        width: '100%',
+                        height: '350px',
+                        border: 'none',
+                        borderRadius: '16px'
+                      }}
+                    ></elevenlabs-convai>
+                  </div>
+                </div>
+              )}
+
+              {/* Widget Loading State - Mobile */}
+              {!widgetLoaded && !widgetError && networkStatus === 'checking' && (
+                <div className="flex justify-center items-center py-12 mb-6">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+                </div>
+              )}
+
+              {/* Widget Error State or Offline Mode - Mobile */}
+              {(widgetError || networkStatus === 'offline') && (
+                <div className="mb-6 p-6 bg-blue-50 border border-blue-200 rounded-2xl">
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      {networkStatus === 'offline' ? (
+                        <WifiOff className="w-8 h-8 text-blue-600" />
+                      ) : (
+                        <ExternalLink className="w-8 h-8 text-blue-600" />
+                      )}
+                    </div>
+                    <h4 className="text-lg font-medium text-blue-900 mb-2">
+                      {networkStatus === 'offline' ? 'Offline Mode Active' : 'Widget Temporarily Unavailable'}
+                    </h4>
+                    <p className="text-blue-700 text-sm mb-4">
+                      {networkStatus === 'offline' 
+                        ? 'All features are available using our direct link below.'
+                        : 'Please use the direct link below to continue with your feedback.'
+                      }
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Alternative Link - Mobile */}
+              <div className="text-center">
+                <a
+                  href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-2xl font-medium hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
+                >
+                  <Volume2 className="w-5 h-5" />
+                  Speak to Aegis
+                  <Mic className="w-4 h-4" />
+                </a>
+                {(widgetError || networkStatus === 'offline') && (
+                  <p className="text-xs text-slate-500 mt-2">
+                    Opens in new tab • Fully functional
+                  </p>
+                )}
+              </div>
             </div>
           </div>
           
