@@ -6,22 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BackFeed - Employee Feedback System</title>
     
-    <!-- Preload ElevenLabs widget script -->
-    <link rel="preload" href="https://unpkg.com/@elevenlabs/convai-widget-embed" as="script">
-    
     <!-- Add microphone permissions meta tag -->
     <meta name="permissions-policy" content="microphone=*">
+    
+    <!-- Preconnect to external services for better performance -->
+    <link rel="preconnect" href="https://api.elevenlabs.io">
+    <link rel="preconnect" href="https://unpkg.com">
+    
+    <!-- Preload ElevenLabs widget script with error handling -->
+    <link rel="preload" href="https://unpkg.com/@elevenlabs/convai-widget-embed" as="script" crossorigin>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     
-    <!-- ElevenLabs widget script loaded globally -->
-    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
-    
-    <!-- Additional script to ensure widget functionality -->
+    <!-- Enhanced script loading with better error handling -->
     <script>
-      // Ensure microphone permissions are properly handled
+      // Enhanced error handling and network detection
       window.addEventListener('load', function() {
         // Check if getUserMedia is available
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -30,22 +31,138 @@
           console.warn('⚠️ getUserMedia is not available');
         }
         
-        // Listen for ElevenLabs widget events globally
-        window.addEventListener('message', function(event) {
-          console.log('Global message listener:', event);
-          
-          // Forward ElevenLabs events to the React app
-          if (event.data && typeof event.data === 'object') {
-            const { type } = event.data;
-            if (type && (type.includes('conversation') || type.includes('convai'))) {
-              console.log('ElevenLabs event detected:', event.data);
-              
-              // Dispatch a custom event that React can listen to
-              window.dispatchEvent(new CustomEvent('elevenlabs-event', {
-                detail: event.data
-              }));
+        // Enhanced network connectivity check
+        function checkNetworkConnectivity() {
+          return new Promise((resolve) => {
+            // Try multiple methods to detect connectivity
+            if (!navigator.onLine) {
+              console.log('🌐 Browser reports offline status');
+              resolve(false);
+              return;
             }
+            
+            // Test actual connectivity with a lightweight request
+            const img = new Image();
+            const timeout = setTimeout(() => {
+              console.log('🌐 Network connectivity test timed out');
+              resolve(false);
+            }, 5000);
+            
+            img.onload = () => {
+              clearTimeout(timeout);
+              console.log('✅ Network connectivity confirmed');
+              resolve(true);
+            };
+            
+            img.onerror = () => {
+              clearTimeout(timeout);
+              console.log('🌐 Network connectivity test failed');
+              resolve(false);
+            };
+            
+            // Use a small, reliable image for testing
+            img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+          });
+        }
+        
+        // Load ElevenLabs widget with enhanced error handling
+        async function loadElevenLabsWidget() {
+          try {
+            const isOnline = await checkNetworkConnectivity();
+            
+            if (!isOnline) {
+              console.log('🌐 Skipping ElevenLabs widget load - offline mode detected');
+              window.dispatchEvent(new CustomEvent('elevenlabs-offline'));
+              return;
+            }
+            
+            // Check if script is already loaded
+            if (document.querySelector('script[src*="elevenlabs"]')) {
+              console.log('✅ ElevenLabs script already loaded');
+              return;
+            }
+            
+            const script = document.createElement('script');
+            script.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
+            script.async = true;
+            script.type = 'text/javascript';
+            
+            // Set up timeout for script loading
+            const loadTimeout = setTimeout(() => {
+              console.warn('⏰ ElevenLabs widget script load timeout');
+              window.dispatchEvent(new CustomEvent('elevenlabs-timeout'));
+            }, 15000);
+            
+            script.onload = () => {
+              console.log('✅ ElevenLabs widget script loaded successfully');
+              clearTimeout(loadTimeout);
+              window.dispatchEvent(new CustomEvent('elevenlabs-loaded'));
+            };
+            
+            script.onerror = () => {
+              console.warn('⚠️ Failed to load ElevenLabs widget script');
+              clearTimeout(loadTimeout);
+              window.dispatchEvent(new CustomEvent('elevenlabs-error'));
+            };
+            
+            document.head.appendChild(script);
+            
+          } catch (error) {
+            console.warn('⚠️ Error in loadElevenLabsWidget:', error);
+            window.dispatchEvent(new CustomEvent('elevenlabs-error'));
           }
+        }
+        
+        // Load widget after a short delay to ensure DOM is ready
+        setTimeout(loadElevenLabsWidget, 1000);
+        
+        // Listen for ElevenLabs widget events globally with enhanced error handling
+        window.addEventListener('message', function(event) {
+          try {
+            // Only process events from trusted origins
+            const trustedOrigins = [
+              'https://elevenlabs.io',
+              'https://api.elevenlabs.io',
+              'https://widget.elevenlabs.io',
+              window.location.origin
+            ];
+            
+            const isTrustedOrigin = trustedOrigins.some(origin => 
+              event.origin === origin || event.origin.includes('elevenlabs')
+            );
+            
+            if (!isTrustedOrigin) {
+              return;
+            }
+            
+            console.log('Global message listener:', event);
+            
+            // Forward ElevenLabs events to the React app
+            if (event.data && typeof event.data === 'object') {
+              const { type } = event.data;
+              if (type && (type.includes('conversation') || type.includes('convai'))) {
+                console.log('ElevenLabs event detected:', event.data);
+                
+                // Dispatch a custom event that React can listen to
+                window.dispatchEvent(new CustomEvent('elevenlabs-event', {
+                  detail: event.data
+                }));
+              }
+            }
+          } catch (error) {
+            console.warn('⚠️ Error processing message event:', error);
+          }
+        });
+        
+        // Handle network status changes
+        window.addEventListener('online', function() {
+          console.log('🌐 Network connection restored');
+          window.dispatchEvent(new CustomEvent('network-online'));
+        });
+        
+        window.addEventListener('offline', function() {
+          console.log('🌐 Network connection lost');
+          window.dispatchEvent(new CustomEvent('network-offline'));
         });
       });
     </script>

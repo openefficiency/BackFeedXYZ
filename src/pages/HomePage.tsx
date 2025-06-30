@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Mic, Check, MessageSquare, ArrowRight, Volume2, ExternalLink, Zap, Star, Shield, Brain, Clock, Users, Sparkles, Heart, ThumbsUp, Award, Search } from 'lucide-react';
+import { Mic, Check, MessageSquare, ArrowRight, Volume2, ExternalLink, Zap, Star, Shield, Brain, Clock, Users, Sparkles, Heart, ThumbsUp, Award, Search, AlertTriangle, Wifi, WifiOff } from 'lucide-react';
 import { handleElevenLabsWebhook } from '../lib/elevenlabs-webhook';
 import { PilotWaitlistModal } from '../components/PilotWaitlistModal';
 
@@ -12,10 +12,42 @@ export const HomePage: React.FC = () => {
   } | null>(null);
   const [error, setError] = useState('');
   const [widgetLoaded, setWidgetLoaded] = useState(false);
+  const [widgetError, setWidgetError] = useState(false);
   const [showPilotModal, setShowPilotModal] = useState(false);
+  const [networkStatus, setNetworkStatus] = useState<'online' | 'offline' | 'checking'>('checking');
 
-  // Load ElevenLabs widget script and set up event listeners
+  // Check network connectivity
   useEffect(() => {
+    const checkNetworkStatus = async () => {
+      try {
+        // Try to fetch a small resource to test connectivity
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+        
+        await fetch('https://api.elevenlabs.io/v1/models', {
+          method: 'HEAD',
+          signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        setNetworkStatus('online');
+      } catch (error) {
+        console.log('🌐 Network connectivity limited - using offline mode');
+        setNetworkStatus('offline');
+      }
+    };
+
+    checkNetworkStatus();
+  }, []);
+
+  // Load ElevenLabs widget script with enhanced error handling
+  useEffect(() => {
+    if (networkStatus === 'offline') {
+      console.log('🌐 Skipping ElevenLabs widget load - offline mode');
+      setWidgetError(true);
+      return;
+    }
+
     // Check if widget script is already loaded
     const existingScript = document.querySelector('script[src*="elevenlabs"]');
     if (existingScript) {
@@ -24,15 +56,24 @@ export const HomePage: React.FC = () => {
       return;
     }
 
-    // Create and load the ElevenLabs widget script
+    // Create and load the ElevenLabs widget script with timeout
     const script = document.createElement('script');
     script.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
     script.async = true;
     script.type = 'text/javascript';
     
+    // Set up timeout for script loading
+    const loadTimeout = setTimeout(() => {
+      console.warn('⏰ ElevenLabs widget script load timeout');
+      setWidgetError(true);
+      setError('ElevenLabs widget is temporarily unavailable. Please use the direct link below or try again later.');
+    }, 15000); // 15 second timeout
+    
     script.onload = () => {
       console.log('✅ ElevenLabs widget script loaded successfully');
+      clearTimeout(loadTimeout);
       setWidgetLoaded(true);
+      setWidgetError(false);
       
       // Set up widget event listeners after script loads
       setTimeout(() => {
@@ -41,19 +82,22 @@ export const HomePage: React.FC = () => {
     };
     
     script.onerror = () => {
-      console.error('❌ Failed to load ElevenLabs widget script');
-      setError('Failed to load ElevenLabs widget. Please refresh the page and try again.');
+      console.warn('⚠️ Failed to load ElevenLabs widget script (expected in restricted environments)');
+      clearTimeout(loadTimeout);
+      setWidgetError(true);
+      setError('ElevenLabs widget is temporarily unavailable. Please use the direct link below to continue.');
     };
     
     document.head.appendChild(script);
 
     return () => {
+      clearTimeout(loadTimeout);
       // Cleanup on unmount
       if (document.head.contains(script)) {
         document.head.removeChild(script);
       }
     };
-  }, []);
+  }, [networkStatus]);
 
   const setupWidgetEventListeners = () => {
     // Listen for ElevenLabs widget events
@@ -206,6 +250,7 @@ export const HomePage: React.FC = () => {
   const resetWidget = () => {
     setResult(null);
     setError('');
+    setWidgetError(false);
   };
 
   // Show success page if conversation completed
@@ -285,6 +330,18 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      {/* Network Status Indicator */}
+      {networkStatus === 'offline' && (
+        <div className="bg-amber-50 border-b border-amber-200 px-4 py-3">
+          <div className="max-w-4xl mx-auto flex items-center gap-3 text-amber-800">
+            <WifiOff className="w-5 h-5" />
+            <span className="text-sm font-medium">
+              Limited connectivity detected. Using offline mode with full functionality.
+            </span>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section - Mobile First */}
       <section className="py-12 md:py-20 px-4">
         <div className="max-w-lg md:max-w-4xl mx-auto text-center">
@@ -338,18 +395,23 @@ export const HomePage: React.FC = () => {
 
             {error && (
               <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-2xl">
-                <p className="text-red-700 text-sm">{error}</p>
-                <button
-                  onClick={() => setError('')}
-                  className="mt-2 text-sm text-red-600 hover:text-red-800 underline"
-                >
-                  Dismiss
-                </button>
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-red-700 text-sm">{error}</p>
+                    <button
+                      onClick={() => setError('')}
+                      className="mt-2 text-sm text-red-600 hover:text-red-800 underline"
+                    >
+                      Dismiss
+                    </button>
+                  </div>
+                </div>
               </div>
             )}
 
             {/* ElevenLabs Widget */}
-            {widgetLoaded && (
+            {widgetLoaded && !widgetError && networkStatus === 'online' && (
               <div className="mb-6">
                 <div className="w-full max-w-md mx-auto">
                   <elevenlabs-convai 
@@ -366,13 +428,37 @@ export const HomePage: React.FC = () => {
             )}
 
             {/* Widget Loading State */}
-            {!widgetLoaded && (
+            {!widgetLoaded && !widgetError && networkStatus === 'checking' && (
               <div className="flex justify-center items-center py-12 mb-6">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
               </div>
             )}
 
-            {/* Alternative Link */}
+            {/* Widget Error State or Offline Mode */}
+            {(widgetError || networkStatus === 'offline') && (
+              <div className="mb-6 p-6 bg-blue-50 border border-blue-200 rounded-2xl">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    {networkStatus === 'offline' ? (
+                      <WifiOff className="w-8 h-8 text-blue-600" />
+                    ) : (
+                      <ExternalLink className="w-8 h-8 text-blue-600" />
+                    )}
+                  </div>
+                  <h4 className="text-lg font-medium text-blue-900 mb-2">
+                    {networkStatus === 'offline' ? 'Offline Mode Active' : 'Widget Temporarily Unavailable'}
+                  </h4>
+                  <p className="text-blue-700 text-sm mb-4">
+                    {networkStatus === 'offline' 
+                      ? 'All features are available using our direct link below.'
+                      : 'Please use the direct link below to continue with your feedback.'
+                    }
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Alternative Link - Always Available */}
             <div className="text-center">
               <a
                 href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
@@ -384,6 +470,11 @@ export const HomePage: React.FC = () => {
                 Speak to Aegis
                 <Mic className="w-4 h-4" />
               </a>
+              {(widgetError || networkStatus === 'offline') && (
+                <p className="text-xs text-slate-500 mt-2">
+                  Opens in new tab • Fully functional
+                </p>
+              )}
             </div>
           </div>
           
