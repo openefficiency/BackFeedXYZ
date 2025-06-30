@@ -6,6 +6,7 @@ import { HRDashboard } from './pages/HRDashboard';
 import { TrackCase } from './pages/TrackCase';
 import { HRLogin } from './pages/HRLogin';
 import { DatabaseStatus } from './pages/DatabaseStatus';
+import { VoiceDashboard } from './pages/VoiceDashboard';
 import { Footer } from './components/Footer';
 import { MagicalBoltLogo } from './components/MagicalBoltLogo';
 
@@ -21,6 +22,7 @@ function App() {
             <Route path="/hr-login" element={<HRLogin />} />
             <Route path="/hr-dashboard" element={<HRDashboard />} />
             <Route path="/database-status" element={<DatabaseStatus />} />
+            <Route path="/voice-dashboard" element={<VoiceDashboard />} />
           </Routes>
         </main>
         <Footer />

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Mic, Shield, Search, Menu, X, ExternalLink, Zap } from 'lucide-react';
+import { Mic, Shield, Search, Menu, X, ExternalLink, Zap, Database } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const location = useLocation();
@@ -53,6 +53,9 @@ export const Navbar: React.FC = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-2">
+            <NavLink to="/voice-dashboard" icon={<Database className="w-4 h-4" />}>
+              Voice Dashboard
+            </NavLink>
             <NavLink to="/track" icon={<Search className="w-4 h-4" />}>
               Track Case
             </NavLink>
@@ -74,6 +77,9 @@ export const Navbar: React.FC = () => {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-slate-200">
             <div className="flex flex-col gap-2">
+              <NavLink to="/voice-dashboard" icon={<Database className="w-4 h-4" />}>
+                Voice Dashboard
+              </NavLink>
               <NavLink to="/track" icon={<Search className="w-4 h-4" />}>
                 Track Case
               </NavLink>

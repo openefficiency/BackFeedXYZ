@@ -4,7 +4,8 @@ import {
   LogOut, Search, Filter, BarChart3, Clock, AlertCircle, 
   CheckCircle, MessageSquare, TrendingUp, Users, FileText,
   Calendar, Eye, ArrowUpRight, Shield, Lock, Tag, Menu, X,
-  ChevronLeft, ChevronRight, Send, Plus, Home
+  ChevronLeft, ChevronRight, Send, Plus, Home, Mic, Volume2,
+  Play, Pause, SkipForward, Database
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
 import { dbService } from '../lib/supabase';
@@ -23,6 +24,11 @@ interface Case {
     raw_transcript: string;
     processed_summary: string;
     sentiment_score: number;
+    elevenlabs_job_id?: string;
+    audio_duration?: number;
+    confidence_score?: number;
+    processing_status?: string;
+    created_at: string;
   }>;
   hr_interactions: Array<{
     id: string;
@@ -39,6 +45,19 @@ interface Case {
   }>;
 }
 
+interface VoiceSummary {
+  total_transcripts: number;
+  completed_transcripts: number;
+  processing_transcripts: number;
+  failed_transcripts: number;
+  total_audio_duration: number;
+  avg_confidence: number;
+  avg_sentiment: number;
+  latest_transcript: string;
+  latest_summary: string;
+  latest_processing_status: string;
+}
+
 export const HRDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [selectedCase, setSelectedCase] = useState<Case | null>(null);
@@ -51,6 +70,9 @@ export const HRDashboard: React.FC = () => {
   const [sendingMessage, setSendingMessage] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [mobileView, setMobileView] = useState<'cases' | 'chat' | 'analytics'>('cases');
+  const [voiceSummary, setVoiceSummary] = useState<VoiceSummary | null>(null);
+  const [voiceTranscripts, setVoiceTranscripts] = useState<any[]>([]);
+  const [loadingVoice, setLoadingVoice] = useState(false);
 
   useEffect(() => {
     // Check authentication
@@ -63,6 +85,39 @@ export const HRDashboard: React.FC = () => {
     loadCases();
   }, [navigate]);
 
+  useEffect(() => {
+    // Load voice data when a case is selected
+    if (selectedCase) {
+      loadVoiceData(selectedCase.id);
+      
+      // Subscribe to real-time voice updates
+      const subscription = dbService.subscribeToVoiceUpdates(
+        selectedCase.id,
+        (payload) => {
+          console.log('🔄 Real-time voice update received:', payload);
+          
+          if (payload.eventType === 'INSERT') {
+            setVoiceTranscripts(prev => [payload.new, ...prev]);
+            loadVoiceData(selectedCase.id); // Refresh summary
+          } else if (payload.eventType === 'UPDATE') {
+            setVoiceTranscripts(prev => 
+              prev.map(t => t.id === payload.new.id ? payload.new : t)
+            );
+            if (payload.new.processing_status === 'completed') {
+              loadVoiceData(selectedCase.id); // Refresh summary
+            }
+          }
+        }
+      );
+
+      return () => {
+        if (subscription) {
+          subscription.unsubscribe();
+        }
+      };
+    }
+  }, [selectedCase]);
+
   const loadCases = async () => {
     try {
       setLoading(true);
@@ -72,6 +127,24 @@ export const HRDashboard: React.FC = () => {
       setError(`Failed to load cases: ${err.message}`);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadVoiceData = async (caseId: string) => {
+    try {
+      setLoadingVoice(true);
+      
+      const [summary, transcripts] = await Promise.all([
+        dbService.getVoiceSummary(caseId),
+        dbService.getVoiceTranscripts(caseId)
+      ]);
+      
+      setVoiceSummary(summary);
+      setVoiceTranscripts(transcripts || []);
+    } catch (err: any) {
+      console.error('Failed to load voice data:', err);
+    } finally {
+      setLoadingVoice(false);
     }
   };
 
@@ -115,6 +188,15 @@ export const HRDashboard: React.FC = () => {
     if (severity >= 4) return 'text-red-600 bg-red-100';
     if (severity >= 3) return 'text-orange-600 bg-orange-100';
     return 'text-green-600 bg-green-100';
+  };
+
+  const getProcessingStatusColor = (status: string) => {
+    switch (status) {
+      case 'completed': return 'bg-green-100 text-green-800';
+      case 'processing': return 'bg-yellow-100 text-yellow-800';
+      case 'failed': return 'bg-red-100 text-red-800';
+      default: return 'bg-slate-100 text-slate-800';
+    }
   };
 
   const updateCaseStatus = async (caseId: string, newStatus: 'open' | 'investigating' | 'closed') => {
@@ -167,6 +249,11 @@ export const HRDashboard: React.FC = () => {
     );
   };
 
+  // Check if case has voice transcripts
+  const hasVoiceTranscripts = (case_: Case) => {
+    return case_.transcripts.some(transcript => transcript.elevenlabs_job_id);
+  };
+
   // Get AI metadata with enhanced information
   const getAIMetadata = (case_: Case) => {
     const aiInsight = case_.ai_insights.find(insight => 
@@ -213,7 +300,8 @@ export const HRDashboard: React.FC = () => {
       return acc;
     }, {} as Record<string, number>),
 
-    aiProcessedCases: cases.filter(hasAIProcessing).length
+    aiProcessedCases: cases.filter(hasAIProcessing).length,
+    voiceProcessedCases: cases.filter(hasVoiceTranscripts).length
   };
 
   const chartData = {
@@ -306,6 +394,14 @@ export const HRDashboard: React.FC = () => {
               </button>
             </div>
 
+            {/* Voice Processing Status */}
+            <div className="hidden md:flex items-center gap-2 px-3 py-2 bg-purple-50 border border-purple-200 rounded-lg">
+              <Mic className="w-4 h-4 text-purple-600" />
+              <span className="text-sm font-medium text-purple-700">
+                Voice: {analyticsData.voiceProcessedCases}
+              </span>
+            </div>
+
             {/* AI Processing Status */}
             <div className="hidden md:flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg">
               <MessageSquare className="w-4 h-4 text-blue-600" />
@@ -313,6 +409,15 @@ export const HRDashboard: React.FC = () => {
                 AI: {analyticsData.aiProcessedCases}
               </span>
             </div>
+
+            {/* Voice Dashboard Button */}
+            <button
+              onClick={() => navigate('/voice-dashboard')}
+              className="hidden md:flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all duration-200 shadow-sm hover:shadow-md"
+            >
+              <Database className="w-4 h-4" />
+              Voice Dashboard
+            </button>
 
             {/* Dashboard Button - Desktop */}
             <button
@@ -337,12 +442,31 @@ export const HRDashboard: React.FC = () => {
         {showMobileMenu && (
           <div className="md:hidden mt-4 pt-4 border-t border-slate-200">
             <div className="space-y-3">
+              <div className="flex items-center gap-2 px-3 py-2 bg-purple-50 border border-purple-200 rounded-lg">
+                <Mic className="w-4 h-4 text-purple-600" />
+                <span className="text-sm font-medium text-purple-700">
+                  Voice Processed: {analyticsData.voiceProcessedCases} cases
+                </span>
+              </div>
+              
               <div className="flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg">
                 <MessageSquare className="w-4 h-4 text-blue-600" />
                 <span className="text-sm font-medium text-blue-700">
                   AI Processed: {analyticsData.aiProcessedCases} cases
                 </span>
               </div>
+              
+              {/* Voice Dashboard Button - Mobile */}
+              <button
+                onClick={() => {
+                  navigate('/voice-dashboard');
+                  setShowMobileMenu(false);
+                }}
+                className="w-full flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all duration-200"
+              >
+                <Database className="w-5 h-5" />
+                Voice Dashboard
+              </button>
               
               {/* Dashboard Button - Mobile */}
               <button
@@ -392,6 +516,7 @@ export const HRDashboard: React.FC = () => {
                 const caseTitle = getCaseTitle(case_);
                 const keyTopics = getKeyTopics(case_);
                 const urgencyIndicators = getUrgencyIndicators(case_);
+                const hasVoice = hasVoiceTranscripts(case_);
                 
                 return (
                   <div
@@ -416,6 +541,12 @@ export const HRDashboard: React.FC = () => {
                           <div className="flex items-center gap-1 px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs">
                             <MessageSquare className="w-3 h-3" />
                             AI
+                          </div>
+                        )}
+                        {hasVoice && (
+                          <div className="flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">
+                            <Mic className="w-3 h-3" />
+                            Voice
                           </div>
                         )}
                         {urgencyIndicators.length > 0 && (
@@ -521,8 +652,103 @@ export const HRDashboard: React.FC = () => {
                       AI Processed
                     </span>
                   )}
+                  {hasVoiceTranscripts(selectedCase) && (
+                    <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
+                      <Mic className="w-4 h-4" />
+                      Voice Processed
+                    </span>
+                  )}
                 </div>
               </div>
+
+              {/* Voice Summary Section */}
+              {voiceSummary && voiceSummary.total_transcripts > 0 && (
+                <div className="bg-gradient-to-r from-purple-50 to-blue-50 border-b border-purple-200 p-4 md:p-6">
+                  <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                    <Volume2 className="w-5 h-5 text-purple-600" />
+                    Voice Analysis Summary
+                  </h3>
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-purple-600">{voiceSummary.total_transcripts}</div>
+                      <div className="text-purple-800">Total Recordings</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-green-600">{voiceSummary.completed_transcripts}</div>
+                      <div className="text-green-800">Completed</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-blue-600">{Math.round(voiceSummary.total_audio_duration / 60)}m</div>
+                      <div className="text-blue-800">Total Audio</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-orange-600">
+                        {voiceSummary.avg_confidence ? Math.round(voiceSummary.avg_confidence * 100) : 0}%
+                      </div>
+                      <div className="text-orange-800">Avg Confidence</div>
+                    </div>
+                    <div className="text-center">
+                      <div className={`text-2xl font-bold ${
+                        voiceSummary.avg_sentiment > 0.1 ? 'text-green-600' :
+                        voiceSummary.avg_sentiment < -0.1 ? 'text-red-600' :
+                        'text-gray-600'
+                      }`}>
+                        {voiceSummary.avg_sentiment > 0.1 ? '😊' :
+                         voiceSummary.avg_sentiment < -0.1 ? '😞' : '😐'}
+                      </div>
+                      <div className="text-slate-600">Sentiment</div>
+                    </div>
+                  </div>
+                  
+                  {voiceSummary.latest_summary && (
+                    <div className="mt-4 p-3 bg-white rounded-lg">
+                      <h4 className="font-medium mb-2">Latest Voice Summary:</h4>
+                      <p className="text-slate-700 text-sm">{voiceSummary.latest_summary}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Voice Transcripts Section */}
+              {voiceTranscripts.length > 0 && (
+                <div className="bg-white border-b border-slate-200 p-4 md:p-6">
+                  <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                    <Mic className="w-5 h-5 text-green-600" />
+                    Voice Transcripts ({voiceTranscripts.length})
+                  </h3>
+                  <div className="space-y-3 max-h-60 overflow-y-auto">
+                    {voiceTranscripts.map((transcript) => (
+                      <div key={transcript.id} className="border rounded-lg p-3">
+                        <div className="flex justify-between items-start mb-2">
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            getProcessingStatusColor(transcript.processing_status || 'pending')
+                          }`}>
+                            {transcript.processing_status || 'pending'}
+                          </span>
+                          {transcript.confidence_score && (
+                            <span className="text-xs text-slate-600">
+                              {Math.round(transcript.confidence_score * 100)}% confidence
+                            </span>
+                          )}
+                        </div>
+                        
+                        {transcript.processed_summary && (
+                          <p className="text-sm text-slate-700 mb-2">
+                            {transcript.processed_summary}
+                          </p>
+                        )}
+                        
+                        <div className="flex justify-between text-xs text-slate-500">
+                          <span>{new Date(transcript.created_at).toLocaleString()}</span>
+                          {transcript.audio_duration && (
+                            <span>{transcript.audio_duration}s</span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Chat Messages */}
               <div className="flex-1 p-4 md:p-6 overflow-y-auto">
@@ -596,7 +822,7 @@ export const HRDashboard: React.FC = () => {
           {(mobileView === 'analytics' || (!selectedCase && window.innerWidth >= 768)) && (
             <div className={`${mobileView === 'analytics' ? 'block' : 'hidden'} md:block p-4 md:p-6 space-y-6`}>
               {/* Stats Cards */}
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-6 gap-4 md:gap-6">
                 <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm">
                   <div className="flex items-center justify-between">
                     <div>
@@ -634,6 +860,16 @@ export const HRDashboard: React.FC = () => {
                       <p className="text-2xl font-bold text-slate-900">{analyticsData.casesByStatus.closed || 0}</p>
                     </div>
                     <CheckCircle className="w-6 h-6 md:w-8 md:h-8 text-green-600" />
+                  </div>
+                </div>
+
+                <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-slate-600 text-sm">Voice Processed</p>
+                      <p className="text-2xl font-bold text-slate-900">{analyticsData.voiceProcessedCases}</p>
+                    </div>
+                    <Mic className="w-6 h-6 md:w-8 md:h-8 text-green-600" />
                   </div>
                 </div>
 
@@ -702,35 +938,36 @@ export const HRDashboard: React.FC = () => {
                 </div>
               </div>
 
-              {/* Enhanced AI Technology Status - Hidden on mobile */}
-              <div className="hidden md:block bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-xl p-6">
+              {/* Enhanced Voice & AI Technology Status */}
+              <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-xl p-6">
                 <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
-                  <MessageSquare className="w-5 h-5 text-purple-600" />
-                  Enhanced AI Technology Processing Status
+                  <Volume2 className="w-5 h-5 text-purple-600" />
+                  Enhanced Voice & AI Technology Processing Status
                 </h3>
                 <div className="grid md:grid-cols-3 gap-4 text-sm">
                   <div className="text-purple-800">
-                    <p className="font-medium mb-1">Conversational AI Processing</p>
-                    <p>✓ {analyticsData.aiProcessedCases} enhanced conversations processed</p>
-                    <p>✓ Intelligent case title generation</p>
-                    <p>✓ Key topic extraction</p>
-                    <p>✓ Urgency indicator detection</p>
-                    <p>✓ Automatic HR routing enabled</p>
-                  </div>
-                  <div className="text-green-800">
-                    <p className="font-medium mb-1">Real-time Processing</p>
-                    <p>✓ Live text processing</p>
-                    <p>✓ Smart formatting enabled</p>
-                    <p>✓ Instant categorization</p>
-                    <p>✓ Real-time sentiment analysis</p>
+                    <p className="font-medium mb-1">Voice Processing (ElevenLabs)</p>
+                    <p>✓ {analyticsData.voiceProcessedCases} voice conversations processed</p>
+                    <p>✓ Real-time transcription enabled</p>
+                    <p>✓ Voice sentiment analysis</p>
+                    <p>✓ Audio quality assessment</p>
+                    <p>✓ Automatic case routing</p>
                   </div>
                   <div className="text-blue-800">
-                    <p className="font-medium mb-1">Enhanced Security & Analytics</p>
+                    <p className="font-medium mb-1">AI Processing & Analysis</p>
+                    <p>✓ {analyticsData.aiProcessedCases} AI-enhanced conversations</p>
+                    <p>✓ Intelligent case categorization</p>
+                    <p>✓ Priority assignment automation</p>
+                    <p>✓ Key topic extraction</p>
+                    <p>✓ Urgency indicator detection</p>
+                  </div>
+                  <div className="text-green-800">
+                    <p className="font-medium mb-1">Integration & Security</p>
                     <p>✓ End-to-end encryption</p>
+                    <p>✓ Real-time webhook processing</p>
                     <p>✓ Comprehensive audit trail</p>
                     <p>✓ Advanced case categorization</p>
                     <p>✓ Intelligent priority assignment</p>
-                    <p>✓ Real-time sentiment analysis</p>
                   </div>
                 </div>
               </div>
