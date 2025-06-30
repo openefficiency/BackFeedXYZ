@@ -12,8 +12,8 @@ export const HRLogin: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [copiedCredentials, setCopiedCredentials] = useState<{[key: string]: boolean}>({});
-  const [hiddenCredentials, setHiddenCredentials] = useState<{[key: string]: boolean}>({});
+  const [copied, setCopied] = useState(false);
+  const [hidden, setHidden] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,38 +39,33 @@ export const HRLogin: React.FC = () => {
     }));
   };
 
-  const copyCredentials = async (email: string, password: string, credentialKey: string) => {
+  const copyCredentials = async () => {
     try {
-      const credentials = `${email}\n${password}`;
+      const credentials = 'hr@company.com\ndemo123';
       await navigator.clipboard.writeText(credentials);
       
       // Auto-fill the form
       setFormData({
-        email: email,
-        password: password
+        email: 'hr@company.com',
+        password: 'demo123'
       });
       
       // Show copied state
-      setCopiedCredentials(prev => ({ ...prev, [credentialKey]: true }));
+      setCopied(true);
       
-      // Hide this credential set after 2 seconds
+      // Hide credential card after 2 seconds
       setTimeout(() => {
-        setHiddenCredentials(prev => ({ ...prev, [credentialKey]: true }));
+        setHidden(true);
       }, 2000);
       
       // Reset copied state after 3 seconds
       setTimeout(() => {
-        setCopiedCredentials(prev => ({ ...prev, [credentialKey]: false }));
+        setCopied(false);
       }, 3000);
     } catch (err) {
       console.error('Failed to copy credentials:', err);
     }
   };
-
-  const demoCredentials = [
-    { key: 'hr', email: 'hr@company.com', password: 'demo123', role: 'HR Manager' },
-    { key: 'admin', email: 'admin@company.com', password: 'admin123', role: 'HR Admin' }
-  ];
 
   return (
     <div className="min-h-screen py-8 px-4">
@@ -163,71 +158,68 @@ export const HRLogin: React.FC = () => {
           </form>
 
           {/* Demo Credentials Section */}
-          <div className="mt-8 p-6 bg-blue-50/80 border border-blue-200/50 rounded-2xl">
-            <h3 className="font-semibold text-blue-900 mb-3 text-center">Demo Credentials</h3>
-            <p className="text-sm text-blue-700 mb-4 text-center font-light">
-              Use these demo accounts to explore the HR dashboard and investigation workflow.
-            </p>
-            
-            <div className="space-y-4">
-              {demoCredentials.map((cred) => (
-                !hiddenCredentials[cred.key] && (
-                  <div key={cred.key} className="bg-white/80 border border-blue-200/50 rounded-xl p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-blue-800">{cred.role}</span>
-                      <span className="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded-full">
-                        {cred.role.split(' ')[1]}
-                      </span>
-                    </div>
-                    
-                    <div className="space-y-2 mb-3">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-blue-800">Email:</span>
-                        <span className="font-mono text-sm text-blue-800">{cred.email}</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-blue-800">Password:</span>
-                        <span className="font-mono text-sm text-blue-800">{cred.password}</span>
-                      </div>
-                    </div>
-
-                    <button
-                      onClick={() => copyCredentials(cred.email, cred.password, cred.key)}
-                      className="w-full flex items-center justify-center gap-2 p-3 bg-white/80 text-slate-700 border border-slate-200 rounded-xl hover:bg-white hover:shadow-md transition-all duration-200 transform hover:scale-[1.02]"
-                    >
-                      {copiedCredentials[cred.key] ? (
-                        <>
-                          <Check className="w-4 h-4 text-green-600" />
-                          <span className="text-green-700 font-medium">Copied & Auto-filled!</span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-4 h-4" />
-                          <span className="font-medium">Copy & Auto-fill Form</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-                )
-              ))}
-            </div>
-
-            {Object.values(hiddenCredentials).some(hidden => hidden) && (
-              <div className="mt-4 p-3 bg-green-50/80 border border-green-200/50 rounded-xl text-center">
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <Check className="w-5 h-5 text-green-600" />
-                  <span className="text-green-700 font-medium">Credentials copied successfully</span>
+          {!hidden && (
+            <div className="mt-8 p-6 bg-blue-50/80 border border-blue-200/50 rounded-2xl">
+              <h3 className="font-semibold text-blue-900 mb-3 text-center">Demo Credentials</h3>
+              <p className="text-sm text-blue-700 mb-4 text-center font-light">
+                Use this demo account to explore the HR dashboard and investigation workflow.
+              </p>
+              
+              <div className="bg-white/80 border border-blue-200/50 rounded-xl p-4 mb-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium text-blue-800">HR Manager</span>
+                  <span className="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded-full">
+                    Manager
+                  </span>
                 </div>
-                <p className="text-green-600 text-sm font-light">
-                  Form has been auto-filled. Click "Sign In to HR Portal" to continue.
-                </p>
-              </div>
-            )}
+                
+                <div className="space-y-2 mb-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-blue-800">Email:</span>
+                    <span className="font-mono text-sm text-blue-800">hr@company.com</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-blue-800">Password:</span>
+                    <span className="font-mono text-sm text-blue-800">demo123</span>
+                  </div>
+                </div>
 
-            <p className="text-xs text-blue-600 mt-3 text-center font-light">
-              Click any credential set to copy and auto-fill the login form
-            </p>
-          </div>
+                <button
+                  onClick={copyCredentials}
+                  className="w-full flex items-center justify-center gap-2 p-3 bg-white/80 text-slate-700 border border-slate-200 rounded-xl hover:bg-white hover:shadow-md transition-all duration-200 transform hover:scale-[1.02]"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="w-4 h-4 text-green-600" />
+                      <span className="text-green-700 font-medium">Copied & Auto-filled!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-4 h-4" />
+                      <span className="font-medium">Copy & Auto-fill Form</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              <p className="text-xs text-blue-600 text-center font-light">
+                Click to copy credentials and auto-fill the login form
+              </p>
+            </div>
+          )}
+
+          {/* Success State */}
+          {hidden && (
+            <div className="mt-8 p-4 bg-green-50/80 border border-green-200/50 rounded-2xl text-center">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <Check className="w-5 h-5 text-green-600" />
+                <span className="text-green-700 font-medium">Credentials copied successfully</span>
+              </div>
+              <p className="text-green-600 text-sm font-light">
+                Form has been auto-filled. Click "Sign In to HR Portal" to continue.
+              </p>
+            </div>
+          )}
 
           <div className="mt-6 text-center text-sm text-slate-500 font-light">
             This is a secure area for authorized HR personnel only.
