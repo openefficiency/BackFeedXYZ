@@ -477,15 +477,6 @@ export const HomePage: React.FC = () => {
               )}
             </div>
           </div>
-          
-          {/* Track Case Button */}
-          <Link
-            to="/track"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-white/80 backdrop-blur-md text-slate-700 rounded-2xl font-medium border border-white/50 hover:bg-white hover:shadow-lg transform hover:scale-105 transition-all duration-200"
-          >
-            <Search className="w-5 h-5" />
-            Track Your Case
-          </Link>
         </div>
       </section>
 
@@ -506,23 +497,30 @@ export const HomePage: React.FC = () => {
               className="block relative overflow-hidden rounded-3xl shadow-2xl border border-white/50 hover:shadow-3xl transition-all duration-500 transform hover:scale-[1.02] bg-white/80 backdrop-blur-sm"
             >
               <img 
-                src="/image.png" 
+                src="/image copy.png" 
                 alt="Bolt Gallery Community & Social builds featuring BackFeed"
                 className="w-full h-auto opacity-90"
               />
               
-              {/* Elegant overlay */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30"></div>
+              {/* Enhanced overlay to hide other projects */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-black/60"></div>
               
-              {/* BackFeed Spotlight */}
+              {/* BackFeed Spotlight - Enhanced */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="bg-white/95 backdrop-blur-md px-6 py-3 rounded-2xl shadow-xl border border-white/40 animate-pulse">
-                  <p className="text-lg font-medium text-slate-900 flex items-center gap-2">
-                    <Heart className="w-5 h-5 text-red-500 fill-current" />
-                    BackFeed
-                  </p>
+                <div className="bg-white/95 backdrop-blur-md px-8 py-4 rounded-3xl shadow-2xl border border-white/60 animate-pulse">
+                  <div className="flex items-center gap-3">
+                    <Heart className="w-6 h-6 text-red-500 fill-current" />
+                    <p className="text-2xl font-bold text-slate-900">BackFeed</p>
+                    <Heart className="w-6 h-6 text-red-500 fill-current" />
+                  </div>
+                  <p className="text-sm text-slate-600 mt-1 text-center">Featured in Bolt Gallery</p>
                 </div>
               </div>
+              
+              {/* Additional overlay to further hide other projects */}
+              <div className="absolute top-0 left-0 w-1/3 h-full bg-gradient-to-r from-black/80 to-transparent"></div>
+              <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-black/80 to-transparent"></div>
+              <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-black/60 to-transparent"></div>
             </a>
           </div>
 
