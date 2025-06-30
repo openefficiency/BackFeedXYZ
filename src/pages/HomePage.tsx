@@ -614,12 +614,10 @@ export const HomePage: React.FC = () => {
           <h2 className="text-4xl md:text-6xl font-extralight text-slate-900 mb-8 tracking-tight leading-tight">
             Ready to Share
             <br />
-            <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-light">Your Feedback?</span>
+            <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-light">Your Feedback</span>
+            <br />
+            <span className="text-slate-800 font-light">to your organization?</span>
           </h2>
-          
-          <p className="text-xl font-light text-slate-600 mb-12 leading-relaxed">
-            Join employees who trust BackFeed to share their feedback through natural AI conversations.
-          </p>
           
           <a
             href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
