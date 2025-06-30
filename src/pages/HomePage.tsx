@@ -595,9 +595,6 @@ export const HomePage: React.FC = () => {
             <h3 className="text-2xl md:text-3xl font-light text-slate-900 mb-6">
               Ready to Transform Your Organization?
             </h3>
-            <p className="text-lg font-light text-slate-600 mb-8 leading-relaxed">
-              Join the exclusive pilot program and be among the first to experience the future of employee engagement.
-            </p>
             
             <button
               onClick={() => setShowPilotModal(true)}
