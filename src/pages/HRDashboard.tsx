@@ -4,7 +4,7 @@ import {
   LogOut, Search, Filter, BarChart3, Clock, AlertCircle, 
   CheckCircle, MessageSquare, TrendingUp, Users, FileText,
   Calendar, Eye, ArrowUpRight, Shield, Lock, Tag, Menu, X,
-  ChevronLeft, ChevronRight, Send, Plus
+  ChevronLeft, ChevronRight, Send, Plus, Home
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
 import { dbService } from '../lib/supabase';
@@ -78,6 +78,11 @@ export const HRDashboard: React.FC = () => {
   const handleLogout = () => {
     localStorage.removeItem('hrAuth');
     navigate('/hr-login');
+  };
+
+  const goToDashboard = () => {
+    setSelectedCase(null);
+    setMobileView('analytics');
   };
 
   const filteredCases = cases.filter(case_ => {
@@ -308,6 +313,15 @@ export const HRDashboard: React.FC = () => {
                 AI: {analyticsData.aiProcessedCases}
               </span>
             </div>
+
+            {/* Dashboard Button - Desktop */}
+            <button
+              onClick={goToDashboard}
+              className="hidden md:flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-sm hover:shadow-md"
+            >
+              <BarChart3 className="w-4 h-4" />
+              Dashboard
+            </button>
             
             <button
               onClick={handleLogout}
@@ -322,13 +336,25 @@ export const HRDashboard: React.FC = () => {
         {/* Mobile Menu */}
         {showMobileMenu && (
           <div className="md:hidden mt-4 pt-4 border-t border-slate-200">
-            <div className="space-y-2">
+            <div className="space-y-3">
               <div className="flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg">
                 <MessageSquare className="w-4 h-4 text-blue-600" />
                 <span className="text-sm font-medium text-blue-700">
                   AI Processed: {analyticsData.aiProcessedCases} cases
                 </span>
               </div>
+              
+              {/* Dashboard Button - Mobile */}
+              <button
+                onClick={() => {
+                  goToDashboard();
+                  setShowMobileMenu(false);
+                }}
+                className="w-full flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200"
+              >
+                <BarChart3 className="w-5 h-5" />
+                Go to Dashboard
+              </button>
             </div>
           </div>
         )}
@@ -460,15 +486,25 @@ export const HRDashboard: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                  <select
-                    value={selectedCase.status}
-                    onChange={(e) => updateCaseStatus(selectedCase.id, e.target.value as any)}
-                    className="px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm"
-                  >
-                    <option value="open">Open</option>
-                    <option value="investigating">Investigating</option>
-                    <option value="closed">Closed</option>
-                  </select>
+                  <div className="flex items-center gap-3">
+                    {/* Dashboard Button in Chat Header - Desktop */}
+                    <button
+                      onClick={goToDashboard}
+                      className="hidden md:flex items-center gap-2 px-3 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors"
+                    >
+                      <Home className="w-4 h-4" />
+                      Dashboard
+                    </button>
+                    <select
+                      value={selectedCase.status}
+                      onChange={(e) => updateCaseStatus(selectedCase.id, e.target.value as any)}
+                      className="px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm"
+                    >
+                      <option value="open">Open</option>
+                      <option value="investigating">Investigating</option>
+                      <option value="closed">Closed</option>
+                    </select>
+                  </div>
                 </div>
                 
                 <div className="flex gap-2 flex-wrap">
