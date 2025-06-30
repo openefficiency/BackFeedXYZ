@@ -377,8 +377,8 @@ export const HomePage: React.FC = () => {
             Simply speak. We listen. Change happens.
           </p>
 
-          {/* AI Interface - Apple-inspired Card with Fixed Z-Index */}
-          <div className="bg-white/60 backdrop-blur-xl border border-white/40 rounded-3xl p-6 md:p-8 mb-12 shadow-2xl hover:shadow-3xl transition-all duration-700 relative z-10">
+          {/* AI Interface - Apple-inspired Card */}
+          <div className="bg-white/60 backdrop-blur-xl border border-white/40 rounded-3xl p-6 md:p-8 mb-12 shadow-2xl hover:shadow-3xl transition-all duration-700">
             <div className="text-center mb-6">
               <div className="flex items-center justify-center gap-3 mb-4">
                 <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center">
@@ -410,19 +410,17 @@ export const HomePage: React.FC = () => {
               </div>
             )}
 
-            {/* ElevenLabs Widget with Enhanced Z-Index */}
+            {/* ElevenLabs Widget */}
             {widgetLoaded && !widgetError && networkStatus === 'online' && (
-              <div className="mb-6 relative z-50">
-                <div className="w-full max-w-md mx-auto relative z-50">
+              <div className="mb-6">
+                <div className="w-full max-w-md mx-auto">
                   <elevenlabs-convai 
                     agent-id="agent_01jydtj6avef99c1ne0eavf0ww"
                     style={{
                       width: '100%',
                       height: '350px',
                       border: 'none',
-                      borderRadius: '16px',
-                      position: 'relative',
-                      zIndex: '9999'
+                      borderRadius: '16px'
                     }}
                   ></elevenlabs-convai>
                 </div>
@@ -460,13 +458,13 @@ export const HomePage: React.FC = () => {
               </div>
             )}
 
-            {/* Alternative Link - Always Available with Lower Z-Index */}
-            <div className="text-center relative z-10">
+            {/* Alternative Link - Always Available */}
+            <div className="text-center">
               <a
                 href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-2xl font-medium hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg relative z-10"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-2xl font-medium hover:from-purple-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
               >
                 <Volume2 className="w-5 h-5" />
                 Speak to Aegis
@@ -479,6 +477,15 @@ export const HomePage: React.FC = () => {
               )}
             </div>
           </div>
+          
+          {/* Track Case Button */}
+          <Link
+            to="/track"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-white/80 backdrop-blur-md text-slate-700 rounded-2xl font-medium border border-white/50 hover:bg-white hover:shadow-lg transform hover:scale-105 transition-all duration-200"
+          >
+            <Search className="w-5 h-5" />
+            Track Your Case
+          </Link>
         </div>
       </section>
 
