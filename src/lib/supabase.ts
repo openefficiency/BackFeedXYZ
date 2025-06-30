@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Supabase configuration with your specific credentials
-const supabaseUrl = 'https://tnvyzdmgyvpzwxbravrx.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRudnl6ZG1neXZwend4YnJhdnJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAyMDg3MTYsImV4cCI6MjA2NTc4NDcxNn0.tgtFA4wHYLfa8pu3Oes2y4raVT-_2LuWFOWimXALbWI';
+// Supabase configuration with your new credentials
+const supabaseUrl = 'https://rxdwludveochqytpjkvs.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4ZHdsdWR2ZW9jaHF5dHBqa3ZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEyMjkyNzYsImV4cCI6MjA2NjgwNTI3Nn0.WCTv2X780Xe4S0Wb2lNPtbSFegvRLc7TzlvMi5r-V90';
 
 // Validate configuration
 if (!supabaseUrl || !supabaseAnonKey) {
@@ -61,7 +61,7 @@ export const testConnection = async (): Promise<boolean> => {
       clearTimeout(timeoutId);
       
       if (error) {
-        console.warn('⚠️ Connection test failed (expected in WebContainer):', {
+        console.warn('⚠️ Connection test failed:', {
           error: error.message,
           code: error.code,
           details: error.details,
@@ -98,7 +98,7 @@ export const testConnection = async (): Promise<boolean> => {
     }
     
   } catch (error: any) {
-    console.warn('⚠️ Connection test exception (expected in WebContainer):', {
+    console.warn('⚠️ Connection test exception:', {
       message: error.message,
       name: error.name,
       attempt: connectionAttempts
