@@ -12,6 +12,7 @@
     <!-- Preconnect to external services for better performance -->
     <link rel="preconnect" href="https://api.elevenlabs.io">
     <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://spaces.napsterai.com">
     
     <!-- Preload ElevenLabs widget script with error handling -->
     <link rel="preload" href="https://unpkg.com/@elevenlabs/convai-widget-embed" as="script" crossorigin>
@@ -19,6 +20,18 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Napster Spaces Conversational AI Widget -->
+    <iframe 
+      src="https://spaces.napsterai.com/view/N2NlNjVhNGQtMzEyMC00M2Q5LTlkYTItMmYwZjZjY2M5YzhhOmFmN2M3M2Q1LWZiZDQtNDg2Ni04ZmIzLWY3OGM2ODM5MDBjZg==" 
+      style="width: 1280px; position: fixed; bottom: 0; right: 20px; aspect-ratio: 16/9; background: transparent; z-index: 999999999;"
+      frameborder="0"
+      allow="microphone; camera; autoplay; clipboard-write; encrypted-media"
+      allowtransparency="true"
+      allowfullscreen
+      referrerpolicy="strict-origin-when-cross-origin"
+      title="Napster Spaces Experience"
+    ></iframe>
     
     <!-- Enhanced script loading with better error handling -->
     <script>
@@ -124,11 +137,12 @@
               'https://elevenlabs.io',
               'https://api.elevenlabs.io',
               'https://widget.elevenlabs.io',
+              'https://spaces.napsterai.com',
               window.location.origin
             ];
             
             const isTrustedOrigin = trustedOrigins.some(origin => 
-              event.origin === origin || event.origin.includes('elevenlabs')
+              event.origin === origin || event.origin.includes('elevenlabs') || event.origin.includes('napsterai')
             );
             
             if (!isTrustedOrigin) {
@@ -137,14 +151,14 @@
             
             console.log('Global message listener:', event);
             
-            // Forward ElevenLabs events to the React app
+            // Forward ElevenLabs and Napster events to the React app
             if (event.data && typeof event.data === 'object') {
               const { type } = event.data;
-              if (type && (type.includes('conversation') || type.includes('convai'))) {
-                console.log('ElevenLabs event detected:', event.data);
+              if (type && (type.includes('conversation') || type.includes('convai') || type.includes('napster'))) {
+                console.log('Conversational AI event detected:', event.data);
                 
                 // Dispatch a custom event that React can listen to
-                window.dispatchEvent(new CustomEvent('elevenlabs-event', {
+                window.dispatchEvent(new CustomEvent('conversational-ai-event', {
                   detail: event.data
                 }));
               }
