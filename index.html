@@ -21,18 +21,6 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     
-    <!-- Napster Spaces Conversational AI Widget -->
-    <iframe 
-      src="https://spaces.napsterai.com/view/N2NlNjVhNGQtMzEyMC00M2Q5LTlkYTItMmYwZjZjY2M5YzhhOmFmN2M3M2Q1LWZiZDQtNDg2Ni04ZmIzLWY3OGM2ODM5MDBjZg==" 
-      style="width: 1280px; position: fixed; bottom: 0; right: 20px; aspect-ratio: 16/9; background: transparent; z-index: 999999999;"
-      frameborder="0"
-      allow="microphone; camera; autoplay; clipboard-write; encrypted-media"
-      allowtransparency="true"
-      allowfullscreen
-      referrerpolicy="strict-origin-when-cross-origin"
-      title="Napster Spaces Experience"
-    ></iframe>
-    
     <!-- Enhanced script loading with better error handling -->
     <script>
       // Enhanced error handling and network detection
@@ -179,6 +167,47 @@
           window.dispatchEvent(new CustomEvent('network-offline'));
         });
       });
+
+      // NapsterAI Popup Function
+      function openNapsterAI() {
+        console.log('🚀 Opening NapsterAI in popup window');
+        
+        // Calculate center position for popup
+        const width = 1280;
+        const height = 720;
+        const left = (screen.width - width) / 2;
+        const top = (screen.height - height) / 2;
+        
+        const popup = window.open(
+          'https://spaces.napsterai.com/view/N2NlNjVhNGQtMzEyMC00M2Q5LTlkYTItMmYwZjZjY2M5YzhhOmFmN2M3M2Q1LWZiZDQtNDg2Ni04ZmIzLWY3OGM2ODM5MDBjZg==',
+          'napsterai',
+          `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes,status=no,toolbar=no,menubar=no,location=no`
+        );
+        
+        if (popup) {
+          popup.focus();
+          console.log('✅ NapsterAI popup opened successfully');
+          
+          // Listen for popup close event
+          const checkClosed = setInterval(() => {
+            if (popup.closed) {
+              console.log('📝 NapsterAI popup was closed');
+              clearInterval(checkClosed);
+              // Dispatch custom event that React can listen to
+              window.dispatchEvent(new CustomEvent('napsterai-popup-closed'));
+            }
+          }, 1000);
+        } else {
+          console.warn('⚠️ Failed to open NapsterAI popup - popup blocked?');
+          alert('Popup was blocked. Please allow popups for this site and try again.');
+        }
+      }
+
+      // Make openNapsterAI function globally available
+      window.openNapsterAI = openNapsterAI;
+      
+      // Dispatch event when function is ready
+      window.dispatchEvent(new CustomEvent('napsterai-ready'));
     </script>
   </body>
 </html>
