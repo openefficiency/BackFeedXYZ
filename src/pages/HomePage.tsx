@@ -663,44 +663,26 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Final CTA - Clean */}
+      {/* Final CTA - Updated Content */}
       <section className="py-16 md:py-24 px-4 bg-gradient-to-br from-blue-50 via-purple-50 to-slate-50">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-4xl md:text-6xl font-extralight text-slate-900 mb-8 tracking-tight leading-tight">
-            Ready to Share
+            Keen to empower
             <br />
-            <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-light">Your Feedback</span>
+            <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-light">Your Employees</span>
             <br />
-            <span className="text-slate-800 font-light">to your organization?</span>
+            <span className="text-slate-800 font-light">with Aegis AI?</span>
           </h2>
           
-          <div className="space-y-6">
-            <a
-              href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-4 px-10 py-4 bg-white/80 backdrop-blur-md text-slate-800 rounded-full font-medium text-lg border border-white/50 hover:bg-white hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
-            >
-              <MessageSquare className="w-5 h-5" />
-              How can 
-              <span className="font-medium bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Aegis AI</span>
-              help you today?
-              <Mic className="w-4 h-4" />
-            </a>
-            
-            {/* Secondary NapsterAI CTA */}
-            <div className="text-center">
-              <button
-                onClick={openNapsterAI}
-                disabled={!napsterAIReady}
-                className="inline-flex items-center gap-3 px-8 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full font-medium hover:from-emerald-600 hover:to-teal-600 transform hover:scale-105 transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-              >
-                <Bot className="w-4 h-4" />
-                Or talk to Aegis to learn more
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
+          <button
+            onClick={openNapsterAI}
+            disabled={!napsterAIReady}
+            className="inline-flex items-center gap-4 px-10 py-4 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-full font-medium text-lg hover:from-emerald-700 hover:to-teal-700 transform hover:scale-105 transition-all duration-300 shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+          >
+            <Bot className="w-5 h-5" />
+            Talk to Aegis AI itself to know more about her
+            <ArrowRight className="w-5 h-5" />
+          </button>
         </div>
       </section>
 
