@@ -496,7 +496,7 @@ export const HomePage: React.FC = () => {
             )}
 
             {/* Alternative Link - Always Available */}
-            <div className="text-center space-y-4">
+            <div className="text-center">
               <a
                 href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
                 target="_blank"
@@ -507,23 +507,6 @@ export const HomePage: React.FC = () => {
                 Speak to Aegis
                 <Mic className="w-4 h-4" />
               </a>
-              
-              {/* NapsterAI CTA Button */}
-              <div className="relative">
-                <button
-                  onClick={openNapsterAI}
-                  disabled={!napsterAIReady}
-                  className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-2xl font-medium hover:from-emerald-700 hover:to-teal-700 transform hover:scale-105 transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                >
-                  <Bot className="w-5 h-5" />
-                  Talk to Aegis to know more about Aegis
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-                
-                {!napsterAIReady && (
-                  <div className="absolute -top-2 -right-2 w-4 h-4 bg-yellow-400 rounded-full animate-pulse"></div>
-                )}
-              </div>
               
               {(widgetError || networkStatus === 'offline') && (
                 <p className="text-xs text-slate-500 mt-2">
