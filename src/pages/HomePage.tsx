@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Mic, Check, MessageSquare, ArrowRight, Volume2, ExternalLink, Zap, Star, Shield, Brain, Clock, Users, Sparkles, Heart, ThumbsUp, Award, Search, AlertTriangle, Wifi, WifiOff, Bot } from 'lucide-react';
 import { handleElevenLabsWebhook } from '../lib/elevenlabs-webhook';
 import { PilotWaitlistModal } from '../components/PilotWaitlistModal';
+import { IframeModal } from '../components/IframeModal';
 
 export const HomePage: React.FC = () => {
   const [result, setResult] = useState<{
@@ -14,8 +15,8 @@ export const HomePage: React.FC = () => {
   const [widgetLoaded, setWidgetLoaded] = useState(false);
   const [widgetError, setWidgetError] = useState(false);
   const [showPilotModal, setShowPilotModal] = useState(false);
+  const [showNapsterAIModal, setShowNapsterAIModal] = useState(false);
   const [networkStatus, setNetworkStatus] = useState<'online' | 'offline' | 'checking'>('checking');
-  const [napsterAIReady, setNapsterAIReady] = useState(false);
 
   // Check network connectivity
   useEffect(() => {
@@ -40,42 +41,6 @@ export const HomePage: React.FC = () => {
 
     checkNetworkStatus();
   }, []);
-
-  // Listen for NapsterAI readiness
-  useEffect(() => {
-    const handleNapsterAIReady = () => {
-      console.log('🤖 NapsterAI popup function is ready');
-      setNapsterAIReady(true);
-    };
-
-    const handleNapsterAIPopupClosed = () => {
-      console.log('📝 NapsterAI popup was closed by user');
-      // You can add any post-popup logic here
-    };
-
-    window.addEventListener('napsterai-ready', handleNapsterAIReady);
-    window.addEventListener('napsterai-popup-closed', handleNapsterAIPopupClosed);
-
-    // Check if function is already available
-    if (window.openNapsterAI) {
-      setNapsterAIReady(true);
-    }
-
-    return () => {
-      window.removeEventListener('napsterai-ready', handleNapsterAIReady);
-      window.removeEventListener('napsterai-popup-closed', handleNapsterAIPopupClosed);
-    };
-  }, []);
-
-  // Open NapsterAI popup
-  const openNapsterAI = () => {
-    if (window.openNapsterAI) {
-      window.openNapsterAI();
-    } else {
-      console.warn('NapsterAI popup function not available yet');
-      alert('NapsterAI is loading. Please try again in a moment.');
-    }
-  };
 
   // Load ElevenLabs widget script with enhanced error handling
   useEffect(() => {
@@ -421,13 +386,7 @@ export const HomePage: React.FC = () => {
                 <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center">
                   <Mic className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-xl font-light text-slate-900">
-                  Your moment to make a difference
-                </h3>
               </div>
-              <p className="text-slate-600 font-light">
-                Because every great workplace starts with honest conversation.
-              </p>
             </div>
 
             {error && (
@@ -658,9 +617,8 @@ export const HomePage: React.FC = () => {
           </h2>
           
           <button
-            onClick={openNapsterAI}
-            disabled={!napsterAIReady}
-            className="inline-flex items-center gap-4 px-10 py-4 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-full font-medium text-lg hover:from-emerald-700 hover:to-teal-700 transform hover:scale-105 transition-all duration-300 shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            onClick={() => setShowNapsterAIModal(true)}
+            className="inline-flex items-center gap-4 px-10 py-4 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-full font-medium text-lg hover:from-emerald-700 hover:to-teal-700 transform hover:scale-105 transition-all duration-300 shadow-2xl"
           >
             <Bot className="w-5 h-5" />
             Talk to Aegis AI itself to know more about her
@@ -673,6 +631,14 @@ export const HomePage: React.FC = () => {
       <PilotWaitlistModal 
         isOpen={showPilotModal} 
         onClose={() => setShowPilotModal(false)} 
+      />
+
+      {/* NapsterAI Modal */}
+      <IframeModal
+        isOpen={showNapsterAIModal}
+        onClose={() => setShowNapsterAIModal(false)}
+        iframeSrc="https://spaces.napsterai.com/view/N2NlNjVhNGQtMzEyMC00M2Q5LTlkYTItMmYwZjZjY2M5YzhhOmFmN2M3M2Q1LWZiZDQtNDg2Ni04ZmIzLWY3OGM2ODM5MDBjZg=="
+        title="Aegis AI - Conversational Assistant"
       />
     </div>
   );

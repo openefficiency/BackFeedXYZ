@@ -12,7 +12,6 @@
     <!-- Preconnect to external services for better performance -->
     <link rel="preconnect" href="https://api.elevenlabs.io">
     <link rel="preconnect" href="https://unpkg.com">
-    <link rel="preconnect" href="https://spaces.napsterai.com">
     
     <!-- Preload ElevenLabs widget script with error handling -->
     <link rel="preload" href="https://unpkg.com/@elevenlabs/convai-widget-embed" as="script" crossorigin>
@@ -125,12 +124,11 @@
               'https://elevenlabs.io',
               'https://api.elevenlabs.io',
               'https://widget.elevenlabs.io',
-              'https://spaces.napsterai.com',
               window.location.origin
             ];
             
             const isTrustedOrigin = trustedOrigins.some(origin => 
-              event.origin === origin || event.origin.includes('elevenlabs') || event.origin.includes('napsterai')
+              event.origin === origin || event.origin.includes('elevenlabs')
             );
             
             if (!isTrustedOrigin) {
@@ -139,14 +137,14 @@
             
             console.log('Global message listener:', event);
             
-            // Forward ElevenLabs and Napster events to the React app
+            // Forward ElevenLabs events to the React app
             if (event.data && typeof event.data === 'object') {
               const { type } = event.data;
-              if (type && (type.includes('conversation') || type.includes('convai') || type.includes('napster'))) {
-                console.log('Conversational AI event detected:', event.data);
+              if (type && (type.includes('conversation') || type.includes('convai'))) {
+                console.log('ElevenLabs event detected:', event.data);
                 
                 // Dispatch a custom event that React can listen to
-                window.dispatchEvent(new CustomEvent('conversational-ai-event', {
+                window.dispatchEvent(new CustomEvent('elevenlabs-event', {
                   detail: event.data
                 }));
               }
@@ -167,47 +165,6 @@
           window.dispatchEvent(new CustomEvent('network-offline'));
         });
       });
-
-      // NapsterAI Popup Function
-      function openNapsterAI() {
-        console.log('🚀 Opening NapsterAI in popup window');
-        
-        // Calculate center position for popup
-        const width = 1280;
-        const height = 720;
-        const left = (screen.width - width) / 2;
-        const top = (screen.height - height) / 2;
-        
-        const popup = window.open(
-          'https://spaces.napsterai.com/view/N2NlNjVhNGQtMzEyMC00M2Q5LTlkYTItMmYwZjZjY2M5YzhhOmFmN2M3M2Q1LWZiZDQtNDg2Ni04ZmIzLWY3OGM2ODM5MDBjZg==',
-          'napsterai',
-          `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes,status=no,toolbar=no,menubar=no,location=no`
-        );
-        
-        if (popup) {
-          popup.focus();
-          console.log('✅ NapsterAI popup opened successfully');
-          
-          // Listen for popup close event
-          const checkClosed = setInterval(() => {
-            if (popup.closed) {
-              console.log('📝 NapsterAI popup was closed');
-              clearInterval(checkClosed);
-              // Dispatch custom event that React can listen to
-              window.dispatchEvent(new CustomEvent('napsterai-popup-closed'));
-            }
-          }, 1000);
-        } else {
-          console.warn('⚠️ Failed to open NapsterAI popup - popup blocked?');
-          alert('Popup was blocked. Please allow popups for this site and try again.');
-        }
-      }
-
-      // Make openNapsterAI function globally available
-      window.openNapsterAI = openNapsterAI;
-      
-      // Dispatch event when function is ready
-      window.dispatchEvent(new CustomEvent('napsterai-ready'));
     </script>
   </body>
 </html>
