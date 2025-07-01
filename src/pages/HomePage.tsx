@@ -15,6 +15,7 @@ export const HomePage: React.FC = () => {
   const [widgetError, setWidgetError] = useState(false);
   const [showPilotModal, setShowPilotModal] = useState(false);
   const [networkStatus, setNetworkStatus] = useState<'online' | 'offline' | 'checking'>('checking');
+  const [showNapsterIframe, setShowNapsterIframe] = useState(false);
 
   // Check network connectivity
   useEffect(() => {
@@ -251,6 +252,14 @@ export const HomePage: React.FC = () => {
     setResult(null);
     setError('');
     setWidgetError(false);
+  };
+
+  const openNapsterIframe = () => {
+    setShowNapsterIframe(true);
+  };
+
+  const closeNapsterIframe = () => {
+    setShowNapsterIframe(false);
   };
 
   // Show success page if conversation completed
@@ -612,27 +621,73 @@ export const HomePage: React.FC = () => {
       <section className="py-16 md:py-24 px-4 bg-gradient-to-br from-blue-50 via-purple-50 to-slate-50">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-4xl md:text-6xl font-extralight text-slate-900 mb-8 tracking-tight leading-tight">
-            Ready to Share
+            Keen to empower
             <br />
-            <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-light">Your Feedback</span>
+            <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-light">Your Employees</span>
             <br />
-            <span className="text-slate-800 font-light">to your organization?</span>
+            <span className="text-slate-800 font-light">with Aegis AI?</span>
           </h2>
           
-          <a
-            href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={openNapsterIframe}
             className="inline-flex items-center gap-4 px-10 py-4 bg-white/80 backdrop-blur-md text-slate-800 rounded-full font-medium text-lg border border-white/50 hover:bg-white hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
           >
             <MessageSquare className="w-5 h-5" />
-            How can 
-            <span className="font-medium bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Aegis AI</span>
-            help you today?
+            Talk to Aegis AI itself to know more about her
             <Mic className="w-4 h-4" />
-          </a>
+          </button>
+          
+          <p className="text-sm text-slate-500 mt-2 font-light">
+            Open Popup to interact with Aegis | Click Start after popup launches
+          </p>
         </div>
       </section>
+
+      {/* Napster AI Iframe Popup */}
+      {showNapsterIframe && (
+        <div className="fixed inset-0 z-[999999999]">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={closeNapsterIframe}
+          ></div>
+          
+          {/* Close button */}
+          <button
+            onClick={closeNapsterIframe}
+            className="absolute top-4 right-4 z-[1000000000] p-2 bg-white/90 hover:bg-white rounded-full shadow-lg transition-colors"
+          >
+            <svg className="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          
+          {/* Iframe */}
+          <iframe 
+            src="https://spaces.napsterai.com/view/N2NlNjVhNGQtMzEyMC00M2Q5LTlkYTItMmYwZjZjY2M5YzhhOmFmN2M3M2Q1LWZiZDQtNDg2Ni04ZmIzLWY3OGM2ODM5MDBjZg==" 
+            style={{
+              width: '90vw',
+              height: '90vh',
+              maxWidth: '1280px',
+              position: 'fixed',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              aspectRatio: '16/9',
+              background: 'transparent',
+              zIndex: 999999999,
+              borderRadius: '12px',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+            }}
+            frameBorder="0"
+            allow="microphone; camera; autoplay; clipboard-write; encrypted-media"
+            allowTransparency={true}
+            allowFullScreen
+            referrerPolicy="strict-origin-when-cross-origin"
+            title="Napster Spaces Experience"
+          />
+        </div>
+      )}
 
       {/* Pilot Waitlist Modal */}
       <PilotWaitlistModal 
