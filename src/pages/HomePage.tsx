@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Mic, Check, MessageSquare, ArrowRight, Volume2, ExternalLink, Zap, Star, Shield, Brain, Clock, Users, Sparkles, Heart, ThumbsUp, Award, Search, AlertTriangle, Wifi, WifiOff } from 'lucide-react';
+import { Mic, Check, MessageSquare, ArrowRight, Volume2, ExternalLink, Zap, Star, Shield, Brain, Clock, Users, Sparkles, Heart, ThumbsUp, Award, Search, AlertTriangle, Wifi, WifiOff, Bot } from 'lucide-react';
 import { handleElevenLabsWebhook } from '../lib/elevenlabs-webhook';
 import { PilotWaitlistModal } from '../components/PilotWaitlistModal';
 
@@ -15,6 +15,7 @@ export const HomePage: React.FC = () => {
   const [widgetError, setWidgetError] = useState(false);
   const [showPilotModal, setShowPilotModal] = useState(false);
   const [networkStatus, setNetworkStatus] = useState<'online' | 'offline' | 'checking'>('checking');
+  const [napsterAIReady, setNapsterAIReady] = useState(false);
 
   // Check network connectivity
   useEffect(() => {
@@ -39,6 +40,42 @@ export const HomePage: React.FC = () => {
 
     checkNetworkStatus();
   }, []);
+
+  // Listen for NapsterAI readiness
+  useEffect(() => {
+    const handleNapsterAIReady = () => {
+      console.log('🤖 NapsterAI popup function is ready');
+      setNapsterAIReady(true);
+    };
+
+    const handleNapsterAIPopupClosed = () => {
+      console.log('📝 NapsterAI popup was closed by user');
+      // You can add any post-popup logic here
+    };
+
+    window.addEventListener('napsterai-ready', handleNapsterAIReady);
+    window.addEventListener('napsterai-popup-closed', handleNapsterAIPopupClosed);
+
+    // Check if function is already available
+    if (window.openNapsterAI) {
+      setNapsterAIReady(true);
+    }
+
+    return () => {
+      window.removeEventListener('napsterai-ready', handleNapsterAIReady);
+      window.removeEventListener('napsterai-popup-closed', handleNapsterAIPopupClosed);
+    };
+  }, []);
+
+  // Open NapsterAI popup
+  const openNapsterAI = () => {
+    if (window.openNapsterAI) {
+      window.openNapsterAI();
+    } else {
+      console.warn('NapsterAI popup function not available yet');
+      alert('NapsterAI is loading. Please try again in a moment.');
+    }
+  };
 
   // Load ElevenLabs widget script with enhanced error handling
   useEffect(() => {
@@ -459,7 +496,7 @@ export const HomePage: React.FC = () => {
             )}
 
             {/* Alternative Link - Always Available */}
-            <div className="text-center">
+            <div className="text-center space-y-4">
               <a
                 href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
                 target="_blank"
@@ -470,6 +507,24 @@ export const HomePage: React.FC = () => {
                 Speak to Aegis
                 <Mic className="w-4 h-4" />
               </a>
+              
+              {/* NapsterAI CTA Button */}
+              <div className="relative">
+                <button
+                  onClick={openNapsterAI}
+                  disabled={!napsterAIReady}
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-2xl font-medium hover:from-emerald-700 hover:to-teal-700 transform hover:scale-105 transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                >
+                  <Bot className="w-5 h-5" />
+                  Talk to Aegis to know more about Aegis
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+                
+                {!napsterAIReady && (
+                  <div className="absolute -top-2 -right-2 w-4 h-4 bg-yellow-400 rounded-full animate-pulse"></div>
+                )}
+              </div>
+              
               {(widgetError || networkStatus === 'offline') && (
                 <p className="text-xs text-slate-500 mt-2">
                   Opens in new tab • Fully functional
@@ -619,18 +674,33 @@ export const HomePage: React.FC = () => {
             <span className="text-slate-800 font-light">to your organization?</span>
           </h2>
           
-          <a
-            href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-4 px-10 py-4 bg-white/80 backdrop-blur-md text-slate-800 rounded-full font-medium text-lg border border-white/50 hover:bg-white hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
-          >
-            <MessageSquare className="w-5 h-5" />
-            How can 
-            <span className="font-medium bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Aegis AI</span>
-            help you today?
-            <Mic className="w-4 h-4" />
-          </a>
+          <div className="space-y-6">
+            <a
+              href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-4 px-10 py-4 bg-white/80 backdrop-blur-md text-slate-800 rounded-full font-medium text-lg border border-white/50 hover:bg-white hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+            >
+              <MessageSquare className="w-5 h-5" />
+              How can 
+              <span className="font-medium bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Aegis AI</span>
+              help you today?
+              <Mic className="w-4 h-4" />
+            </a>
+            
+            {/* Secondary NapsterAI CTA */}
+            <div className="text-center">
+              <button
+                onClick={openNapsterAI}
+                disabled={!napsterAIReady}
+                className="inline-flex items-center gap-3 px-8 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full font-medium hover:from-emerald-600 hover:to-teal-600 transform hover:scale-105 transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              >
+                <Bot className="w-4 h-4" />
+                Or talk to Aegis to learn more
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
         </div>
       </section>
 
