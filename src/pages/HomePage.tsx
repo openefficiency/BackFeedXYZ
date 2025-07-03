@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Mic, Check, MessageSquare, ArrowRight, Volume2, ExternalLink, Zap, Star, Shield, Brain, Clock, Users, Sparkles, Heart, ThumbsUp, Award, Search, AlertTriangle, Wifi, WifiOff } from 'lucide-react';
+import { Mic, Check, MessageSquare, ArrowRight, Volume2, ExternalLink, Zap, Star, Shield, Brain, Clock, Users, Sparkles, Heart, ThumbsUp, Award, Search, AlertTriangle, Wifi, WifiOff, Lock, Eye, UserCheck } from 'lucide-react';
 import { handleElevenLabsWebhook } from '../lib/elevenlabs-webhook';
 import { PilotWaitlistModal } from '../components/PilotWaitlistModal';
 
@@ -485,6 +485,169 @@ export const HomePage: React.FC = () => {
                 </p>
               )}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Confidential Reporting Section */}
+      <section className="py-16 md:py-24 px-4 bg-gradient-to-br from-blue-50 via-slate-50 to-purple-50">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-3 px-6 py-3 bg-white/80 backdrop-blur-md border border-white/50 rounded-full text-slate-700 text-sm font-light mb-8 shadow-lg">
+              <Shield className="w-4 h-4 text-green-600" />
+              100% Anonymous & Confidential
+            </div>
+            
+            <h2 className="text-4xl md:text-6xl font-extralight text-slate-900 mb-8 tracking-tight leading-tight">
+              Your Privacy is
+              <br />
+              <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent font-light">Protected</span>
+            </h2>
+            
+            <p className="text-lg md:text-xl text-slate-600 mb-12 leading-relaxed font-light max-w-3xl mx-auto">
+              We've built the most secure and confidential reporting system possible. 
+              Your identity remains completely anonymous while ensuring your voice is heard.
+            </p>
+          </div>
+
+          {/* Privacy Policy Card */}
+          <div className="bg-white/80 backdrop-blur-xl border border-white/50 rounded-3xl p-8 md:p-12 shadow-2xl mb-12">
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Lock className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-2xl md:text-3xl font-light text-slate-900 mb-4">
+                Our Privacy Commitment
+              </h3>
+              <p className="text-slate-600 font-light leading-relaxed">
+                This written policy explicitly guarantees your complete anonymity and confidentiality.
+              </p>
+            </div>
+
+            {/* Privacy Policy List */}
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <Eye className="w-4 h-4 text-green-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-slate-900 mb-2">100% Anonymous Reporting</h4>
+                    <p className="text-slate-600 text-sm leading-relaxed">
+                      All reports are completely anonymous and confidential. No personal identifying information is ever collected or stored.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <Mic className="w-4 h-4 text-blue-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-slate-900 mb-2">No Voice Recordings Stored</h4>
+                    <p className="text-slate-600 text-sm leading-relaxed">
+                      No voice recordings are ever made or stored. Only processed text summaries are retained for case management.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <UserCheck className="w-4 h-4 text-purple-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-slate-900 mb-2">No Identifying Data</h4>
+                    <p className="text-slate-600 text-sm leading-relaxed">
+                      No names, employee IDs, IP addresses, or any other identifying information is collected during the reporting process.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <Shield className="w-4 h-4 text-orange-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-slate-900 mb-2">Authorized Access Only</h4>
+                    <p className="text-slate-600 text-sm leading-relaxed">
+                      Reports are accessible only to authorized HR personnel who are bound by strict confidentiality agreements.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <AlertTriangle className="w-4 h-4 text-red-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-slate-900 mb-2">Confidentiality Violations</h4>
+                    <p className="text-slate-600 text-sm leading-relaxed">
+                      Any violation of confidentiality protocols will result in immediate disciplinary action up to and including termination.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <Lock className="w-4 h-4 text-green-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-slate-900 mb-2">Secure Infrastructure</h4>
+                    <p className="text-slate-600 text-sm leading-relaxed">
+                      All data is encrypted in transit and at rest using industry-standard security protocols and compliance frameworks.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Trust Indicators */}
+            <div className="mt-12 pt-8 border-t border-slate-200">
+              <div className="grid md:grid-cols-3 gap-6 text-center">
+                <div className="p-4">
+                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Shield className="w-6 h-6 text-green-600" />
+                  </div>
+                  <h5 className="font-semibold text-slate-900 mb-2">Enterprise Security</h5>
+                  <p className="text-slate-600 text-sm">Bank-level encryption and security protocols</p>
+                </div>
+                
+                <div className="p-4">
+                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Eye className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <h5 className="font-semibold text-slate-900 mb-2">Zero Tracking</h5>
+                  <p className="text-slate-600 text-sm">No cookies, analytics, or user tracking</p>
+                </div>
+                
+                <div className="p-4">
+                  <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Lock className="w-6 h-6 text-purple-600" />
+                  </div>
+                  <h5 className="font-semibold text-slate-900 mb-2">Compliance Ready</h5>
+                  <p className="text-slate-600 text-sm">GDPR, CCPA, and SOX compliant</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Call to Action */}
+          <div className="text-center">
+            <p className="text-lg text-slate-600 mb-8 font-light">
+              Your safety and privacy are our highest priorities. Report with confidence.
+            </p>
+            <a
+              href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-10 py-4 bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-full font-medium text-lg hover:from-green-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-300 shadow-2xl"
+            >
+              <Shield className="w-5 h-5" />
+              Start Confidential Report
+              <ArrowRight className="w-5 h-5" />
+            </a>
           </div>
         </div>
       </section>
