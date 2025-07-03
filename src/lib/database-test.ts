@@ -4,7 +4,7 @@ import { supabase, dbService } from './supabase';
  * Comprehensive database testing utility
  * Tests all database operations and connections
  */
-export class DatabaseTester {
+class DatabaseTester {
   private results: Array<{ test: string; status: 'pass' | 'fail'; message: string; duration: number }> = [];
 
   async runAllTests(): Promise<void> {

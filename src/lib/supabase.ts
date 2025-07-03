@@ -39,7 +39,7 @@ let connectionAttempts = 0;
 const MAX_CONNECTION_ATTEMPTS = 3;
 
 // Enhanced connection test with better error handling and fallback
-export const testConnection = async (): Promise<boolean> => {
+const testConnection = async (): Promise<boolean> => {
   try {
     console.log('🔍 Testing Supabase connection...');
     console.log('📍 URL:', supabaseUrl);
@@ -117,7 +117,7 @@ export const testConnection = async (): Promise<boolean> => {
 };
 
 // Check if we're in a network-restricted environment
-export const isOfflineMode = (): boolean => {
+const isOfflineMode = (): boolean => {
   return !isNetworkAvailable || connectionAttempts >= MAX_CONNECTION_ATTEMPTS;
 };
 
@@ -944,7 +944,7 @@ function getDemoHRUsers(): any[] {
 }
 
 // Enhanced API service with better error handling
-export const apiService = {
+const apiService = {
   async transcribeAudio(audioBlob: Blob): Promise<string> {
     try {
       console.log('🎤 Starting audio transcription...');

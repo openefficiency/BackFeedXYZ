@@ -36,7 +36,7 @@ interface ElevenLabsWebhookPayload {
   };
 }
 
-export class ElevenLabsWebhookHandler {
+class ElevenLabsWebhookHandler {
   /**
    * Process ElevenLabs conversation completion webhook
    */
