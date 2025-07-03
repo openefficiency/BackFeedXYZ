@@ -557,7 +557,7 @@ export const HomePage: React.FC = () => {
                     <AlertTriangle className="w-4 h-4 text-red-600" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-slate-900">Confidentiality Violations</h4>
+                    <h4 className="font-semibold text-slate-900">Confidentiality Violations of the report will result in immediate disciplinary action</h4>
                   </div>
                 </div>
 
