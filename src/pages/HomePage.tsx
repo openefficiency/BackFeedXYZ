@@ -505,25 +505,12 @@ export const HomePage: React.FC = () => {
             </h2>
             
             <p className="text-lg md:text-xl text-slate-600 mb-12 leading-relaxed font-light max-w-3xl mx-auto">
-              We've built the most secure and confidential reporting system possible. 
-              Your identity remains completely anonymous while ensuring your voice is heard.
+              This written policy explicitly guarantees your complete anonymity and confidentiality.
             </p>
           </div>
 
           {/* Privacy Policy Card */}
           <div className="bg-white/80 backdrop-blur-xl border border-white/50 rounded-3xl p-8 md:p-12 shadow-2xl mb-12">
-            <div className="text-center mb-8">
-              <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Lock className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-2xl md:text-3xl font-light text-slate-900 mb-4">
-                Our Privacy Commitment
-              </h3>
-              <p className="text-slate-600 font-light leading-relaxed">
-                This written policy explicitly guarantees your complete anonymity and confidentiality.
-              </p>
-            </div>
-
             {/* Privacy Policy List */}
             <div className="grid md:grid-cols-2 gap-8">
               <div className="space-y-6">
@@ -532,10 +519,7 @@ export const HomePage: React.FC = () => {
                     <Eye className="w-4 h-4 text-green-600" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-slate-900 mb-2">100% Anonymous Reporting</h4>
-                    <p className="text-slate-600 text-sm leading-relaxed">
-                      All reports are completely anonymous and confidential. No personal identifying information is ever collected or stored.
-                    </p>
+                    <h4 className="font-semibold text-slate-900">100% Anonymous Reporting</h4>
                   </div>
                 </div>
 
@@ -544,10 +528,7 @@ export const HomePage: React.FC = () => {
                     <Mic className="w-4 h-4 text-blue-600" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-slate-900 mb-2">No Voice Recordings Stored</h4>
-                    <p className="text-slate-600 text-sm leading-relaxed">
-                      No voice recordings are ever made or stored. Only processed text summaries are retained for case management.
-                    </p>
+                    <h4 className="font-semibold text-slate-900">No Voice Recordings Stored</h4>
                   </div>
                 </div>
 
@@ -556,10 +537,7 @@ export const HomePage: React.FC = () => {
                     <UserCheck className="w-4 h-4 text-purple-600" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-slate-900 mb-2">No Identifying Data</h4>
-                    <p className="text-slate-600 text-sm leading-relaxed">
-                      No names, employee IDs, IP addresses, or any other identifying information is collected during the reporting process.
-                    </p>
+                    <h4 className="font-semibold text-slate-900">No Identifying Data</h4>
                   </div>
                 </div>
               </div>
@@ -570,10 +548,7 @@ export const HomePage: React.FC = () => {
                     <Shield className="w-4 h-4 text-orange-600" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-slate-900 mb-2">Authorized Access Only</h4>
-                    <p className="text-slate-600 text-sm leading-relaxed">
-                      Reports are accessible only to authorized HR personnel who are bound by strict confidentiality agreements.
-                    </p>
+                    <h4 className="font-semibold text-slate-900">Authorized Access Only</h4>
                   </div>
                 </div>
 
@@ -582,10 +557,7 @@ export const HomePage: React.FC = () => {
                     <AlertTriangle className="w-4 h-4 text-red-600" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-slate-900 mb-2">Confidentiality Violations</h4>
-                    <p className="text-slate-600 text-sm leading-relaxed">
-                      Any violation of confidentiality protocols will result in immediate disciplinary action up to and including termination.
-                    </p>
+                    <h4 className="font-semibold text-slate-900">Confidentiality Violations</h4>
                   </div>
                 </div>
 
@@ -594,10 +566,7 @@ export const HomePage: React.FC = () => {
                     <Lock className="w-4 h-4 text-green-600" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-slate-900 mb-2">Secure Infrastructure</h4>
-                    <p className="text-slate-600 text-sm leading-relaxed">
-                      All data is encrypted in transit and at rest using industry-standard security protocols and compliance frameworks.
-                    </p>
+                    <h4 className="font-semibold text-slate-900">Secure Infrastructure</h4>
                   </div>
                 </div>
               </div>
@@ -610,44 +579,24 @@ export const HomePage: React.FC = () => {
                   <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
                     <Shield className="w-6 h-6 text-green-600" />
                   </div>
-                  <h5 className="font-semibold text-slate-900 mb-2">Enterprise Security</h5>
-                  <p className="text-slate-600 text-sm">Bank-level encryption and security protocols</p>
+                  <h5 className="font-semibold text-slate-900">Enterprise Security</h5>
                 </div>
                 
                 <div className="p-4">
                   <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
                     <Eye className="w-6 h-6 text-blue-600" />
                   </div>
-                  <h5 className="font-semibold text-slate-900 mb-2">Zero Tracking</h5>
-                  <p className="text-slate-600 text-sm">No cookies, analytics, or user tracking</p>
+                  <h5 className="font-semibold text-slate-900">Zero Tracking</h5>
                 </div>
                 
                 <div className="p-4">
                   <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
                     <Lock className="w-6 h-6 text-purple-600" />
                   </div>
-                  <h5 className="font-semibold text-slate-900 mb-2">Compliance Ready</h5>
-                  <p className="text-slate-600 text-sm">GDPR, CCPA, and SOX compliant</p>
+                  <h5 className="font-semibold text-slate-900">Compliance Ready</h5>
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* Call to Action */}
-          <div className="text-center">
-            <p className="text-lg text-slate-600 mb-8 font-light">
-              Your safety and privacy are our highest priorities. Report with confidence.
-            </p>
-            <a
-              href="https://elevenlabs.io/app/talk-to?agent_id=agent_01jydtj6avef99c1ne0eavf0ww"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-10 py-4 bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-full font-medium text-lg hover:from-green-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-300 shadow-2xl"
-            >
-              <Shield className="w-5 h-5" />
-              Start Confidential Report
-              <ArrowRight className="w-5 h-5" />
-            </a>
           </div>
         </div>
       </section>
